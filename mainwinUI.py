@@ -11,14 +11,24 @@ class MainWindow(QtGui.QMainWindow):
 
     def initUI(self):
         self.setWindowTitle("Better Download Manager")
-        self.setGeometry(50, 50, 640, 480)
+        self.setGeometry(50, 100, 800, 600)
+
+        File_Exit = QtGui.QAction("E&xit", self)
+        File_Exit.setShortcut("Ctrl+Q")
+        File_Exit.setStatusTip("Exit the application")
+        File_Exit.triggered.connect(self.close)
+
+        self.statusBar()
+        main_menu = self.menuBar()
+        sub_File_menu = main_menu.addMenu("&File")
+        sub_File_menu.addAction(File_Exit)
 
 
 def runApp():
     app = QtGui.QApplication(sys.argv)
 
     main_win = MainWindow()
-    main_win.showMaximized()
+    main_win.show()
 
     sys.exit(app.exec_())
 
