@@ -14,15 +14,27 @@ class AboutDLG(QtGui.QDialog):
 
     def initUI(self):
         self.setWindowTitle("About Better Download Manager")
-        self.resize(450, 350)
+        self.setGeometry(200, 100, 450, 350)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         # self.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.WindowTitleHint)
 
-        grdLayout= QtGui.QGridLayout()
+        lblLogo = QtGui.QLabel("Application Logo in here")
+        lblAppName = QtGui.QLabel("Better Download Manager")
+        lblAppVer = QtGui.QLabel("Ver: 0.1 alpha")
+
+        btnClose = QtGui.QPushButton("&Close")
+        btnClose.clicked.connect(self.close)
+
+        grdLayout = QtGui.QGridLayout()
         self.setLayout(grdLayout)
 
-        lblLogo= QtGui.QLabel("Application Logo in here")
-        grdLayout.addWidget()
+        grdLayout.addWidget(lblLogo, 0, 0)
+        grdLayout.addWidget(lblAppName, 1, 0)
+        grdLayout.addWidget(lblAppVer, 2, 0)
+        grdLayout.addWidget(btnClose, 3, 0)
+
+        grdLayout.setAlignment(QtCore.Qt.AlignHCenter)
+
 
 # ============END=OF=CLASS====================================
 
