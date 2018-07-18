@@ -1,4 +1,3 @@
-import sys
 from PyQt4 import QtGui
 
 
@@ -33,11 +32,6 @@ class MainWindow(QtGui.QMainWindow):
         self.action_File_NewDL.setToolTip("To show new download form")
         self.action_File_NewDL.setStatusTip("To show new download form")
         # action_File_NewDL.triggered.connect(self.shownewdlform)
-
-        # # ***Batch Download Action***********************************
-        # self.action_File_NewBatchDL = QtGui.QAction("&Batch Download", self)
-        # self.action_File_NewBatchDL.setToolTip("For batch downloading")
-        # self.action_File_NewBatchDL.setStatusTip("For batch downloading")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtGui.QActionGroup(self)
@@ -96,6 +90,7 @@ class MainWindow(QtGui.QMainWindow):
 
 
 if __name__ == "__main__":
+    import sys
     app = QtGui.QApplication(sys.argv)
 
     main_win = MainWindow()
