@@ -1,4 +1,4 @@
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 
 # ==========START=OF=CLASS====================================
@@ -10,8 +10,13 @@ class AboutDLG(QtGui.QDialog):
 
         self.initUI()
 
+# ---------------------------------------------------
+
     def initUI(self):
-        pass
+        self.setWindowTitle("About Better Download Manager")
+        self.resize(450, 350)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        # self.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.WindowTitleHint)
 
 # ============END=OF=CLASS====================================
 
@@ -19,8 +24,6 @@ class AboutDLG(QtGui.QDialog):
 if __name__ == "__main__":
     import sys
     app = QtGui.QApplication(sys.argv)
-
     about_win = AboutDLG()
     about_win.show()
-
     app.exec_()
