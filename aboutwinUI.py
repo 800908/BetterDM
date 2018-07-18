@@ -18,6 +18,12 @@ class AboutDLG(QtGui.QDialog):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         # self.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.WindowTitleHint)
 
+        grdLayout= QtGui.QGridLayout()
+        self.setLayout(grdLayout)
+
+        lblLogo= QtGui.QLabel("Application Logo in here")
+        grdLayout.addWidget()
+
 # ============END=OF=CLASS====================================
 
 
