@@ -19,8 +19,13 @@ class AboutDLG(QtGui.QDialog):
         # self.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.WindowTitleHint)
 
         lblLogo = QtGui.QLabel("Application Logo in here")
+        lblLogo.setAlignment(QtCore.Qt.AlignHCenter)
+
         lblAppName = QtGui.QLabel("Better Download Manager")
+        lblAppName.setAlignment(QtCore.Qt.AlignHCenter)
+
         lblAppVer = QtGui.QLabel("Ver: 0.1 alpha")
+        lblAppVer.setAlignment(QtCore.Qt.AlignHCenter)
 
         btnClose = QtGui.QPushButton("&Close")
         btnClose.clicked.connect(self.close)
@@ -32,8 +37,6 @@ class AboutDLG(QtGui.QDialog):
         grdLayout.addWidget(lblAppName, 1, 0)
         grdLayout.addWidget(lblAppVer, 2, 0)
         grdLayout.addWidget(btnClose, 3, 0)
-
-        grdLayout.setAlignment(QtCore.Qt.AlignHCenter)
 
 
 # ============END=OF=CLASS====================================
