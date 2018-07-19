@@ -20,6 +20,8 @@ class MainWindow(QtGui.QMainWindow):
 
         self.initMainMenu()
 
+        self.initToolBar()
+
         self.statusBar()
 
 # ---------------------------------------------------
@@ -53,6 +55,27 @@ class MainWindow(QtGui.QMainWindow):
         self.action_File_Exit.setStatusTip("To exit the application")
         self.action_File_Exit.triggered.connect(self.close)
 
+        # ***Start Download*******************************************
+        self.action_Download_Start = QtGui.QAction("&Start Download", self)
+        # self.action_Download_Start.setShortcut("Ctrl+Q")
+        self.action_Download_Start.setToolTip("To start stoped download")
+        self.action_Download_Start.setStatusTip("To start stoped download")
+        # self.action_Download_Start.triggered.connect()
+
+        # ***Start Download*******************************************
+        self.action_Download_Stop = QtGui.QAction("S&top Download", self)
+        # self.action_Download_Stop.setShortcut("Ctrl+Q")
+        self.action_Download_Stop.setToolTip("To stop started download")
+        self.action_Download_Stop.setStatusTip("To stop started download")
+        # self.action_Download_Stop.triggered.connect()
+
+        # ***Delete Download*******************************************
+        self.action_Download_Delete = QtGui.QAction("&Delete Download", self)
+        # self.action_Download_Delete.setShortcut("Ctrl+Q")
+        self.action_Download_Delete.setToolTip("To Delete download from list")
+        self.action_Download_Delete.setStatusTip("To Delete download from list")
+        # self.action_Download_Delete.triggered.connect()
+
         # ***About Action********************************************
         self.action_Help_About = QtGui.QAction("&About", self)
         self.action_Help_About.setToolTip("To see about window")
@@ -62,10 +85,10 @@ class MainWindow(QtGui.QMainWindow):
 # ---------------------------------------------------
 
     def initMainMenu(self):
-        main_menu = self.menuBar()
+        main_Menu = self.menuBar()
 
         # File menu
-        menu_File = main_menu.addMenu("&File")
+        menu_File = main_Menu.addMenu("&File")
         # File --> New Download
         menu_File.addAction(self.action_File_NewDL)
         # File --> Batch Download submenu
@@ -80,11 +103,29 @@ class MainWindow(QtGui.QMainWindow):
         # File --> Exit menu
         menu_File.addAction(self.action_File_Exit)
 
-        menu_Download = main_menu.addMenu("&Download")
+        # Download menu
+        menu_Download = main_Menu.addMenu("&Download")
+        # Download --> Start
+        menu_Download.addAction(self.action_Download_Start)
+        # Download --> Stop
+        menu_Download.addAction(self.action_Download_Stop)
+        # Download --> Delete
+        menu_Download.addAction(self.action_Download_Delete)
 
-        menu_Help = main_menu.addMenu("&Help")
+        menu_Help = main_Menu.addMenu("&Help")
         # Help --> About menu
         menu_Help.addAction(self.action_Help_About)
+
+# ---------------------------------------------------
+
+    def initToolBar(self):
+        main_Toolbar = self.addToolBar("Main Toolbar")
+
+        main_Toolbar.addAction(self.action_File_NewDL)
+        main_Toolbar.addAction(self.action_Download_Start)
+        main_Toolbar.addAction(self.action_Download_Stop)
+        main_Toolbar.addAction(self.action_Download_Delete)
+
 
 # ============END=OF=CLASS====================================
 
