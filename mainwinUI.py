@@ -24,6 +24,8 @@ class MainWindow(QtGui.QMainWindow):
 
         self.statusBar()
 
+        self.initLayoutAndWidget()
+
 # ---------------------------------------------------
 
     def initActions(self):
@@ -55,21 +57,21 @@ class MainWindow(QtGui.QMainWindow):
         self.action_File_Exit.setStatusTip("To exit the application")
         self.action_File_Exit.triggered.connect(self.close)
 
-        # ***Start Download*******************************************
+        # ***Start Download******************************************
         self.action_Download_Start = QtGui.QAction("&Start Download", self)
         # self.action_Download_Start.setShortcut("Ctrl+Q")
         self.action_Download_Start.setToolTip("To start stoped download")
         self.action_Download_Start.setStatusTip("To start stoped download")
         # self.action_Download_Start.triggered.connect()
 
-        # ***Start Download*******************************************
+        # ***Start Download******************************************
         self.action_Download_Stop = QtGui.QAction("S&top Download", self)
         # self.action_Download_Stop.setShortcut("Ctrl+Q")
         self.action_Download_Stop.setToolTip("To stop started download")
         self.action_Download_Stop.setStatusTip("To stop started download")
         # self.action_Download_Stop.triggered.connect()
 
-        # ***Delete Download*******************************************
+        # ***Delete Download*****************************************
         self.action_Download_Delete = QtGui.QAction("&Delete Download", self)
         # self.action_Download_Delete.setShortcut("Ctrl+Q")
         self.action_Download_Delete.setToolTip("To Delete download from list")
@@ -125,6 +127,14 @@ class MainWindow(QtGui.QMainWindow):
         main_Toolbar.addAction(self.action_Download_Start)
         main_Toolbar.addAction(self.action_Download_Stop)
         main_Toolbar.addAction(self.action_Download_Delete)
+
+
+# ---------------------------------------------------
+
+    def initLayoutAndWidget(self):
+        grdlMain = QtGui.QGridLayout()
+        vblLeft = QtGui.QVBoxLayout()
+        vblRight = QtGui.QVBoxLayout()
 
 
 # ============END=OF=CLASS====================================
