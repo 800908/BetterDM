@@ -1,4 +1,4 @@
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 
 # ==========START=OF=CLASS====================================
@@ -132,10 +132,27 @@ class MainWindow(QtGui.QMainWindow):
 # ---------------------------------------------------
 
     def initLayoutAndWidget(self):
-        grdlMain = QtGui.QGridLayout()
-        vblLeft = QtGui.QVBoxLayout()
-        vblRight = QtGui.QVBoxLayout()
+        splMain = QtGui.QSplitter()
+        splLeft = QtGui.QSplitter()
+        splLeft.setOrientation(QtCore.Qt.Vertical)
+        splRight = QtGui.QSplitter()
+        splRight.setOrientation(QtCore.Qt.Vertical)
 
+        lstwCat = QtGui.QListView()
+        tblwDLs = QtGui.QTableView()
+        lstwLog = QtGui.QListView()
+
+        splLeft.addWidget(lstwCat)
+        splRight.addWidget(tblwDLs)
+        splRight.addWidget(lstwLog)
+
+        splMain.addWidget(splLeft)
+        splMain.addWidget(splRight)
+
+        splMain.setSizes([self.width() / 4, self.width() / 4 * 3])
+        splRight.setSizes([self.height() / 4 * 3, self.height() / 4])
+
+        self.setCentralWidget(splMain)
 
 # ============END=OF=CLASS====================================
 
