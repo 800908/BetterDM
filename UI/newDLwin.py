@@ -43,6 +43,13 @@ class NewDLDLG(QtGui.QDialog):
         lblSaveFolder.setBuddy(self.cbSaveFolder)
         lblSaveFolder.setAlignment(QtCore.Qt.AlignRight)
 
+        # ======Comment====================================
+        lblComment = QtGui.QLabel("&Comment:")
+        self.tedtComment = QtGui.QTextEdit("")
+        lblComment.setBuddy(self.tedtComment)
+        self.tedtComment.setMaximumHeight(70)
+        lblComment.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
+
         # ======Layout=====================================
         glayMain = QtGui.QGridLayout()
         glayMain.setColumnStretch(1, 5)
@@ -59,6 +66,9 @@ class NewDLDLG(QtGui.QDialog):
         glayMain.addWidget(lblSaveFolder, 3, 0)
         glayMain.addWidget(self.cbSaveFolder, 3, 1)
         glayMain.addWidget(self.tbtnSaveFolder, 3, 2)
+
+        glayMain.addWidget(lblComment, 4, 0)
+        glayMain.addWidget(self.tedtComment, 4, 1, 2, 2)
 
         self.setLayout(glayMain)
 
