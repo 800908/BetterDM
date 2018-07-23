@@ -1,7 +1,7 @@
 import sys
 from PyQt4 import QtGui
-from UI.mainwinUI import MainWindow
-from UI.aboutwinUI import AboutDLG
+from UI.mainwin import MainWindow
+from UI.aboutwin import AboutDLG
 
 
 def show_aboutme():
