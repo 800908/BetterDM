@@ -23,6 +23,13 @@ class NewDLDLG(QtGui.QDialog):
         lblURL.setBuddy(self.ledtURL)
         lblURL.setAlignment(QtCore.Qt.AlignRight)
 
+        # ======Size=======================================
+        lblSize = QtGui.QLabel("File Size:")
+        self.lblFileSize = QtGui.QLabel("")
+        self.pbtnGetSize = QtGui.QPushButton("&Get Size")
+        lblSize.setBuddy(self.lblFileSize)
+        lblSize.setAlignment(QtCore.Qt.AlignRight)
+
         # ======Mirror=====================================
         lblMirror = QtGui.QLabel("&Mirror:")
         self.ledtMirror = QtGui.QLineEdit("")
@@ -50,25 +57,43 @@ class NewDLDLG(QtGui.QDialog):
         self.tedtComment.setMaximumHeight(70)
         lblComment.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
 
-        # ======Layout=====================================
+        # ======Buttons====================================
+        # hlayButtoms = QtGui.QHBoxLayout()
+        self.pbtnAdd_Start = QtGui.QPushButton("&Add Start")
+        self.pbtnAdd_Pause = QtGui.QPushButton("Add &Pause")
+        self.pbtnCancel = QtGui.QPushButton("Cancel")
+        self.pbtnMoreOp = QtGui.QPushButton("More &Option")
+
+        # ======More Options===============================
+        
+
+        # ======Layout Manager=============================
         glayMain = QtGui.QGridLayout()
-        glayMain.setColumnStretch(1, 5)
 
         glayMain.addWidget(lblURL, 0, 0)
-        glayMain.addWidget(self.ledtURL, 0, 1, 1, 2)
+        glayMain.addWidget(self.ledtURL, 0, 1, 1, 5)
 
-        glayMain.addWidget(lblMirror, 1, 0)
-        glayMain.addWidget(self.ledtMirror, 1, 1, 1, 2)
+        glayMain.addWidget(lblSize, 1, 0)
+        glayMain.addWidget(self.pbtnGetSize, 1, 1)
+        glayMain.addWidget(self.lblFileSize, 1, 2)
 
-        glayMain.addWidget(lblFileName, 2, 0)
-        glayMain.addWidget(self.ledtFileName, 2, 1, 1, 2)
+        glayMain.addWidget(lblMirror, 2, 0)
+        glayMain.addWidget(self.ledtMirror, 2, 1, 1, 5)
 
-        glayMain.addWidget(lblSaveFolder, 3, 0)
-        glayMain.addWidget(self.cbSaveFolder, 3, 1)
-        glayMain.addWidget(self.tbtnSaveFolder, 3, 2)
+        glayMain.addWidget(lblFileName, 3, 0)
+        glayMain.addWidget(self.ledtFileName, 3, 1, 1, 5)
 
-        glayMain.addWidget(lblComment, 4, 0)
-        glayMain.addWidget(self.tedtComment, 4, 1, 2, 2)
+        glayMain.addWidget(lblSaveFolder, 4, 0)
+        glayMain.addWidget(self.cbSaveFolder, 4, 1, 1, 4)
+        glayMain.addWidget(self.tbtnSaveFolder, 4, 5)
+
+        glayMain.addWidget(lblComment, 5, 0)
+        glayMain.addWidget(self.tedtComment, 5, 1, 1, 5)
+
+        glayMain.addWidget(self.pbtnMoreOp, 7, 0)
+        glayMain.addWidget(self.pbtnCancel, 7, 3)
+        glayMain.addWidget(self.pbtnAdd_Pause, 7, 4)
+        glayMain.addWidget(self.pbtnAdd_Start, 7, 5)
 
         self.setLayout(glayMain)
 
