@@ -14,8 +14,8 @@ class AboutDLG(QtGui.QDialog):
 
     def initUI(self):
         self.setWindowTitle("About Better Download Manager")
-        self.setGeometry(200, 100, 450, 350)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        # self.setGeometry(200, 100, 450, 350)
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         # self.setWindowFlags(QtCore.Qt.Dialog | QtCore.Qt.WindowTitleHint)
 
         lblLogo = QtGui.QLabel("Application Logo in here")

@@ -41,19 +41,25 @@ class MainWindow(QtGui.QMainWindow):
 
             return Result
 
-        self.action_File_NewDL = createAction("&New Download", QtGui.QKeySequence.New, "To show new download form")
+        self.action_File_NewDL = createAction("&New Download", QtGui.QKeySequence.New,
+                                              "To show new download form")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtGui.QActionGroup(self)
         self.action_File_BatchURL = createAction("From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        self.action_File_BatchFile = createAction("From &File ...", "", "Batch downloading from File")
+        self.action_File_BatchFile = createAction("From &File ...", "",
+                                                  "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        self.action_File_Exit = createAction("E&xit", "Ctrl+Q", "To exit the application", self.close)
-        self.action_Download_Start = createAction("&Start Download", "", "To start stoped download")
-        self.action_Download_Stop = createAction("S&top Download", "", "To stop started download")
-        self.action_Download_Delete = createAction("&Delete Download", "", "To Delete download from list")
+        self.action_File_Exit = createAction("E&xit", "Ctrl+Q", "To exit the application",
+                                             self.close)
+        self.action_Download_Start = createAction("&Start Download", "",
+                                                  "To start stoped download")
+        self.action_Download_Stop = createAction("S&top Download", "",
+                                                 "To stop started download")
+        self.action_Download_Delete = createAction("&Delete Download", "",
+                                                   "To Delete download from list")
         self.action_Help_About = createAction("&About", "", "To see about window")
 
 # ---------------------------------------------------
@@ -110,6 +116,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.lstwCat = QtGui.QListWidget()
         self.toolbDL = QtGui.QToolBar("Main Toolbar")
+        self.toolbDL.setMaximumHeight(25)
         self.tblwDLs = QtGui.QTableWidget()
         self.lstwLog = QtGui.QListWidget()
 
