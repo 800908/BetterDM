@@ -20,7 +20,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.initMainMenu()
 
-        self.initToolBar()
+        # self.initToolBar()
 
         self.statusBar()
 
@@ -30,59 +30,31 @@ class MainWindow(QtGui.QMainWindow):
 
     def initActions(self):
 
-        # ***New Download Action*************************************
-        self.action_File_NewDL = QtGui.QAction("&New Download", self)
-        self.action_File_NewDL.setShortcut(QtGui.QKeySequence.New)
-        self.action_File_NewDL.setToolTip("To show new download form")
-        self.action_File_NewDL.setStatusTip("To show new download form")
-        # action_File_NewDL.triggered.connect(self.shownewdlform)
+        def createAction(actTitle="New Action", actShortcut="", actTip="", actTriger=None):
+
+            Result = QtGui.QAction(actTitle, self)
+            Result.setShortcut(actShortcut)
+            Result.setToolTip(actTip)
+            Result.setStatusTip(actTip)
+            if actTriger:
+                Result.triggered.connect(actTriger)
+
+            return Result
+
+        self.action_File_NewDL = createAction("&New Download", QtGui.QKeySequence.New, "To show new download form")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtGui.QActionGroup(self)
-        # Batch Download from URL Action
-        self.action_File_BatchURL = QtGui.QAction("From &URL ...", self)
-        self.action_File_BatchURL.setToolTip("Batch downloading from URL")
-        self.action_File_BatchURL.setStatusTip("Batch downloading from URL")
+        self.action_File_BatchURL = createAction("From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        # Batch Download from File Action
-        self.action_File_BatchFile = QtGui.QAction("From &File ...", self)
-        self.action_File_BatchFile.setToolTip("Batch downloading from File")
-        self.action_File_BatchFile.setStatusTip("Batch downloading from File")
+        self.action_File_BatchFile = createAction("From &File ...", "", "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        # ***Exit Action*********************************************
-        self.action_File_Exit = QtGui.QAction("E&xit", self)
-        self.action_File_Exit.setShortcut("Ctrl+Q")
-        self.action_File_Exit.setToolTip("To exit the application")
-        self.action_File_Exit.setStatusTip("To exit the application")
-        self.action_File_Exit.triggered.connect(self.close)
-
-        # ***Start Download******************************************
-        self.action_Download_Start = QtGui.QAction("&Start Download", self)
-        # self.action_Download_Start.setShortcut("Ctrl+Q")
-        self.action_Download_Start.setToolTip("To start stoped download")
-        self.action_Download_Start.setStatusTip("To start stoped download")
-        # self.action_Download_Start.triggered.connect()
-
-        # ***Start Download******************************************
-        self.action_Download_Stop = QtGui.QAction("S&top Download", self)
-        # self.action_Download_Stop.setShortcut("Ctrl+Q")
-        self.action_Download_Stop.setToolTip("To stop started download")
-        self.action_Download_Stop.setStatusTip("To stop started download")
-        # self.action_Download_Stop.triggered.connect()
-
-        # ***Delete Download*****************************************
-        self.action_Download_Delete = QtGui.QAction("&Delete Download", self)
-        # self.action_Download_Delete.setShortcut("Ctrl+Q")
-        self.action_Download_Delete.setToolTip("To Delete download from list")
-        self.action_Download_Delete.setStatusTip("To Delete download from list")
-        # self.action_Download_Delete.triggered.connect()
-
-        # ***About Action********************************************
-        self.action_Help_About = QtGui.QAction("&About", self)
-        self.action_Help_About.setToolTip("To see about window")
-        self.action_Help_About.setStatusTip("To see about window")
-        # action_Help_About.triggered.connect(self.showaboutwin)
+        self.action_File_Exit = createAction("E&xit", "Ctrl+Q", "To exit the application", self.close)
+        self.action_Download_Start = createAction("&Start Download", "", "To start stoped download")
+        self.action_Download_Stop = createAction("S&top Download", "", "To stop started download")
+        self.action_Download_Delete = createAction("&Delete Download", "", "To Delete download from list")
+        self.action_Help_About = createAction("&About", "", "To see about window")
 
 # ---------------------------------------------------
 
@@ -132,25 +104,28 @@ class MainWindow(QtGui.QMainWindow):
 # ---------------------------------------------------
 
     def initLayoutAndWidget(self):
-        splMain = QtGui.QSplitter()
-        splLeft = QtGui.QSplitter()
-        splLeft.setOrientation(QtCore.Qt.Vertical)
-        splRight = QtGui.QSplitter()
-        splRight.setOrientation(QtCore.Qt.Vertical)
+        splMain = QtGui.QSplitter(QtCore.Qt.Horizontal)
+        splLeft = QtGui.QSplitter(QtCore.Qt.Vertical)
+        splRight = QtGui.QSplitter(QtCore.Qt.Vertical)
 
-        lstwCat = QtGui.QListView()
-        tblwDLs = QtGui.QTableView()
-        lstwLog = QtGui.QListView()
+        self.lstwCat = QtGui.QListWidget()
+        self.toolbDL = QtGui.QToolBar("Main Toolbar")
+        self.tblwDLs = QtGui.QTableWidget()
+        self.lstwLog = QtGui.QListWidget()
 
-        splLeft.addWidget(lstwCat)
-        splRight.addWidget(tblwDLs)
-        splRight.addWidget(lstwLog)
+        splLeft.addWidget(self.lstwCat)
+
+        splRight.addWidget(self.toolbDL)
+        splRight.addWidget(self.tblwDLs)
+        splRight.addWidget(self.lstwLog)
+        splRight.setStretchFactor(0, 1)
+        splRight.setStretchFactor(1, 6)
+        splRight.setStretchFactor(2, 2)
 
         splMain.addWidget(splLeft)
         splMain.addWidget(splRight)
-
-        splMain.setSizes([self.width() / 4, self.width() / 4 * 3])
-        splRight.setSizes([self.height() / 4 * 3, self.height() / 4])
+        splMain.setStretchFactor(0, 1)
+        splMain.setStretchFactor(1, 3)
 
         self.setCentralWidget(splMain)
 
