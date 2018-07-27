@@ -1,12 +1,12 @@
 import sys
 from PyQt4 import QtGui
-from mainwinUI import MainWindow
-from aboutwinUI import AboutDLG
+from UI.mainwinUI import MainWindow
+from UI.aboutwinUI import AboutDLG
 
 
 def show_aboutme():
     about_win = AboutDLG(main_win)
-    about_win.show()
+    about_win.exec_()
 
 
 app = QtGui.QApplication(sys.argv)
