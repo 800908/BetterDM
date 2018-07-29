@@ -21,26 +21,26 @@ class NewDLDLG(QtGui.QDialog):
         lblURL = QtGui.QLabel(u"File &URL:")
         self.ledtURL = QtGui.QLineEdit("")
         lblURL.setBuddy(self.ledtURL)
-        lblURL.setAlignment(QtCore.Qt.AlignRight)
+        # lblURL.setAlignment(QtCore.Qt.AlignRight)
 
         # ======Size=======================================
         lblSize = QtGui.QLabel(u"File Size:")
         self.lblFileSize = QtGui.QLabel("")
         self.pbtnGetSize = QtGui.QPushButton(u"&Get Size")
         lblSize.setBuddy(self.lblFileSize)
-        lblSize.setAlignment(QtCore.Qt.AlignRight)
+        # lblSize.setAlignment(QtCore.Qt.AlignRight)
 
         # ======Mirror=====================================
         lblMirror = QtGui.QLabel(u"&Mirror:")
         self.ledtMirror = QtGui.QLineEdit("")
         lblMirror.setBuddy(self.ledtMirror)
-        lblMirror.setAlignment(QtCore.Qt.AlignRight)
+        # lblMirror.setAlignment(QtCore.Qt.AlignRight)
 
         # ======File Name==================================
         lblFileName = QtGui.QLabel(u"&File Name:")
         self.ledtFileName = QtGui.QLineEdit("")
         lblFileName.setBuddy(self.ledtFileName)
-        lblFileName.setAlignment(QtCore.Qt.AlignRight)
+        # lblFileName.setAlignment(QtCore.Qt.AlignRight)
 
         # ======Folder Name================================
         lblSaveFolder = QtGui.QLabel(u"&Save Folder:")
@@ -48,27 +48,27 @@ class NewDLDLG(QtGui.QDialog):
         self.tbtnSaveFolder = QtGui.QToolButton()
         self.cbSaveFolder.setEditable(True)
         lblSaveFolder.setBuddy(self.cbSaveFolder)
-        lblSaveFolder.setAlignment(QtCore.Qt.AlignRight)
+        # lblSaveFolder.setAlignment(QtCore.Qt.AlignRight)
 
         # ======Comment====================================
         lblComment = QtGui.QLabel(u"&Comment:")
         self.tedtComment = QtGui.QTextEdit("")
         lblComment.setBuddy(self.tedtComment)
         self.tedtComment.setMaximumHeight(70)
-        lblComment.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTop)
+        lblComment.setAlignment(QtCore.Qt.AlignTop)
 
         # ======Buttons====================================
         # hlayButtoms = QtGui.QHBoxLayout()
         self.pbtnAdd_Start = QtGui.QPushButton(u"&Add Start")
         self.pbtnAdd_Pause = QtGui.QPushButton(u"Add &Pause")
         self.pbtnCancel = QtGui.QPushButton(u"Cancel")
-        self.pbtnMoreOp = QtGui.QPushButton(u"More &Option >")
+        self.pbtnMoreOp = QtGui.QPushButton(u"More &Options")
 
         # ======More Options===============================
         self.gboxMoreOp = QtGui.QGroupBox()
-        self.gboxMoreOp.setFlat(True)
         # self.gboxMoreOp.setContentsMargins(5, 5, 5, 5)
 
+        # ------Connections Group--------------------------
         lblMaxConn = QtGui.QLabel(u"Ma&x Connections:")
         self.spbMaxConn = QtGui.QSpinBox()
         self.spbMaxConn.setValue(4)
@@ -101,38 +101,56 @@ class NewDLDLG(QtGui.QDialog):
         gboxConn = QtGui.QGroupBox(u"Connections:")
         gboxConn.setLayout(glayConn)
 
-        # glayMoreOp = QtGui.QGridLayout()
+        # ------Identification Group--------------------------
+        lblUserName = QtGui.QLabel(u"&User Name:")
+        self.ledtUser = QtGui.QLineEdit("")
+        lblUserName.setBuddy(self.ledtUser)
 
+        lblPassword = QtGui.QLabel(u"&Password:")
+        self.ledtPass = QtGui.QLineEdit("")
+        lblPassword.setBuddy(self.ledtPass)
+
+        glayID = QtGui.QGridLayout()
+        glayID.addWidget(lblUserName, 0, 0)
+        glayID.addWidget(self.ledtUser, 0, 1)
+        glayID.addWidget(lblPassword, 1, 0)
+        glayID.addWidget(self.ledtPass, 1, 1)
+
+        gboxID = QtGui.QGroupBox(u"Identification:")
+        gboxID.setLayout(glayID)
+
+        # glayMoreOp = QtGui.QGridLayout()
 
         # ======Main Layout================================
         glayMain = QtGui.QGridLayout()
 
-        glayMain.addWidget(lblURL, 0, 0)
-        glayMain.addWidget(self.ledtURL, 0, 1, 1, 5)
+        glayMain.addWidget(lblURL, 0, 0, 1, 2)
+        glayMain.addWidget(self.ledtURL, 0, 2, 1, 8)
 
-        glayMain.addWidget(lblSize, 1, 0)
-        glayMain.addWidget(self.pbtnGetSize, 1, 1)
-        glayMain.addWidget(self.lblFileSize, 1, 2)
+        glayMain.addWidget(lblSize, 1, 0, 1, 2)
+        glayMain.addWidget(self.pbtnGetSize, 1, 2)
+        glayMain.addWidget(self.lblFileSize, 1, 3)
 
-        glayMain.addWidget(lblMirror, 2, 0)
-        glayMain.addWidget(self.ledtMirror, 2, 1, 1, 5)
+        glayMain.addWidget(lblMirror, 2, 0, 1, 2)
+        glayMain.addWidget(self.ledtMirror, 2, 2, 1, 8)
 
-        glayMain.addWidget(lblFileName, 3, 0)
-        glayMain.addWidget(self.ledtFileName, 3, 1, 1, 5)
+        glayMain.addWidget(lblFileName, 3, 0, 1, 2)
+        glayMain.addWidget(self.ledtFileName, 3, 2, 1, 8)
 
-        glayMain.addWidget(lblSaveFolder, 4, 0)
-        glayMain.addWidget(self.cbSaveFolder, 4, 1, 1, 4)
-        glayMain.addWidget(self.tbtnSaveFolder, 4, 5)
+        glayMain.addWidget(lblSaveFolder, 4, 0, 1, 2)
+        glayMain.addWidget(self.cbSaveFolder, 4, 2, 1, 7)
+        glayMain.addWidget(self.tbtnSaveFolder, 4, 9)
 
-        glayMain.addWidget(lblComment, 5, 0)
-        glayMain.addWidget(self.tedtComment, 5, 1, 1, 5)
+        glayMain.addWidget(lblComment, 5, 0, 1, 2)
+        glayMain.addWidget(self.tedtComment, 5, 2, 1, 8)
 
-        glayMain.addWidget(gboxConn, 6, 0, 1, 3)
+        # glayMain.addWidget(gboxConn, 6, 0, 1, 3)
+        # glayMain.addWidget(gboxID, 6, 3, 1, 4)
 
-        glayMain.addWidget(self.pbtnMoreOp, 7, 0)
-        glayMain.addWidget(self.pbtnCancel, 7, 3)
-        glayMain.addWidget(self.pbtnAdd_Pause, 7, 4)
-        glayMain.addWidget(self.pbtnAdd_Start, 7, 5)
+        # glayMain.addWidget(self.pbtnMoreOp, 7, 0, 1, 2)
+        # glayMain.addWidget(self.pbtnCancel, 7, 7)
+        # glayMain.addWidget(self.pbtnAdd_Pause, 7, 8)
+        # glayMain.addWidget(self.pbtnAdd_Start, 7, 9)
 
         self.setLayout(glayMain)
 
