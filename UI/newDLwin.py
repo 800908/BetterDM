@@ -10,6 +10,7 @@ class NewDLDLG(QtGui.QDialog):
         super(NewDLDLG, self).__init__(parent)
 
         self.initUI()
+        self.initEvent()
 
 # ---------------------------------------------------
 
@@ -57,16 +58,7 @@ class NewDLDLG(QtGui.QDialog):
         self.tedtComment.setMaximumHeight(70)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
-        # ======Buttons====================================
-        # hlayButtoms = QtGui.QHBoxLayout()
-        self.pbtnAdd_Start = QtGui.QPushButton(u"&Add Start")
-        self.pbtnAdd_Pause = QtGui.QPushButton(u"Add &Pause")
-        self.pbtnCancel = QtGui.QPushButton(u"Cancel")
-        self.pbtnMoreOp = QtGui.QPushButton(u"More &Options")
-
         # ======More Options===============================
-        self.gboxMoreOp = QtGui.QGroupBox()
-        # self.gboxMoreOp.setContentsMargins(5, 5, 5, 5)
 
         # ------Connections Group--------------------------
         lblMaxConn = QtGui.QLabel(u"Ma&x Connections:")
@@ -118,8 +110,26 @@ class NewDLDLG(QtGui.QDialog):
 
         gboxID = QtGui.QGroupBox(u"Identification:")
         gboxID.setLayout(glayID)
+        # ----------------------------------------------------
+        glayMoreOp = QtGui.QGridLayout()
+        glayMoreOp.addWidget(gboxConn, 0, 0)
+        glayMoreOp.addWidget(gboxID, 0, 1)
 
-        # glayMoreOp = QtGui.QGridLayout()
+        self.gboxMoreOp = QtGui.QGroupBox()
+        self.gboxMoreOp.setLayout(glayMoreOp)
+
+        # ======Buttons====================================
+        self.pbtnAdd_Start = QtGui.QPushButton(u"&Add Start")
+        self.pbtnAdd_Pause = QtGui.QPushButton(u"Add &Pause")
+        self.pbtnCancel = QtGui.QPushButton(u"Cancel")
+        self.pbtnMoreOp = QtGui.QPushButton(u"More &Options")
+
+        hlayButtons = QtGui.QHBoxLayout()
+        hlayButtons.addWidget(self.pbtnMoreOp)
+        hlayButtons.insertSpacing(1, 50)
+        hlayButtons.addWidget(self.pbtnCancel)
+        hlayButtons.addWidget(self.pbtnAdd_Pause)
+        hlayButtons.addWidget(self.pbtnAdd_Start)
 
         # ======Main Layout================================
         glayMain = QtGui.QGridLayout()
@@ -144,16 +154,25 @@ class NewDLDLG(QtGui.QDialog):
         glayMain.addWidget(lblComment, 5, 0, 1, 2)
         glayMain.addWidget(self.tedtComment, 5, 2, 1, 8)
 
-        # glayMain.addWidget(gboxConn, 6, 0, 1, 3)
-        # glayMain.addWidget(gboxID, 6, 3, 1, 4)
+        glayMain.addWidget(self.gboxMoreOp, 6, 0, 1, 10)
 
-        # glayMain.addWidget(self.pbtnMoreOp, 7, 0, 1, 2)
-        # glayMain.addWidget(self.pbtnCancel, 7, 7)
-        # glayMain.addWidget(self.pbtnAdd_Pause, 7, 8)
-        # glayMain.addWidget(self.pbtnAdd_Start, 7, 9)
+        glayMain.addLayout(hlayButtons, 7, 0, 1, 10)
 
         self.setLayout(glayMain)
 
+# ---------------------------------------------------
+
+    def initEvent(self):
+        self.pbtnMoreOp.released.connect(self.show_hide_OP)
+
+# ---------------------------------------------------
+
+    def show_hide_OP(self):
+        if self.gboxMoreOp.isVisible():
+            self.gboxMoreOp.setVisible(False)
+            self.pbtnMoreOp.setText("")
+        else:
+            self.gboxMoreOp.setVisible(True)
 
 # ============END=OF=CLASS====================================
 
