@@ -10,7 +10,7 @@ class NewDLDLG(QtGui.QDialog):
         super(NewDLDLG, self).__init__(parent)
 
         self.initUI()
-        self.initEventHandler()
+        self.initEventHandlers()
 
 # ---------------------------------------------------
 
@@ -172,8 +172,21 @@ class NewDLDLG(QtGui.QDialog):
 
 # ---------------------------------------------------
 
-    def initEventHandler(self):
-        self.pbtnMoreOp.released.connect(self.show_hide_OP)
+    def initEventHandlers(self):
+        self.pbtnMoreOp.clicked.connect(self.show_hide_OP)
+        self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)
+
+# ---------------------------------------------------
+    def setFolder2Save(self):
+        fdSaveFolder = QtGui.QFileDialog()
+
+        folder2Save = fdSaveFolder.getExistingDirectory(self,
+                                                        u"Please choose a folder to save on",
+                                                        QtCore.QDir.homePath(),
+                                                        QtGui.QFileDialog.ShowDirsOnly)
+        if folder2Save:
+            self.cbSaveFolder.insertItem(0, folder2Save)
+            self.cbSaveFolder.setCurrentIndex(0)
 
 # ---------------------------------------------------
 
