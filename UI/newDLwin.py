@@ -10,7 +10,7 @@ class NewDLDLG(QtGui.QDialog):
         super(NewDLDLG, self).__init__(parent)
 
         self.initUI()
-        self.initEvent()
+        self.initEventHandler()
 
 # ---------------------------------------------------
 
@@ -115,14 +115,21 @@ class NewDLDLG(QtGui.QDialog):
         glayMoreOp.addWidget(gboxConn, 0, 0)
         glayMoreOp.addWidget(gboxID, 0, 1)
 
-        self.gboxMoreOp = QtGui.QGroupBox()
-        self.gboxMoreOp.setLayout(glayMoreOp)
+        self.frMoreOp = QtGui.QFrame()
+        self.frMoreOp.setLayout(glayMoreOp)
+        self.frMoreOp.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frMoreOp.hide()
+
+        # ======Bottom Line================================
+        frBottomLine = QtGui.QFrame()
+        frBottomLine.setFrameStyle(QtGui.QFrame.HLine | QtGui.QFrame.Sunken)
 
         # ======Buttons====================================
         self.pbtnAdd_Start = QtGui.QPushButton(u"&Add Start")
         self.pbtnAdd_Pause = QtGui.QPushButton(u"Add &Pause")
         self.pbtnCancel = QtGui.QPushButton(u"Cancel")
         self.pbtnMoreOp = QtGui.QPushButton(u"More &Options")
+        # self.pbtnMoreOp.setCheckable(True)
 
         hlayButtons = QtGui.QHBoxLayout()
         hlayButtons.addWidget(self.pbtnMoreOp)
@@ -154,25 +161,36 @@ class NewDLDLG(QtGui.QDialog):
         glayMain.addWidget(lblComment, 5, 0, 1, 2)
         glayMain.addWidget(self.tedtComment, 5, 2, 1, 8)
 
-        glayMain.addWidget(self.gboxMoreOp, 6, 0, 1, 10)
+        glayMain.addWidget(self.frMoreOp, 6, 0, 1, 10)
 
-        glayMain.addLayout(hlayButtons, 7, 0, 1, 10)
+        glayMain.addWidget(frBottomLine, 7, 0, 1, 10)
 
+        glayMain.addLayout(hlayButtons, 8, 0, 1, 10)
+
+        glayMain.setSizeConstraint(QtGui.QLayout.SetFixedSize)
         self.setLayout(glayMain)
 
 # ---------------------------------------------------
 
-    def initEvent(self):
+    def initEventHandler(self):
         self.pbtnMoreOp.released.connect(self.show_hide_OP)
 
 # ---------------------------------------------------
 
     def show_hide_OP(self):
-        if self.gboxMoreOp.isVisible():
-            self.gboxMoreOp.setVisible(False)
-            self.pbtnMoreOp.setText("")
+        if self.frMoreOp.isVisible():
+            self.frMoreOp.hide()
+            self.pbtnMoreOp.setText(u"More &Options")
+            # self.resize(self.width(), self.height() - self.frMoreOp.height())
         else:
-            self.gboxMoreOp.setVisible(True)
+            self.frMoreOp.show()
+            self.pbtnMoreOp.setText(u"Less &Options")
+            # self.resize(self.width(), self.height() + self.frMoreOp.height())
+
+        self.setGeometry(
+            QtGui.QStyle.alignedRect(QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
+                                     self.size(), QtGui.QApplication.desktop().availableGeometry())
+        )
 
 # ============END=OF=CLASS====================================
 
