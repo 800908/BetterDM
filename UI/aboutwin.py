@@ -1,9 +1,9 @@
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore
 
 
 # ==========START=OF=CLASS====================================
 
-class AboutDLG(QtGui.QDialog):
+class AboutDLG(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(AboutDLG, self).__init__(parent)
@@ -18,19 +18,19 @@ class AboutDLG(QtGui.QDialog):
         # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         # self.setWindowFlags(QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
 
-        lblLogo = QtGui.QLabel("Application Logo in here")
+        lblLogo = QtWidgets.QLabel("Application Logo in here")
         lblLogo.setAlignment(QtCore.Qt.AlignHCenter)
 
-        lblAppName = QtGui.QLabel("Better Download Manager")
+        lblAppName = QtWidgets.QLabel("Better Download Manager")
         lblAppName.setAlignment(QtCore.Qt.AlignHCenter)
 
-        lblAppVer = QtGui.QLabel("Ver: 0.1 alpha")
+        lblAppVer = QtWidgets.QLabel("Ver: 0.1 alpha")
         lblAppVer.setAlignment(QtCore.Qt.AlignHCenter)
 
-        btnClose = QtGui.QPushButton("&Close")
+        btnClose = QtWidgets.QPushButton("&Close")
         btnClose.clicked.connect(self.close)
 
-        grdLayout = QtGui.QGridLayout()
+        grdLayout = QtWidgets.QGridLayout()
         self.setLayout(grdLayout)
 
         grdLayout.addWidget(lblLogo, 0, 0)
@@ -44,7 +44,7 @@ class AboutDLG(QtGui.QDialog):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     about_win = AboutDLG()
     about_win.show()
     app.exec_()

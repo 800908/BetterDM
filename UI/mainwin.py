@@ -1,9 +1,9 @@
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 
 
 # ==========START=OF=CLASS====================================
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -30,37 +30,27 @@ class MainWindow(QtGui.QMainWindow):
 
     def initActions(self):
 
-        def createAction(actTitle="New Action", actShortcut="", actTip="", actTriger=None):
-
-            Result = QtGui.QAction(actTitle, self)
-            Result.setShortcut(actShortcut)
-            Result.setToolTip(actTip)
-            Result.setStatusTip(actTip)
-            if actTriger:
-                Result.triggered.connect(actTriger)
-
-            return Result
-
-        self.action_File_NewDL = createAction("&New Download", QtGui.QKeySequence.New,
-                                              "To show new download form")
+        self.action_File_NewDL = mylib.createAction(self, "&New Download", QtGui.QKeySequence.New,
+                                                    "To show new download form")
 
         # ***Batch Download Group Action*****************************
-        self.gaction_File_BatchDL = QtGui.QActionGroup(self)
-        self.action_File_BatchURL = createAction("From &URL ...", "", "Batch downloading from URL")
+        self.gaction_File_BatchDL = QtWidgets.QActionGroup(self)
+        self.action_File_BatchURL = mylib.createAction(
+            self, "From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        self.action_File_BatchFile = createAction("From &File ...", "",
-                                                  "Batch downloading from File")
+        self.action_File_BatchFile = mylib.createAction(self, "From &File ...", "",
+                                                        "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        self.action_File_Exit = createAction("E&xit", "Ctrl+Q", "To exit the application",
-                                             self.close)
-        self.action_Download_Start = createAction("&Start Download", "",
-                                                  "To start stoped download")
-        self.action_Download_Stop = createAction("S&top Download", "",
-                                                 "To stop started download")
-        self.action_Download_Delete = createAction("&Delete Download", "",
-                                                   "To Delete download from list")
-        self.action_Help_About = createAction("&About", "", "To see about window")
+        self.action_File_Exit = mylib.createAction(self, "E&xit", "Ctrl+Q",
+                                                   "To exit the application", self.close)
+        self.action_Download_Start = mylib.createAction(self, "&Start Download", "",
+                                                        "To start stoped download")
+        self.action_Download_Stop = mylib.createAction(self, "S&top Download", "",
+                                                       "To stop started download")
+        self.action_Download_Delete = mylib.createAction(self, "&Delete Download", "",
+                                                         "To Delete download from list")
+        self.action_Help_About = mylib.createAction(self, "&About", "", "To see about window")
 
 # ---------------------------------------------------
 
@@ -110,15 +100,15 @@ class MainWindow(QtGui.QMainWindow):
 # ---------------------------------------------------
 
     def initLayoutAndWidget(self):
-        splMain = QtGui.QSplitter(QtCore.Qt.Horizontal)
-        splLeft = QtGui.QSplitter(QtCore.Qt.Vertical)
-        splRight = QtGui.QSplitter(QtCore.Qt.Vertical)
+        splMain = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
+        splLeft = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        splRight = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 
-        self.lstwCat = QtGui.QListWidget()
-        self.toolbDL = QtGui.QToolBar("Main Toolbar")
+        self.lstwCat = QtWidgets.QListWidget()
+        self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
         self.toolbDL.setMaximumHeight(25)
-        self.tblwDLs = QtGui.QTableWidget()
-        self.lstwLog = QtGui.QListWidget()
+        self.tblwDLs = QtWidgets.QTableWidget()
+        self.lstwLog = QtWidgets.QListWidget()
 
         splLeft.addWidget(self.lstwCat)
 
@@ -141,7 +131,10 @@ class MainWindow(QtGui.QMainWindow):
 
 if __name__ == "__main__":
     import sys
-    app = QtGui.QApplication(sys.argv)
+    sys.path.insert(0, "../libs/")
+    import mylib
+
+    app = QtWidgets.QApplication(sys.argv)
     main_win = MainWindow()
     main_win.show()
     app.exec_()
