@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtWidgets
 from UI.mainwin import MainWindow
 from UI.aboutwin import AboutDLG
-from libs.mylib import *
+# import UI.res.ui_common_func as com_func
 
 
 def show_aboutme():

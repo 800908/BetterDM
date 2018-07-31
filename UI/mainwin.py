@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-import res.ui_common_func as ui_func
+import res.ui_common_func as com_func
 
 
 # ==========START=OF=CLASS====================================
@@ -31,27 +31,27 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initActions(self):
 
-        self.action_File_NewDL = ui_func.getAction(
+        self.action_File_NewDL = com_func.getAction(
             self, "&New Download", QtGui.QKeySequence.New, "To show new download form")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtWidgets.QActionGroup(self)
-        self.action_File_BatchURL = ui_func.getAction(
+        self.action_File_BatchURL = com_func.getAction(
             self, "From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        self.action_File_BatchFile = ui_func.getAction(
+        self.action_File_BatchFile = com_func.getAction(
             self, "From &File ...", "", "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        self.action_File_Exit = ui_func.getAction(
+        self.action_File_Exit = com_func.getAction(
             self, "E&xit", "Ctrl+Q", "To exit the application", self.close)
-        self.action_Download_Start = ui_func.getAction(
+        self.action_Download_Start = com_func.getAction(
             self, "&Start Download", "", "To start stoped download")
-        self.action_Download_Stop = ui_func.getAction(
+        self.action_Download_Stop = com_func.getAction(
             self, "S&top Download", "", "To stop started download")
-        self.action_Download_Delete = ui_func.getAction(
+        self.action_Download_Delete = com_func.getAction(
             self, "&Delete Download", "", "To Delete download from list")
-        self.action_Help_About = ui_func.getAction(self, "&About", "", "To see about window")
+        self.action_Help_About = com_func.getAction(self, "&About", "", "To see about window")
 
 # ---------------------------------------------------
 

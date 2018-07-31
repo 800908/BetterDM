@@ -166,7 +166,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
         folder2Save = fdSaveFolder.getExistingDirectory(
             self, u"Please choose a folder to save on",
-            QtCore.QDir.homePath(),
+            com_func.getSysDLDir(),
             QtWidgets.QFileDialog.ShowDirsOnly)
 
         if folder2Save:

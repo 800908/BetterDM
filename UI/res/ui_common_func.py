@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 
 # ---------------------------------------------------------------------------
@@ -22,5 +22,11 @@ def getBuddyLabel(title, buddy, parent=None):
     Result.setBuddy(buddy)
 
     return Result
+
+# ---------------------------------------------------------------------------
+
+
+def getSysDLDir():
+    return QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation)
 
 # ---------------------------------------------------------------------------
