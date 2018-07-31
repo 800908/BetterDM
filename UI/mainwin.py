@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
+import res.ui_common_func as ui_func
 
 
 # ==========START=OF=CLASS====================================
@@ -30,27 +31,27 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initActions(self):
 
-        self.action_File_NewDL = mylib.createAction(self, "&New Download", QtGui.QKeySequence.New,
-                                                    "To show new download form")
+        self.action_File_NewDL = ui_func.getAction(
+            self, "&New Download", QtGui.QKeySequence.New, "To show new download form")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtWidgets.QActionGroup(self)
-        self.action_File_BatchURL = mylib.createAction(
+        self.action_File_BatchURL = ui_func.getAction(
             self, "From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        self.action_File_BatchFile = mylib.createAction(self, "From &File ...", "",
-                                                        "Batch downloading from File")
+        self.action_File_BatchFile = ui_func.getAction(
+            self, "From &File ...", "", "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        self.action_File_Exit = mylib.createAction(self, "E&xit", "Ctrl+Q",
-                                                   "To exit the application", self.close)
-        self.action_Download_Start = mylib.createAction(self, "&Start Download", "",
-                                                        "To start stoped download")
-        self.action_Download_Stop = mylib.createAction(self, "S&top Download", "",
-                                                       "To stop started download")
-        self.action_Download_Delete = mylib.createAction(self, "&Delete Download", "",
-                                                         "To Delete download from list")
-        self.action_Help_About = mylib.createAction(self, "&About", "", "To see about window")
+        self.action_File_Exit = ui_func.getAction(
+            self, "E&xit", "Ctrl+Q", "To exit the application", self.close)
+        self.action_Download_Start = ui_func.getAction(
+            self, "&Start Download", "", "To start stoped download")
+        self.action_Download_Stop = ui_func.getAction(
+            self, "S&top Download", "", "To stop started download")
+        self.action_Download_Delete = ui_func.getAction(
+            self, "&Delete Download", "", "To Delete download from list")
+        self.action_Help_About = ui_func.getAction(self, "&About", "", "To see about window")
 
 # ---------------------------------------------------
 
@@ -131,9 +132,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     import sys
-    sys.path.insert(0, "../libs/")
-    import mylib
-
     app = QtWidgets.QApplication(sys.argv)
     main_win = MainWindow()
     main_win.show()

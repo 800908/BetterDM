@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-
+import res.ui_common_func as com_func
 
 # ==========START=OF=CLASS====================================
 
@@ -19,69 +19,54 @@ class NewDLDLG(QtWidgets.QDialog):
         self.setMinimumSize(450, 200)
 
         # ======URL========================================
-        lblURL = QtWidgets.QLabel(u"File &URL:")
         self.ledtURL = QtWidgets.QLineEdit("")
-        lblURL.setBuddy(self.ledtURL)
-        # lblURL.setAlignment(QtCore.Qt.AlignRight)
+        lblURL = com_func.getBuddyLabel(u"File &URL:", self.ledtURL)
 
         # ======Size=======================================
-        lblSize = QtWidgets.QLabel(u"File Size:")
-        self.lblFileSize = QtWidgets.QLabel("")
         self.pbtnGetSize = QtWidgets.QPushButton(u"&Get Size")
-        lblSize.setBuddy(self.lblFileSize)
-        # lblSize.setAlignment(QtCore.Qt.AlignRight)
+        lblSize = com_func.getBuddyLabel(u"File Size:", self.pbtnGetSize)
+        self.lblFileSize = QtWidgets.QLabel("")
 
         # ======Mirror=====================================
-        lblMirror = QtWidgets.QLabel(u"&Mirror:")
         self.ledtMirror = QtWidgets.QLineEdit("")
-        lblMirror.setBuddy(self.ledtMirror)
-        # lblMirror.setAlignment(QtCore.Qt.AlignRight)
+        lblMirror = com_func.getBuddyLabel(u"&Mirror:", self.ledtMirror)
 
         # ======File Name==================================
-        lblFileName = QtWidgets.QLabel(u"&File Name:")
         self.ledtFileName = QtWidgets.QLineEdit("")
-        lblFileName.setBuddy(self.ledtFileName)
-        # lblFileName.setAlignment(QtCore.Qt.AlignRight)
+        lblFileName = com_func.getBuddyLabel(u"&File Name:", self.ledtFileName)
 
         # ======Folder Name================================
-        lblSaveFolder = QtWidgets.QLabel(u"&Save Folder:")
         self.cbSaveFolder = QtWidgets.QComboBox()
-        # self.cbSaveFolder.InsertPolicy(QtWidgets.QComboBox.InsertAtCurrent)
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
-        lblSaveFolder.setBuddy(self.cbSaveFolder)
-        # lblSaveFolder.setAlignment(QtCore.Qt.AlignRight)
+        lblSaveFolder = com_func.getBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
 
         # ======Comment====================================
-        lblComment = QtWidgets.QLabel(u"&Comment:")
         self.tedtComment = QtWidgets.QTextEdit("")
-        lblComment.setBuddy(self.tedtComment)
+        lblComment = com_func.getBuddyLabel(u"&Comment:", self.tedtComment)
         self.tedtComment.setMaximumHeight(70)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
         # ======More Options===============================
 
         # ------Connections Group--------------------------
-        lblMaxConn = QtWidgets.QLabel(u"Ma&x Connections:")
         self.spbMaxConn = QtWidgets.QSpinBox()
         self.spbMaxConn.setValue(4)
         self.spbMaxConn.setMinimum(1)
         self.spbMaxConn.setMaximum(16)
-        lblMaxConn.setBuddy(self.spbMaxConn)
+        lblMaxConn = com_func.getBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
 
-        lblMaxTry = QtWidgets.QLabel(u"Max &Try:")
         self.spbMaxTry = QtWidgets.QSpinBox()
         self.spbMaxTry.setValue(10)
         self.spbMaxTry.setMinimum(1)
         self.spbMaxTry.setMaximum(999)
-        lblMaxTry.setBuddy(self.spbMaxTry)
+        lblMaxTry = com_func.getBuddyLabel(u"Max &Try:", self.spbMaxTry)
 
-        lblTryDelay = QtWidgets.QLabel(u"Trying &Delay:")
         self.spbTryDelay = QtWidgets.QSpinBox()
         self.spbTryDelay.setValue(5)
         self.spbTryDelay.setMinimum(1)
         self.spbTryDelay.setMaximum(99)
-        lblTryDelay.setBuddy(self.spbTryDelay)
+        lblTryDelay = com_func.getBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
 
         glayConn = QtWidgets.QGridLayout()
         glayConn.addWidget(lblMaxConn, 0, 0)
@@ -95,13 +80,11 @@ class NewDLDLG(QtWidgets.QDialog):
         gboxConn.setLayout(glayConn)
 
         # ------Identification Group--------------------------
-        lblUserName = QtWidgets.QLabel(u"&User Name:")
         self.ledtUser = QtWidgets.QLineEdit("")
-        lblUserName.setBuddy(self.ledtUser)
+        lblUserName = com_func.getBuddyLabel(u"&User Name:", self.ledtUser)
 
-        lblPassword = QtWidgets.QLabel(u"&Password:")
         self.ledtPass = QtWidgets.QLineEdit("")
-        lblPassword.setBuddy(self.ledtPass)
+        lblPassword = com_func.getBuddyLabel(u"&Password:", self.ledtPass)
 
         glayID = QtWidgets.QGridLayout()
         glayID.addWidget(lblUserName, 0, 0)
@@ -181,10 +164,11 @@ class NewDLDLG(QtWidgets.QDialog):
     def setFolder2Save(self):
         fdSaveFolder = QtWidgets.QFileDialog()
 
-        folder2Save = fdSaveFolder.getExistingDirectory(self,
-                                                        u"Please choose a folder to save on",
-                                                        QtCore.QDir.homePath(),
-                                                        QtWidgets.QFileDialog.ShowDirsOnly)
+        folder2Save = fdSaveFolder.getExistingDirectory(
+            self, u"Please choose a folder to save on",
+            QtCore.QDir.homePath(),
+            QtWidgets.QFileDialog.ShowDirsOnly)
+
         if folder2Save:
             self.cbSaveFolder.insertItem(0, folder2Save)
             self.cbSaveFolder.setCurrentIndex(0)
@@ -202,9 +186,9 @@ class NewDLDLG(QtWidgets.QDialog):
             # self.resize(self.width(), self.height() + self.frMoreOp.height())
 
         self.setGeometry(
-            QtWidgets.QStyle.alignedRect(QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
-                                         self.size(), QtWidgets.QApplication.desktop(
-                                         ).availableGeometry())
+            QtWidgets.QStyle.alignedRect(
+                QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter, self.size(),
+                QtWidgets.QApplication.desktop().availableGeometry())
         )
 
 # ============END=OF=CLASS====================================
