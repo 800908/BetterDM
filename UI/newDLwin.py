@@ -1,5 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
-import res.ui_common_func as com_func
+
+try:
+    from UI.res import ui_common_func as com_func  # if imported
+except ImportError:
+    from res import ui_common_func as com_func  # if run directly
 
 # ==========START=OF=CLASS====================================
 
@@ -47,25 +51,30 @@ class NewDLDLG(QtWidgets.QDialog):
         self.tedtComment.setMaximumHeight(70)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
+        # ======Buttons====================================
+        self.pbtnAdd_Start = QtWidgets.QPushButton(u"&Add Start")
+        self.pbtnAdd_Pause = QtWidgets.QPushButton(u"Add &Pause")
+        self.pbtnCancel = QtWidgets.QPushButton(u"Cancel")
+        self.pbtnMoreOp = QtWidgets.QPushButton(u"More &Options")
+        # self.pbtnMoreOp.setCheckable(True)
+
+        hlayButtons = QtWidgets.QHBoxLayout()
+        hlayButtons.addWidget(self.pbtnMoreOp)
+        hlayButtons.insertSpacing(1, 50)
+        hlayButtons.addWidget(self.pbtnCancel)
+        hlayButtons.addWidget(self.pbtnAdd_Pause)
+        hlayButtons.addWidget(self.pbtnAdd_Start)
+
         # ======More Options===============================
 
         # ------Connections Group--------------------------
-        self.spbMaxConn = QtWidgets.QSpinBox()
-        self.spbMaxConn.setValue(4)
-        self.spbMaxConn.setMinimum(1)
-        self.spbMaxConn.setMaximum(16)
+        self.spbMaxConn = com_func.getSpinBoxwithMinMaxVal(1, 16, 4)
         lblMaxConn = com_func.getBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
 
-        self.spbMaxTry = QtWidgets.QSpinBox()
-        self.spbMaxTry.setValue(10)
-        self.spbMaxTry.setMinimum(1)
-        self.spbMaxTry.setMaximum(999)
+        self.spbMaxTry = com_func.getSpinBoxwithMinMaxVal(1, 999, 10)
         lblMaxTry = com_func.getBuddyLabel(u"Max &Try:", self.spbMaxTry)
 
-        self.spbTryDelay = QtWidgets.QSpinBox()
-        self.spbTryDelay.setValue(5)
-        self.spbTryDelay.setMinimum(1)
-        self.spbTryDelay.setMaximum(99)
+        self.spbTryDelay = com_func.getSpinBoxwithMinMaxVal(1, 99, 5)
         lblTryDelay = com_func.getBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
 
         glayConn = QtWidgets.QGridLayout()
@@ -100,27 +109,9 @@ class NewDLDLG(QtWidgets.QDialog):
         glayMoreOp.addWidget(gboxID, 0, 1)
 
         self.frMoreOp = QtWidgets.QFrame()
-        self.frMoreOp.setLayout(glayMoreOp)
         self.frMoreOp.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frMoreOp.hide()
-
-        # ======Bottom Line================================
-        frBottomLine = QtWidgets.QFrame()
-        frBottomLine.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Sunken)
-
-        # ======Buttons====================================
-        self.pbtnAdd_Start = QtWidgets.QPushButton(u"&Add Start")
-        self.pbtnAdd_Pause = QtWidgets.QPushButton(u"Add &Pause")
-        self.pbtnCancel = QtWidgets.QPushButton(u"Cancel")
-        self.pbtnMoreOp = QtWidgets.QPushButton(u"More &Options")
-        # self.pbtnMoreOp.setCheckable(True)
-
-        hlayButtons = QtWidgets.QHBoxLayout()
-        hlayButtons.addWidget(self.pbtnMoreOp)
-        hlayButtons.insertSpacing(1, 50)
-        hlayButtons.addWidget(self.pbtnCancel)
-        hlayButtons.addWidget(self.pbtnAdd_Pause)
-        hlayButtons.addWidget(self.pbtnAdd_Start)
+        self.frMoreOp.setLayout(glayMoreOp)
 
         # ======Main Layout================================
         glayMain = QtWidgets.QGridLayout()
@@ -145,11 +136,13 @@ class NewDLDLG(QtWidgets.QDialog):
         glayMain.addWidget(lblComment, 5, 0, 1, 2)
         glayMain.addWidget(self.tedtComment, 5, 2, 1, 8)
 
-        glayMain.addWidget(self.frMoreOp, 6, 0, 1, 10)
+        glayMain.addWidget(com_func.getHLine(), 6, 0, 1, 10)
 
-        glayMain.addWidget(frBottomLine, 7, 0, 1, 10)
+        glayMain.addLayout(hlayButtons, 7, 0, 1, 10)
 
-        glayMain.addLayout(hlayButtons, 8, 0, 1, 10)
+        glayMain.addWidget(com_func.getHLine(), 8, 0, 1, 10)
+
+        glayMain.addWidget(self.frMoreOp, 9, 0, 1, 10)
 
         glayMain.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.setLayout(glayMain)
@@ -157,7 +150,7 @@ class NewDLDLG(QtWidgets.QDialog):
 # ---------------------------------------------------
 
     def initEventHandlers(self):
-        self.pbtnMoreOp.clicked.connect(self.show_hide_OP)
+        self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)
         self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)
 
 # ---------------------------------------------------
@@ -175,7 +168,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def show_hide_OP(self):
+    def show_hide_MoreOp(self):
         if self.frMoreOp.isVisible():
             self.frMoreOp.hide()
             self.pbtnMoreOp.setText(u"More &Options")
@@ -183,13 +176,9 @@ class NewDLDLG(QtWidgets.QDialog):
         else:
             self.frMoreOp.show()
             self.pbtnMoreOp.setText(u"Less &Options")
+            com_func.moveWindowtoDesktopCenter(self)
             # self.resize(self.width(), self.height() + self.frMoreOp.height())
 
-        self.setGeometry(
-            QtWidgets.QStyle.alignedRect(
-                QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter, self.size(),
-                QtWidgets.QApplication.desktop().availableGeometry())
-        )
 
 # ============END=OF=CLASS====================================
 
