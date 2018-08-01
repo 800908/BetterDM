@@ -73,5 +73,21 @@ def moveWindowtoFitDesktop(window):
 
     win_width = window.width()
     win_height = window.height()
+    win_xPos = window.pos().x()
+    win_yPos = window.pos().y()
 
-    
+    if win_xPos < 0:
+        win_xPos = 0
+    if win_yPos < 0:
+        win_yPos = 0
+
+    off_xPos = win_xPos + win_width - desk_width
+    off_yPos = win_yPos + win_height - desk_height
+
+    if off_xPos > 0:
+        win_xPos = win_xPos - off_xPos
+
+    if off_yPos > 0:
+        win_yPos = win_yPos - off_yPos
+
+    window.move(win_xPos, win_yPos)

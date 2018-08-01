@@ -20,7 +20,6 @@ class NewDLDLG(QtWidgets.QDialog):
 
     def initUI(self):
         self.setWindowTitle(u"BDM - New Download")
-        self.setMinimumSize(450, 200)
 
         # ======URL========================================
         self.ledtURL = QtWidgets.QLineEdit("")
@@ -43,6 +42,7 @@ class NewDLDLG(QtWidgets.QDialog):
         self.cbSaveFolder = QtWidgets.QComboBox()
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
+        self.cbSaveFolder.addItem(com_func.getSysDLDir())
         lblSaveFolder = com_func.getBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
 
         # ======Comment====================================
@@ -53,10 +53,10 @@ class NewDLDLG(QtWidgets.QDialog):
 
         # ======Buttons====================================
         self.pbtnAdd_Start = QtWidgets.QPushButton(u"&Add Start")
+        self.pbtnAdd_Start.setDefault(True)
         self.pbtnAdd_Pause = QtWidgets.QPushButton(u"Add &Pause")
         self.pbtnCancel = QtWidgets.QPushButton(u"Cancel")
         self.pbtnMoreOp = QtWidgets.QPushButton(u"More &Options")
-        # self.pbtnMoreOp.setCheckable(True)
 
         hlayButtons = QtWidgets.QHBoxLayout()
         hlayButtons.addWidget(self.pbtnMoreOp)
@@ -152,6 +152,7 @@ class NewDLDLG(QtWidgets.QDialog):
     def initEventHandlers(self):
         self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)
         self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)
+        self.pbtnCancel.clicked.connect(self.close)
 
 # ---------------------------------------------------
     def setFolder2Save(self):
@@ -172,12 +173,10 @@ class NewDLDLG(QtWidgets.QDialog):
         if self.frMoreOp.isVisible():
             self.frMoreOp.hide()
             self.pbtnMoreOp.setText(u"More &Options")
-            # self.resize(self.width(), self.height() - self.frMoreOp.height())
         else:
             self.frMoreOp.show()
             self.pbtnMoreOp.setText(u"Less &Options")
-            com_func.moveWindowtoDesktopCenter(self)
-            # self.resize(self.width(), self.height() + self.frMoreOp.height())
+            com_func.moveWindowtoFitDesktop(self)
 
 
 # ============END=OF=CLASS====================================
