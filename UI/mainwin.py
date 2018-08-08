@@ -24,7 +24,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initMainMenu()
 
-        # self.initToolBar()
+        self.initToolBar()
 
         self.statusBar()
 
@@ -169,8 +169,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.splRight = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 
     # -----------------------------------------------------
-        self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
-        self.toolbDL.setMaximumHeight(25)
+        # self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
+        # self.toolbDL.setMaximumHeight(25)
 
     # -----------------------------------------------------
 
@@ -193,19 +193,52 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.lstwCat = QtWidgets.QListWidget()
-        self.lstwCat.addItems(["All", "Active", "Stoped", "Deleted"])
+        self.trwCats = QtWidgets.QTreeWidget()
+        self.trwCats.setColumnCount(1)
+        self.trwCats.setHeaderLabel("Categories")
 
-        self.splLeft.addWidget(self.lstwCat)
+        self.trwiDLStatus = QtWidgets.QTreeWidgetItem()
+        self.trwiDLStatus.setText(0, "Download Status")
+
+        self.trwiDLStatus_All = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
+        self.trwiDLStatus_All.setText(0, "All")
+        self.trwiDLStatus_Active = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
+        self.trwiDLStatus_Active.setText(0, "Active")
+        self.trwiDLStatus_Finished = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
+        self.trwiDLStatus_Finished.setText(0, "Finished")
+        self.trwiDLStatus_Stoped = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
+        self.trwiDLStatus_Stoped.setText(0, "Stoped")
+        self.trwiDLStatus_Deleted = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
+        self.trwiDLStatus_Deleted.setText(0, "Deleted")
+
+        self.trwCats.addTopLevelItem(self.trwiDLStatus)
+
+        self.trwiUserCats = QtWidgets.QTreeWidgetItem()
+        self.trwiUserCats.setText(0, "User Categories")
+        self.trwCats.addTopLevelItem(self.trwiUserCats)
+
+        self.trwCats.setCurrentItem(self.trwiDLStatus_All)
+        self.splLeft.addWidget(self.trwCats)
+
 
     # -----------------------------------------------------
 
-        self.splRight.addWidget(self.toolbDL)
+        self.trwFiles = QtWidgets.QTreeWidget()
+        self.trwFiles.setColumnCount(2)
+        self.trwFiles.setHeaderLabels(["File", "Size"])
+
+        self.splLeft.addWidget(self.trwFiles)
+
+        self.splRight.setStretchFactor(0, 1)
+        self.splRight.setStretchFactor(1, 1)
+
+    # -----------------------------------------------------
+
+        # self.splRight.addWidget(self.toolbDL)
         self.splRight.addWidget(self.tblwDLs)
         self.splRight.addWidget(self.tedtDLInfo)
-        self.splRight.setStretchFactor(0, 1)
-        self.splRight.setStretchFactor(1, 6)
-        self.splRight.setStretchFactor(2, 2)
+        self.splRight.setStretchFactor(0, 2)
+        self.splRight.setStretchFactor(1, 1)
 
     # -----------------------------------------------------
 
