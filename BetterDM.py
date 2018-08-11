@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets
 from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
-import UI.res.ui_common_func as com_func
+import UI.libs.common_func as com_func
 
 
 # ==========START=OF=CLASS====================================
