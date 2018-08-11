@@ -38,13 +38,10 @@ class BetterDM(QtWidgets.QApplication):
 # ---------------------------------------------------
 
     def initDLList(self):
-        self.DLList = []
-
-
-# ---------------------------------------------------
-
-    def loadDLList():
-        pass
+        if com_func.isFileExistInCurDir(self.DLListFileName):
+            self.DLList = com_func.getFromJSONfile(self.DLListFileName)
+        else:
+            self.DLList = []
 
 # ---------------------------------------------------
 
@@ -62,10 +59,15 @@ class BetterDM(QtWidgets.QApplication):
 
 # ---------------------------------------------------
 
-    def addToDLList(self, toADDdic):
-        self.DLList.append(toADDdic)
-        self.showDLListInTable()
+    def saveDLList(self):
+        com_func.save2JSONfile(self.DLList, self.DLListFileName)
 
+# ---------------------------------------------------
+
+    def addToDLList(self, Dict2Add):
+        self.DLList.append(Dict2Add)
+        self.saveDLList()
+        self.showDLListInTable()
 
 # ---------------------------------------------------
 

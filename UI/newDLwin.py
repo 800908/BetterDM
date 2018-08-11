@@ -162,6 +162,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
     def initEventHandlers(self):
         self.ledtURL.textChanged.connect(self.on_ledtURL_textChanged)
+        self.ledtURL.editingFinished.connect(self.on_ledURL_editingFinished)
 
         self.pbtnGetSize.clicked.connect(self.on_pbtnGetSize_clicked)
         self.pbtnAddStart.clicked.connect(self.on_pbtnAddStart_clicked)
@@ -169,6 +170,12 @@ class NewDLDLG(QtWidgets.QDialog):
         self.pbtnMoreOp.clicked.connect(self.on_pbtnMoreOp_clicked)
         self.tbtnSaveFolder.clicked.connect(self.on_tbtnSaveFolder_clicked)
         self.pbtnCancel.clicked.connect(self.on_pbtnCancel_clicked)
+
+# ---------------------------------------------------
+
+    def on_ledURL_editingFinished(self):
+        if com_func.isItURL(self.ledtURL.text()):
+            self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
 
 # ---------------------------------------------------
 

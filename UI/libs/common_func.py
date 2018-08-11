@@ -189,17 +189,17 @@ def getReadableFileSize(SizeInBytes):
 # ---------------------------------------------------------------------------
 
 
-def saveList2JSONfile(List, jsonFileName):
+def save2JSONfile(toSave, jsonFileName):
     try:
         with open(jsonFileName, "wt") as outFile:
-            json.dump(List, outFile)
+            json.dump(toSave, outFile)
     except IOError as err:
         showErrorMessBox("saving error", str(err))
 
 # ---------------------------------------------------------------------------
 
 
-def getListFromJSONfile(jsonFileName):
+def getFromJSONfile(jsonFileName):
     try:
         with open(jsonFileName, "rt") as inFile:
             return json.load(inFile)
