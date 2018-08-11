@@ -7,7 +7,7 @@ import json
 # ---------------------------------------------------------------------------
 
 
-def getAction(parent=None, actTitle="New Action", actShortcut="", actTip="", actTriger=None):
+def getNewAction(parent=None, actTitle="New Action", actShortcut="", actTip="", actTriger=None):
     Result = QtWidgets.QAction(actTitle, parent)
     Result.setShortcut(actShortcut)
     Result.setToolTip(actTip)
@@ -20,7 +20,7 @@ def getAction(parent=None, actTitle="New Action", actShortcut="", actTip="", act
 # ---------------------------------------------------------------------------
 
 
-def getBuddyLabel(title, buddy, parent=None):
+def getNewBuddyLabel(title, buddy, parent=None):
     Result = QtWidgets.QLabel(title, parent)
     Result.setBuddy(buddy)
 
@@ -29,7 +29,7 @@ def getBuddyLabel(title, buddy, parent=None):
 # ---------------------------------------------------------------------------
 
 
-def getTableItem(itemToGet):
+def getNewTableItem(itemToGet):
     Result = QtWidgets.QTableWidgetItem(itemToGet)
     Result.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
@@ -49,13 +49,7 @@ def showErrorMessBox(title, message, parent=None):
 # ---------------------------------------------------------------------------
 
 
-def getSysDLDir():
-    return QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation)
-
-# ---------------------------------------------------------------------------
-
-
-def getVLine(parent=None):
+def getNewVLine(parent=None):
     Result = QtWidgets.QFrame()
     Result.setFrameStyle(QtWidgets.QFrame.VLine | QtWidgets.QFrame.Sunken)
     return Result
@@ -63,7 +57,7 @@ def getVLine(parent=None):
 # ---------------------------------------------------------------------------
 
 
-def getHLine(parent=None):
+def getNewHLine(parent=None):
     Result = QtWidgets.QFrame()
     Result.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Sunken)
     return Result
@@ -71,7 +65,7 @@ def getHLine(parent=None):
 # ---------------------------------------------------------------------------
 
 
-def getSpinBoxwithMinMaxVal(MIN, MAX, VAL, parent=None):
+def getNewSpinBoxwithMinMaxVal(MIN, MAX, VAL, parent=None):
     Result = QtWidgets.QSpinBox(parent)
     Result.setMinimum(MIN)
     Result.setMaximum(MAX)
@@ -115,6 +109,13 @@ def moveWindowtoFitDesktop(window):
         win_yPos = win_yPos - off_yPos
 
     window.move(win_xPos, win_yPos)
+
+# ---------------------------------------------------------------------------
+
+
+def getSysDLDir():
+    return QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation)
+
 
 # ---------------------------------------------------------------------------
 
@@ -198,9 +199,15 @@ def saveList2JSONfile(List, jsonFileName):
 # ---------------------------------------------------------------------------
 
 
-def loadListFromJSONfile(jsonFileName):
+def getListFromJSONfile(jsonFileName):
     try:
         with open(jsonFileName, "rt") as inFile:
             return json.load(inFile)
     except IOError as err:
         showErrorMessBox("loading error", str(err))
+
+# ---------------------------------------------------------------------------
+
+
+def isFileExistInCurDir(FileName):
+    return QtCore.QFileInfo(FileName).exists()

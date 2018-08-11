@@ -35,27 +35,27 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initActions(self):
 
-        self.action_File_NewDL = com_func.getAction(
+        self.action_File_NewDL = com_func.getNewAction(
             self, "&New Download", QtGui.QKeySequence.New, "To show new download form")
 
         # ***Batch Download Group Action*****************************
         self.gaction_File_BatchDL = QtWidgets.QActionGroup(self)
-        self.action_File_BatchURL = com_func.getAction(
+        self.action_File_BatchURL = com_func.getNewAction(
             self, "From &URL ...", "", "Batch downloading from URL")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchURL)
-        self.action_File_BatchFile = com_func.getAction(
+        self.action_File_BatchFile = com_func.getNewAction(
             self, "From &File ...", "", "Batch downloading from File")
         self.gaction_File_BatchDL.addAction(self.action_File_BatchFile)
 
-        self.action_File_Exit = com_func.getAction(
+        self.action_File_Exit = com_func.getNewAction(
             self, "E&xit", "Ctrl+Q", "To exit the application", self.close)
-        self.action_Download_Start = com_func.getAction(
+        self.action_Download_Start = com_func.getNewAction(
             self, "&Start Download", "", "To start stoped download")
-        self.action_Download_Stop = com_func.getAction(
+        self.action_Download_Stop = com_func.getNewAction(
             self, "S&top Download", "", "To stop started download")
-        self.action_Download_Delete = com_func.getAction(
+        self.action_Download_Delete = com_func.getNewAction(
             self, "&Delete Download", "", "To Delete download from list")
-        self.action_Help_About = com_func.getAction(self, "&About", "", "To see about window")
+        self.action_Help_About = com_func.getNewAction(self, "&About", "", "To see about window")
 
 # ---------------------------------------------------
 

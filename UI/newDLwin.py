@@ -23,39 +23,39 @@ class NewDLDLG(QtWidgets.QDialog):
 
         # ======URL========================================
         self.ledtURL = QtWidgets.QLineEdit("")
-        lblURL = com_func.getBuddyLabel(u"File &URL:", self.ledtURL)
+        lblURL = com_func.getNewBuddyLabel(u"File &URL:", self.ledtURL)
 
         # ======Size=======================================
         self.pbtnGetSize = QtWidgets.QPushButton(u"&Get Size")
-        lblSize = com_func.getBuddyLabel(u"File Size:", self.pbtnGetSize)
+        lblSize = com_func.getNewBuddyLabel(u"File Size:", self.pbtnGetSize)
         self.lblFileSize = QtWidgets.QLabel("")
 
         # ======Mirror=====================================
         self.ledtMirror = QtWidgets.QLineEdit("")
-        lblMirror = com_func.getBuddyLabel(u"&Mirror:", self.ledtMirror)
+        lblMirror = com_func.getNewBuddyLabel(u"&Mirror:", self.ledtMirror)
 
         # ======File Name==================================
         self.ledtFileName = QtWidgets.QLineEdit("")
-        lblFileName = com_func.getBuddyLabel(u"&File Name:", self.ledtFileName)
+        lblFileName = com_func.getNewBuddyLabel(u"&File Name:", self.ledtFileName)
 
         # ======Folder Name================================
         self.cbSaveFolder = QtWidgets.QComboBox()
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
         self.cbSaveFolder.addItem(com_func.getSysDLDir())
-        lblSaveFolder = com_func.getBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
+        lblSaveFolder = com_func.getNewBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
 
         # ======Comment====================================
         self.tedtComment = QtWidgets.QTextEdit("")
-        lblComment = com_func.getBuddyLabel(u"&Comment:", self.tedtComment)
+        lblComment = com_func.getNewBuddyLabel(u"&Comment:", self.tedtComment)
         self.tedtComment.setMaximumHeight(70)
         self.tedtComment.setAcceptRichText(False)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
         # ======Buttons====================================
-        self.pbtnAdd_Start = QtWidgets.QPushButton(u"&Add Start")
-        self.pbtnAdd_Start.setDefault(True)
-        self.pbtnAdd_Pause = QtWidgets.QPushButton(u"Add &Pause")
+        self.pbtnAddStart = QtWidgets.QPushButton(u"&Add Start")
+        self.pbtnAddStart.setDefault(True)
+        self.pbtnAddPause = QtWidgets.QPushButton(u"Add &Pause")
         self.pbtnCancel = QtWidgets.QPushButton(u"Cancel")
         self.pbtnMoreOp = QtWidgets.QPushButton(u"More &Options")
 
@@ -63,20 +63,20 @@ class NewDLDLG(QtWidgets.QDialog):
         hlayButtons.addWidget(self.pbtnMoreOp)
         hlayButtons.insertSpacing(1, 50)
         hlayButtons.addWidget(self.pbtnCancel)
-        hlayButtons.addWidget(self.pbtnAdd_Pause)
-        hlayButtons.addWidget(self.pbtnAdd_Start)
+        hlayButtons.addWidget(self.pbtnAddPause)
+        hlayButtons.addWidget(self.pbtnAddStart)
 
         # ======More Options===============================
 
         # ------Connections Group--------------------------
-        self.spbMaxConn = com_func.getSpinBoxwithMinMaxVal(1, 16, 4)
-        lblMaxConn = com_func.getBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
+        self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, 4)
+        lblMaxConn = com_func.getNewBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
 
-        self.spbMaxTry = com_func.getSpinBoxwithMinMaxVal(1, 999, 10)
-        lblMaxTry = com_func.getBuddyLabel(u"Max &Try:", self.spbMaxTry)
+        self.spbMaxTry = com_func.getNewSpinBoxwithMinMaxVal(1, 999, 10)
+        lblMaxTry = com_func.getNewBuddyLabel(u"Max &Try:", self.spbMaxTry)
 
-        self.spbTryDelay = com_func.getSpinBoxwithMinMaxVal(1, 99, 5)
-        lblTryDelay = com_func.getBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
+        self.spbTryDelay = com_func.getNewSpinBoxwithMinMaxVal(1, 99, 5)
+        lblTryDelay = com_func.getNewBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
 
         glayConn = QtWidgets.QGridLayout()
         glayConn.addWidget(lblMaxConn, 0, 0)
@@ -91,10 +91,10 @@ class NewDLDLG(QtWidgets.QDialog):
 
         # ------Identification Group--------------------------
         self.ledtUser = QtWidgets.QLineEdit("")
-        lblUserName = com_func.getBuddyLabel(u"&User Name:", self.ledtUser)
+        lblUserName = com_func.getNewBuddyLabel(u"&User Name:", self.ledtUser)
 
         self.ledtPass = QtWidgets.QLineEdit("")
-        lblPassword = com_func.getBuddyLabel(u"&Password:", self.ledtPass)
+        lblPassword = com_func.getNewBuddyLabel(u"&Password:", self.ledtPass)
 
         glayID = QtWidgets.QGridLayout()
         glayID.addWidget(lblUserName, 0, 0)
@@ -137,11 +137,11 @@ class NewDLDLG(QtWidgets.QDialog):
         glayMain.addWidget(lblComment, 5, 0, 1, 2)
         glayMain.addWidget(self.tedtComment, 5, 2, 1, 8)
 
-        glayMain.addWidget(com_func.getHLine(), 6, 0, 1, 10)
+        glayMain.addWidget(com_func.getNewHLine(), 6, 0, 1, 10)
 
         glayMain.addLayout(hlayButtons, 7, 0, 1, 10)
 
-        glayMain.addWidget(com_func.getHLine(), 8, 0, 1, 10)
+        glayMain.addWidget(com_func.getNewHLine(), 8, 0, 1, 10)
 
         glayMain.addWidget(self.frMoreOp, 9, 0, 1, 10)
 
@@ -156,30 +156,30 @@ class NewDLDLG(QtWidgets.QDialog):
 
         self.ledtURL.setText(com_func.getURLfromClipboard())
         self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
-        self.onURLtextChanged()
+        self.on_ledtURL_textChanged()
 
 # ---------------------------------------------------
 
     def initEventHandlers(self):
-        self.ledtURL.textChanged.connect(self.onURLtextChanged)
+        self.ledtURL.textChanged.connect(self.on_ledtURL_textChanged)
 
-        self.pbtnGetSize.clicked.connect(self.onGetSizeClicked)
-        self.pbtnAdd_Start.clicked.connect(self.onAdd_StartClicked)
-        self.pbtnAdd_Pause.clicked.connect(self.onAdd_PauseClicked)
-        self.pbtnMoreOp.clicked.connect(self.onMoreOpClicked)
-        self.tbtnSaveFolder.clicked.connect(self.onSaveFolderClicked)
-        self.pbtnCancel.clicked.connect(self.close)
+        self.pbtnGetSize.clicked.connect(self.on_pbtnGetSize_clicked)
+        self.pbtnAddStart.clicked.connect(self.on_pbtnAddStart_clicked)
+        self.pbtnAddPause.clicked.connect(self.on_pbtnAddPause_clicked)
+        self.pbtnMoreOp.clicked.connect(self.on_pbtnMoreOp_clicked)
+        self.tbtnSaveFolder.clicked.connect(self.on_tbtnSaveFolder_clicked)
+        self.pbtnCancel.clicked.connect(self.on_pbtnCancel_clicked)
 
 # ---------------------------------------------------
 
-    def onURLtextChanged(self):
+    def on_ledtURL_textChanged(self):
         self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
-        self.pbtnAdd_Start.setEnabled(self.pbtnGetSize.isEnabled())
-        self.pbtnAdd_Pause.setEnabled(self.pbtnGetSize.isEnabled())
+        self.pbtnAddStart.setEnabled(self.pbtnGetSize.isEnabled())
+        self.pbtnAddPause.setEnabled(self.pbtnGetSize.isEnabled())
 
 # ---------------------------------------------------
 
-    def onGetSizeClicked(self):
+    def on_pbtnGetSize_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
             self.lblFileSize.setText(com_func.getReadableFileSize(
                 com_func.getSizeOfRemoteFile(str(self.ledtURL.text()))))
@@ -188,7 +188,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def onAdd_StartClicked(self):
+    def on_pbtnAddStart_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
             self.wantedToAdd = True
             self.wantedToStart = True
@@ -198,7 +198,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def onAdd_PauseClicked(self):
+    def on_pbtnAddPause_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
             self.wantedToAdd = True
             self.wantedToStart = False
@@ -208,7 +208,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def onSaveFolderClicked(self):
+    def on_tbtnSaveFolder_clicked(self):
         fdSaveFolder = QtWidgets.QFileDialog()
 
         folder2Save = fdSaveFolder.getExistingDirectory(
@@ -222,7 +222,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def onMoreOpClicked(self):
+    def on_pbtnMoreOp_clicked(self):
         if self.frMoreOp.isVisible():
             self.frMoreOp.hide()
             self.pbtnMoreOp.setText(u"More &Options")
@@ -230,6 +230,12 @@ class NewDLDLG(QtWidgets.QDialog):
             self.frMoreOp.show()
             self.pbtnMoreOp.setText(u"Less &Options")
             com_func.moveWindowtoFitDesktop(self)
+
+
+# ---------------------------------------------------
+
+    def on_pbtnCancel_clicked(self):
+        self.close()
 
 
 # ============END=OF=CLASS====================================
