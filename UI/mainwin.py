@@ -117,6 +117,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs.setHorizontalHeaderLabels(
             ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"])
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tblwDLs.setColumnWidth(0, 250)
+        self.tblwDLs.setColumnWidth(1, 70)
+        self.tblwDLs.setColumnWidth(2, 150)
+        self.tblwDLs.setColumnWidth(3, 70)
+        self.tblwDLs.setColumnWidth(4, 100)
 
         self.lstwLog = QtWidgets.QListWidget()
 

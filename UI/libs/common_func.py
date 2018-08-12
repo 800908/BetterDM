@@ -7,6 +7,15 @@ import json
 # ---------------------------------------------------------------------------
 
 
+def getNewDLProgressBar(FileSize):
+    pbarDL = QtWidgets.QProgressBar()
+    pbarDL.setRange(0, FileSize)
+    pbarDL.setValue(0)
+    return pbarDL
+
+# ---------------------------------------------------------------------------
+
+
 def getNewAction(parent=None, actTitle="New Action", actShortcut="", actTip="", actTriger=None):
     Result = QtWidgets.QAction(actTitle, parent)
     Result.setShortcut(actShortcut)

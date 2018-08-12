@@ -12,10 +12,11 @@ class BetterDM(QtWidgets.QApplication):
     def __init__(self, argv):
         super(BetterDM, self).__init__(argv)
 
-        self.Main_win = MainWindow()
-        self.initMainWin()
         self.initDefaultVals()
         self.initDLList()
+
+        self.Main_win = MainWindow()
+        self.initMainWin()
         self.Main_win.show()
 
 
@@ -23,6 +24,7 @@ class BetterDM(QtWidgets.QApplication):
 
     def initMainWin(self):
         self.initMainWinActions()
+        self.showDLListInTable()
 
 # ---------------------------------------------------
 
@@ -51,10 +53,10 @@ class BetterDM(QtWidgets.QApplication):
             self.Main_win.tblwDLs.insertRow(curRow)
             self.Main_win.tblwDLs.setItem(curRow, 0, com_func.getNewTableItem(
                 curDL["FileName"]))
-            self.Main_win.tblwDLs.setItem(curRow, 1, com_func.getNewTableItem(
-                curDL["Mirror"]))
-            self.Main_win.tblwDLs.setItem(curRow, 2, com_func.getNewTableItem(
-                curDL["FileName"]))
+            # self.Main_win.tblwDLs.setItem(curRow, 1, com_func.getNewTableItem(
+            #     curDL["Size"]))
+
+            self.Main_win.tblwDLs.setCellWidget(curRow, 2, com_func.getNewDLProgressBar(100))
             curRow += 1
 
 # ---------------------------------------------------
