@@ -92,6 +92,7 @@ class BetterDM(QtWidgets.QApplication):
 
         if NewDL_win.wantedToAdd:
             self.addToDLList(self.getDLDicfromNewDLWin(NewDL_win))
+            # self.add2AppSettings(NewDL_win.cbSaveFolder.)
 
 # ---------------------------------------------------
 

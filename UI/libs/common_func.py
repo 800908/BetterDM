@@ -220,3 +220,13 @@ def getFromJSONfile(jsonFileName):
 
 def isFileExistInCurDir(FileName):
     return QtCore.QFileInfo(FileName).exists()
+
+
+# ---------------------------------------------------------------------------
+
+def getComboBoxItemsAsList(ComboBox):
+    return [ComboBox.itemText(i) for i in ComboBox.count()]
+
+# ---------------------------------------------------------------------------
+
+def add2AppSetting(Key_, )
