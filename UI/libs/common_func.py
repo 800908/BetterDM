@@ -181,7 +181,7 @@ def getSizeOfRemoteFile(FileURL):
         return 0
 
 # ---------------------------------------------------------------------------
-# https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
+#from: https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
 
 
 def getReadableFileSize(SizeInBytes):
@@ -221,12 +221,28 @@ def getFromJSONfile(jsonFileName):
 def isFileExistInCurDir(FileName):
     return QtCore.QFileInfo(FileName).exists()
 
-
 # ---------------------------------------------------------------------------
+
 
 def getComboBoxItemsAsList(ComboBox):
-    return [ComboBox.itemText(i) for i in ComboBox.count()]
+    return [ComboBox.itemText(i) for i in range(ComboBox.count())]
 
 # ---------------------------------------------------------------------------
 
-def add2AppSetting(Key_, )
+
+def getAppSettings():
+    return QtCore.QSettings(u"BDM", "BetterDM")
+
+# ---------------------------------------------------------------------------
+
+
+def add2AppSettings(Key2Add, Value2Add):
+    AppSettings = getAppSettings()
+    AppSettings.setValue(Key2Add, Value2Add)
+
+# ---------------------------------------------------------------------------
+
+
+def getValFromAppSettings(Key2Get, DefaultVal=None):
+    AppSettings = getAppSettings()
+    return AppSettings.value(Key2Get, DefaultVal)

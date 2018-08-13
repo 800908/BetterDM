@@ -48,6 +48,8 @@ class BetterDM(QtWidgets.QApplication):
 # ---------------------------------------------------
 
     def showDLListInTable(self):
+        self.Main_win.tblwDLs.setRowCount(0)  # clear table
+
         curRow = 0
         for curDL in self.DLList:
             self.Main_win.tblwDLs.insertRow(curRow)
@@ -68,8 +70,6 @@ class BetterDM(QtWidgets.QApplication):
 
     def addToDLList(self, Dict2Add):
         self.DLList.append(Dict2Add)
-        self.saveDLList()
-        self.showDLListInTable()
 
 # ---------------------------------------------------
 
@@ -88,11 +88,17 @@ class BetterDM(QtWidgets.QApplication):
 
     def on_action_File_NewDL_triggered(self):
         NewDL_win = NewDLDLG(self.Main_win)
+        NewDL_win.cbSaveFolder.addItems(com_func.getValFromAppSettings(
+            "NewDL_win/cbSaveFolderItems", [com_func.getSysDLDir()]))
         NewDL_win.exec_()
 
         if NewDL_win.wantedToAdd:
             self.addToDLList(self.getDLDicfromNewDLWin(NewDL_win))
-            # self.add2AppSettings(NewDL_win.cbSaveFolder.)
+            self.saveDLList()
+            com_func.add2AppSettings("NewDL_win/cbSaveFolderItems",
+                                     com_func.getComboBoxItemsAsList(NewDL_win.cbSaveFolder))
+            self.showDLListInTable()
+
 
 # ---------------------------------------------------
 
