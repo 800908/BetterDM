@@ -181,7 +181,7 @@ def getSizeOfRemoteFile(FileURL):
         return 0
 
 # ---------------------------------------------------------------------------
-#from: https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
+# from: https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
 
 
 def getReadableFileSize(SizeInBytes):

@@ -30,7 +30,36 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initLayoutAndWidget()
 
-        self.showMaximized()
+        self.initWindowSizeAndPos()
+
+        self.initEventHandlers()
+
+# ---------------------------------------------------
+
+    def closeEvent(self, event):
+        event.accept()
+
+# ---------------------------------------------------
+
+    def initEventHandlers(self):
+        pass
+
+
+# ---------------------------------------------------
+
+    def initWindowSizeAndPos(self):
+        isWinMaximized = com_func.getValFromAppSettings("Main_win/iswinmaximized", True)
+
+        if isWinMaximized:
+            self.showMaximized()
+        else:
+            win_height = com_func.getValFromAppSettings("Main_win/win_height", 640)
+            win_width = com_func.getValFromAppSettings("Main_win/win_width", 480)
+            win_xpos = com_func.getValFromAppSettings("Main_win/win_xpos", 50)
+            win_ypos = com_func.getValFromAppSettings("Main_win/win_ypos", 50)
+
+            self.setGeometry(win_xpos, win_ypos, win_width, win_height)
+
 # ---------------------------------------------------
 
     def initActions(self):
@@ -117,11 +146,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs.setHorizontalHeaderLabels(
             ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"])
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.tblwDLs.setColumnWidth(0, 250)
-        self.tblwDLs.setColumnWidth(1, 70)
-        self.tblwDLs.setColumnWidth(2, 150)
-        self.tblwDLs.setColumnWidth(3, 70)
-        self.tblwDLs.setColumnWidth(4, 100)
+        self.tblwDLs.setColumnWidth(0, com_func.getValFromAppSettings(
+            "Main_win/table_filename_width", 250))
+        self.tblwDLs.setColumnWidth(1, com_func.getValFromAppSettings(
+            "Main_win/table_size_width", 70))
+        self.tblwDLs.setColumnWidth(2, com_func.getValFromAppSettings(
+            "Main_win/table_progress_width", 150))
+        self.tblwDLs.setColumnWidth(3, com_func.getValFromAppSettings(
+            "Main_win/table_dlspeed_width", 70))
+        self.tblwDLs.setColumnWidth(4, com_func.getValFromAppSettings(
+            "Main_win/table_timetofinish_width", 100))
 
         self.lstwLog = QtWidgets.QListWidget()
 

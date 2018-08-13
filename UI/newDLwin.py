@@ -42,7 +42,9 @@ class NewDLDLG(QtWidgets.QDialog):
         self.cbSaveFolder = QtWidgets.QComboBox()
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
-        # self.cbSaveFolder.addItem(com_func.getSysDLDir())
+        self.cbSaveFolder.addItems(com_func.getValFromAppSettings(
+            "NewDL_win/cbSaveFolderItems", [com_func.getSysDLDir()]))
+
         lblSaveFolder = com_func.getNewBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
 
         # ======Comment====================================
@@ -219,8 +221,8 @@ class NewDLDLG(QtWidgets.QDialog):
         fdSaveFolder = QtWidgets.QFileDialog()
 
         folder2Save = fdSaveFolder.getExistingDirectory(
-            self, u"Please choose a folder to save on",
-            "",
+            self, u"Please choose a folder to save on to",
+            self.cbSaveFolder.currentText(),
             QtWidgets.QFileDialog.ShowDirsOnly)
 
         if folder2Save:

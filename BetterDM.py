@@ -17,18 +17,26 @@ class BetterDM(QtWidgets.QApplication):
 
         self.Main_win = MainWindow()
         self.initMainWin()
-        self.Main_win.show()
 
+        self.initEventHandler()
+        self.load_apply_AppSettings()
+
+        self.Main_win.show()
 
 # ---------------------------------------------------
 
     def initMainWin(self):
-        self.initMainWinActions()
         self.showDLListInTable()
 
 # ---------------------------------------------------
 
-    def initMainWinActions(self):
+    def load_apply_AppSettings(self):
+        pass
+
+
+# ---------------------------------------------------
+
+    def initEventHandler(self):
         self.Main_win.action_File_NewDL.triggered.connect(self.on_action_File_NewDL_triggered)
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
 
