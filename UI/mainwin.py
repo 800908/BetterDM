@@ -36,7 +36,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
 # ---------------------------------------------------
 
+    def saveWindowSettings(self):
+        if self.isMaximized():
+            com_func.add2AppSettings("Main_win/iswinmaximized", True)
+        else:
+            com_func.add2AppSettings("Main_win/iswinmaximized", False)
+            com_func.add2AppSettings("Main_win/win_width", self.width())
+            com_func.add2AppSettings("Main_win/win_height", self.height())
+            com_func.add2AppSettings("Main_win/win_xpos", self.x())
+            com_func.add2AppSettings("Main_win/win_ypos", self.y())
+
+        for col_num in range(self.tblwDLs.columnCount()):
+            com_func.add2AppSettings("Main_win/table_col{}_width".format(col_num),
+                                     self.tblwDLs.columnWidth(col_num))
+
+
+# ---------------------------------------------------
+
     def closeEvent(self, event):
+        self.saveWindowSettings()
         event.accept()
 
 # ---------------------------------------------------
@@ -48,17 +66,18 @@ class MainWindow(QtWidgets.QMainWindow):
 # ---------------------------------------------------
 
     def initWindowSizeAndPos(self):
-        isWinMaximized = com_func.getValFromAppSettings("Main_win/iswinmaximized", True)
+        isWinMaximized = com_func.getValFromAppSettings("Main_win/iswinmaximized", True, bool)
 
         if isWinMaximized:
             self.showMaximized()
         else:
-            win_height = com_func.getValFromAppSettings("Main_win/win_height", 640)
-            win_width = com_func.getValFromAppSettings("Main_win/win_width", 480)
-            win_xpos = com_func.getValFromAppSettings("Main_win/win_xpos", 50)
-            win_ypos = com_func.getValFromAppSettings("Main_win/win_ypos", 50)
+            win_width = com_func.getValFromAppSettings("Main_win/win_width", 640, int)
+            win_height = com_func.getValFromAppSettings("Main_win/win_height", 480, int)
+            win_xpos = com_func.getValFromAppSettings("Main_win/win_xpos", 50, int)
+            win_ypos = com_func.getValFromAppSettings("Main_win/win_ypos", 50, int)
 
-            self.setGeometry(win_xpos, win_ypos, win_width, win_height)
+            self.resize(win_width, win_height)
+            self.move(win_xpos, win_ypos)
 
 # ---------------------------------------------------
 
@@ -146,16 +165,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs.setHorizontalHeaderLabels(
             ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"])
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
         self.tblwDLs.setColumnWidth(0, com_func.getValFromAppSettings(
-            "Main_win/table_filename_width", 250))
+            "Main_win/table_col0_width", 250, int))
         self.tblwDLs.setColumnWidth(1, com_func.getValFromAppSettings(
-            "Main_win/table_size_width", 70))
+            "Main_win/table_col1_width", 70, int))
         self.tblwDLs.setColumnWidth(2, com_func.getValFromAppSettings(
-            "Main_win/table_progress_width", 150))
+            "Main_win/table_col2_width", 150, int))
         self.tblwDLs.setColumnWidth(3, com_func.getValFromAppSettings(
-            "Main_win/table_dlspeed_width", 70))
+            "Main_win/table_col3_width", 70, int))
         self.tblwDLs.setColumnWidth(4, com_func.getValFromAppSettings(
-            "Main_win/table_timetofinish_width", 100))
+            "Main_win/table_col4_width", 100, int))
 
         self.lstwLog = QtWidgets.QListWidget()
 

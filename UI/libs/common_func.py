@@ -243,6 +243,10 @@ def add2AppSettings(Key2Add, Value2Add):
 # ---------------------------------------------------------------------------
 
 
-def getValFromAppSettings(Key2Get, DefaultVal=None):
+def getValFromAppSettings(Key2Get, DefaultVal=None, ReturnType=None):
     AppSettings = getAppSettings()
-    return AppSettings.value(Key2Get, DefaultVal)
+
+    if ReturnType is None:
+        return AppSettings.value(Key2Get, DefaultVal)
+    else:
+        return AppSettings.value(Key2Get, DefaultVal, type=ReturnType)
