@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+import time
 from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
@@ -23,29 +24,29 @@ class BetterDM(QtWidgets.QApplication):
 
         self.Main_win.show()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initMainWin(self):
         self.showDLListInTable()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def load_apply_AppSettings(self):
         pass
 
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initEventHandler(self):
         self.Main_win.action_File_NewDL.triggered.connect(self.on_action_File_NewDL_triggered)
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initDefaultVals(self):
         self.DLListFileName = "downloads.json"
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initDLList(self):
         if com_func.isFileExistInCurDir(self.DLListFileName):
@@ -53,7 +54,7 @@ class BetterDM(QtWidgets.QApplication):
         else:
             self.DLList = []
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def showDLListInTable(self):
         self.Main_win.tblwDLs.setRowCount(0)  # clear table
@@ -69,17 +70,17 @@ class BetterDM(QtWidgets.QApplication):
             self.Main_win.tblwDLs.setCellWidget(curRow, 2, com_func.getNewDLProgressBar(100))
             curRow += 1
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def saveDLList(self):
         com_func.save2JSONfile(self.DLList, self.DLListFileName)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def addToDLList(self, Dict2Add):
         self.DLList.append(Dict2Add)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def getDLDicfromNewDLWin(self, DL_win):
         DLParamDic = {}
@@ -89,10 +90,11 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["FileFolder"] = str(DL_win.cbSaveFolder.currentText())
         DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
         DLParamDic["Started"] = DL_win.wantedToStart
+        DLParamDic["Added_Time"] = time.time()
 
         return DLParamDic
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_action_File_NewDL_triggered(self):
         NewDL_win = NewDLDLG(self.Main_win)
@@ -103,12 +105,10 @@ class BetterDM(QtWidgets.QApplication):
         if NewDL_win.wantedToAdd:
             self.addToDLList(self.getDLDicfromNewDLWin(NewDL_win))
             self.saveDLList()
-            com_func.add2AppSettings("NewDL_win/cbSaveFolderItems",
-                                     com_func.getComboBoxItemsAsList(NewDL_win.cbSaveFolder))
             self.showDLListInTable()
 
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_action_Help_About_triggered(self):
         AboutMe_win = AboutDLG(self.Main_win)

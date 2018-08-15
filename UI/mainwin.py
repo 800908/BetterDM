@@ -15,7 +15,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initUI()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initUI(self):
         self.setWindowTitle("Better Download Manager")
@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initEventHandlers()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def saveWindowSettings(self):
         if self.isMaximized():
@@ -50,20 +50,24 @@ class MainWindow(QtWidgets.QMainWindow):
             com_func.add2AppSettings("Main_win/table_col{}_width".format(col_num),
                                      self.tblwDLs.columnWidth(col_num))
 
+        com_func.add2AppSettings("Main_win/Main_spliter_state", self.splMain.saveState())
+        com_func.add2AppSettings("Main_win/Right_spliter_state", self.splRight.saveState())
+        com_func.add2AppSettings("Main_win/Left_spliter_state", self.splLeft.saveState())
 
-# ---------------------------------------------------
+
+# ************************************************************************
 
     def closeEvent(self, event):
         self.saveWindowSettings()
         event.accept()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initEventHandlers(self):
         pass
 
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initWindowSizeAndPos(self):
         isWinMaximized = com_func.getValFromAppSettings("Main_win/iswinmaximized", True, bool)
@@ -79,14 +83,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.resize(win_width, win_height)
             self.move(win_xpos, win_ypos)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initActions(self):
 
         self.action_File_NewDL = com_func.getNewAction(
             self, "&New Download", QtGui.QKeySequence.New, "To show new download form")
 
-        # ***Batch Download Group Action*****************************
+        # ---Batch Download Group Action---------------------------------
         self.gaction_File_BatchDL = QtWidgets.QActionGroup(self)
         self.action_File_BatchURL = com_func.getNewAction(
             self, "From &URL ...", "", "Batch downloading from URL")
@@ -105,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self, "&Delete Download", "", "To Delete download from list")
         self.action_Help_About = com_func.getNewAction(self, "&About", "", "To see about window")
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initMainMenu(self):
         main_Menu = self.menuBar()
@@ -139,7 +143,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Help --> About menu
         menu_Help.addAction(self.action_Help_About)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initToolBar(self):
         main_Toolbar = self.addToolBar("Main Toolbar")
@@ -150,16 +154,19 @@ class MainWindow(QtWidgets.QMainWindow):
         main_Toolbar.addAction(self.action_Download_Delete)
 
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initLayoutAndWidget(self):
-        splMain = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
-        splLeft = QtWidgets.QSplitter(QtCore.Qt.Vertical)
-        splRight = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        self.splMain = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
+        self.splLeft = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        self.splRight = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 
+    # -----------------------------------------------------
         self.lstwCat = QtWidgets.QListWidget()
         self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
         self.toolbDL.setMaximumHeight(25)
+
+    # -----------------------------------------------------
 
         self.tblwDLs = QtWidgets.QTableWidget(0, 5)
         self.tblwDLs.setHorizontalHeaderLabels(
@@ -177,23 +184,40 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs.setColumnWidth(4, com_func.getValFromAppSettings(
             "Main_win/table_col4_width", 100, int))
 
-        self.lstwLog = QtWidgets.QListWidget()
+    # -----------------------------------------------------
 
-        splLeft.addWidget(self.lstwCat)
+        self.tedtLog = QtWidgets.QTextEdit()
+        self.tedtLog.setReadOnly(True)
 
-        splRight.addWidget(self.toolbDL)
-        splRight.addWidget(self.tblwDLs)
-        splRight.addWidget(self.lstwLog)
-        splRight.setStretchFactor(0, 1)
-        splRight.setStretchFactor(1, 6)
-        splRight.setStretchFactor(2, 2)
+    # -----------------------------------------------------
 
-        splMain.addWidget(splLeft)
-        splMain.addWidget(splRight)
-        splMain.setStretchFactor(0, 1)
-        splMain.setStretchFactor(1, 3)
+        self.splLeft.addWidget(self.lstwCat)
 
-        self.setCentralWidget(splMain)
+    # -----------------------------------------------------
+
+        self.splRight.addWidget(self.toolbDL)
+        self.splRight.addWidget(self.tblwDLs)
+        self.splRight.addWidget(self.tedtLog)
+        self.splRight.setStretchFactor(0, 1)
+        self.splRight.setStretchFactor(1, 6)
+        self.splRight.setStretchFactor(2, 2)
+
+    # -----------------------------------------------------
+
+        self.splMain.addWidget(self.splLeft)
+        self.splMain.addWidget(self.splRight)
+        self.splMain.setStretchFactor(0, 1)
+        self.splMain.setStretchFactor(1, 3)
+
+    # -----------------------------------------------------
+
+        self.setCentralWidget(self.splMain)
+
+    # -----------------------------------------------------
+
+        self.splMain.restoreState(com_func.getValFromAppSettings("Main_win/Main_spliter_state"))
+        self.splRight.restoreState(com_func.getValFromAppSettings("Main_win/Right_spliter_state"))
+        self.splLeft.restoreState(com_func.getValFromAppSettings("Main_win/Left_spliter_state"))
 
 # ============END=OF=CLASS====================================
 

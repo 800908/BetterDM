@@ -10,7 +10,7 @@ class AboutDLG(QtWidgets.QDialog):
 
         self.initUI()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initUI(self):
         self.setWindowTitle("About Better Download Manager")

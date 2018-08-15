@@ -4,7 +4,7 @@ import math
 import re
 import json
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewDLProgressBar(FileSize):
@@ -13,7 +13,7 @@ def getNewDLProgressBar(FileSize):
     pbarDL.setValue(0)
     return pbarDL
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewAction(parent=None, actTitle="New Action", actShortcut="", actTip="", actTriger=None):
@@ -26,7 +26,7 @@ def getNewAction(parent=None, actTitle="New Action", actShortcut="", actTip="", 
 
     return Result
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewBuddyLabel(title, buddy, parent=None):
@@ -35,7 +35,7 @@ def getNewBuddyLabel(title, buddy, parent=None):
 
     return Result
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewTableItem(itemToGet):
@@ -45,7 +45,7 @@ def getNewTableItem(itemToGet):
     return Result
 
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 def showErrorMessBox(title, message, parent=None):
     MessBox = QtWidgets.QMessageBox(parent)
@@ -55,7 +55,7 @@ def showErrorMessBox(title, message, parent=None):
     MessBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
     MessBox.exec_()
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewVLine(parent=None):
@@ -63,7 +63,7 @@ def getNewVLine(parent=None):
     Result.setFrameStyle(QtWidgets.QFrame.VLine | QtWidgets.QFrame.Sunken)
     return Result
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewHLine(parent=None):
@@ -71,7 +71,7 @@ def getNewHLine(parent=None):
     Result.setFrameStyle(QtWidgets.QFrame.HLine | QtWidgets.QFrame.Sunken)
     return Result
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getNewSpinBoxwithMinMaxVal(MIN, MAX, VAL, parent=None):
@@ -81,7 +81,7 @@ def getNewSpinBoxwithMinMaxVal(MIN, MAX, VAL, parent=None):
     Result.setValue(VAL)
     return Result
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def moveWindowtoDesktopCenter(window):
@@ -91,7 +91,7 @@ def moveWindowtoDesktopCenter(window):
             QtWidgets.QApplication.desktop().availableGeometry())
     )
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def moveWindowtoFitDesktop(window):
@@ -119,14 +119,14 @@ def moveWindowtoFitDesktop(window):
 
     window.move(win_xPos, win_yPos)
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getSysDLDir():
     return QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation)
 
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def isItURL(textToCheck):
@@ -140,7 +140,7 @@ def isItURL(textToCheck):
     # URL = QtCore.QUrl(textToCheck)
     # return URL.isValid()
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getURLfromClipboard():
@@ -152,7 +152,7 @@ def getURLfromClipboard():
 
     return Clipboard_str
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getFileNamefromURL(URL_str):
@@ -167,7 +167,7 @@ def getFileNamefromURL(URL_str):
 
     return URL.fileName()
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getSizeOfRemoteFile(FileURL):
@@ -180,7 +180,7 @@ def getSizeOfRemoteFile(FileURL):
     except pycurl.error:
         return 0
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 # from: https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
 
 
@@ -195,7 +195,7 @@ def getReadableFileSize(SizeInBytes):
 
     return "{} {}".format(s, SizeName[i])
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def save2JSONfile(toSave, jsonFileName):
@@ -205,7 +205,7 @@ def save2JSONfile(toSave, jsonFileName):
     except IOError as err:
         showErrorMessBox("saving error", str(err))
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getFromJSONfile(jsonFileName):
@@ -215,32 +215,32 @@ def getFromJSONfile(jsonFileName):
     except IOError as err:
         showErrorMessBox("loading error", str(err))
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def isFileExistInCurDir(FileName):
     return QtCore.QFileInfo(FileName).exists()
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getComboBoxItemsAsList(ComboBox):
     return [ComboBox.itemText(i) for i in range(ComboBox.count())]
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getAppSettings():
     return QtCore.QSettings(u"BDM", "BetterDM")
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def add2AppSettings(Key2Add, Value2Add):
     AppSettings = getAppSettings()
     AppSettings.setValue(Key2Add, Value2Add)
 
-# ---------------------------------------------------------------------------
+# ************************************************************************
 
 
 def getValFromAppSettings(Key2Get, DefaultVal=None, ReturnType=None):

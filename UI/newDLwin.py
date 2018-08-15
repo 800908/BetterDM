@@ -17,28 +17,41 @@ class NewDLDLG(QtWidgets.QDialog):
         self.initEventHandlers()
         self.initDefaultVals()
 
-# ---------------------------------------------------
+# ************************************************************************
+
+    def saveWindowSettings(self):
+        com_func.add2AppSettings("NewDL_win/cbSaveFolderItems",
+                                 com_func.getComboBoxItemsAsList(self.cbSaveFolder))
+
+
+# ************************************************************************
+
+    def closeEvent(self, event):
+        self.saveWindowSettings()
+        event.accept()
+
+# ************************************************************************
 
     def initUI(self):
 
-        # ======URL========================================
+        # -------URL------------------------------------------
         self.ledtURL = QtWidgets.QLineEdit("")
         lblURL = com_func.getNewBuddyLabel(u"File &URL:", self.ledtURL)
 
-        # ======Size=======================================
+        # -------Size-----------------------------------------
         self.pbtnGetSize = QtWidgets.QPushButton(u"&Get Size")
         lblSize = com_func.getNewBuddyLabel(u"File Size:", self.pbtnGetSize)
         self.lblFileSize = QtWidgets.QLabel("")
 
-        # ======Mirror=====================================
+        # -------Mirror---------------------------------------
         self.ledtMirror = QtWidgets.QLineEdit("")
         lblMirror = com_func.getNewBuddyLabel(u"&Mirror:", self.ledtMirror)
 
-        # ======File Name==================================
+        # -------File Name------------------------------------
         self.ledtFileName = QtWidgets.QLineEdit("")
         lblFileName = com_func.getNewBuddyLabel(u"&File Name:", self.ledtFileName)
 
-        # ======Folder Name================================
+        # -------Folder Name----------------------------------
         self.cbSaveFolder = QtWidgets.QComboBox()
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
@@ -47,14 +60,14 @@ class NewDLDLG(QtWidgets.QDialog):
 
         lblSaveFolder = com_func.getNewBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
 
-        # ======Comment====================================
+        # -------Comment--------------------------------------
         self.tedtComment = QtWidgets.QTextEdit("")
         lblComment = com_func.getNewBuddyLabel(u"&Comment:", self.tedtComment)
         self.tedtComment.setMaximumHeight(70)
         self.tedtComment.setAcceptRichText(False)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
-        # ======Buttons====================================
+        # -------Buttons--------------------------------------
         self.pbtnAddStart = QtWidgets.QPushButton(u"&Add Start")
         self.pbtnAddStart.setDefault(True)
         self.pbtnAddPause = QtWidgets.QPushButton(u"Add &Pause")
@@ -68,9 +81,7 @@ class NewDLDLG(QtWidgets.QDialog):
         hlayButtons.addWidget(self.pbtnAddPause)
         hlayButtons.addWidget(self.pbtnAddStart)
 
-        # ======More Options===============================
-
-        # ------Connections Group--------------------------
+        # ------Connections Group-----------------------------
         self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, 4)
         lblMaxConn = com_func.getNewBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
 
@@ -91,7 +102,7 @@ class NewDLDLG(QtWidgets.QDialog):
         gboxConn = QtWidgets.QGroupBox(u"Connections:")
         gboxConn.setLayout(glayConn)
 
-        # ------Identification Group--------------------------
+        # ------Identification Group------------------------------
         self.ledtUser = QtWidgets.QLineEdit("")
         lblUserName = com_func.getNewBuddyLabel(u"&User Name:", self.ledtUser)
 
@@ -106,7 +117,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
         gboxID = QtWidgets.QGroupBox(u"Identification:")
         gboxID.setLayout(glayID)
-        # ----------------------------------------------------
+
         glayMoreOp = QtWidgets.QGridLayout()
         glayMoreOp.addWidget(gboxConn, 0, 0)
         glayMoreOp.addWidget(gboxID, 0, 1)
@@ -116,7 +127,7 @@ class NewDLDLG(QtWidgets.QDialog):
         self.frMoreOp.hide()
         self.frMoreOp.setLayout(glayMoreOp)
 
-        # ======Main Layout================================
+        # ------Main Layout-------------------------------------
         glayMain = QtWidgets.QGridLayout()
 
         glayMain.addWidget(lblURL, 0, 0, 1, 2)
@@ -150,7 +161,7 @@ class NewDLDLG(QtWidgets.QDialog):
         glayMain.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.setLayout(glayMain)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initDefaultVals(self):
         self.setWindowTitle(u"BDM - New Download")
@@ -160,7 +171,7 @@ class NewDLDLG(QtWidgets.QDialog):
         self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
         self.on_ledtURL_textChanged()
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def initEventHandlers(self):
         self.ledtURL.textChanged.connect(self.on_ledtURL_textChanged)
@@ -173,20 +184,20 @@ class NewDLDLG(QtWidgets.QDialog):
         self.tbtnSaveFolder.clicked.connect(self.on_tbtnSaveFolder_clicked)
         self.pbtnCancel.clicked.connect(self.on_pbtnCancel_clicked)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_ledURL_editingFinished(self):
         if com_func.isItURL(self.ledtURL.text()):
             self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_ledtURL_textChanged(self):
         self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
         self.pbtnAddStart.setEnabled(self.pbtnGetSize.isEnabled())
         self.pbtnAddPause.setEnabled(self.pbtnGetSize.isEnabled())
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_pbtnGetSize_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
@@ -195,7 +206,7 @@ class NewDLDLG(QtWidgets.QDialog):
         else:
             self.lblFileSize.setText(u"Faild")
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_pbtnAddStart_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
@@ -205,7 +216,7 @@ class NewDLDLG(QtWidgets.QDialog):
         else:
             com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_pbtnAddPause_clicked(self):
         if com_func.isItURL(str(self.ledtURL.text())):
@@ -215,7 +226,7 @@ class NewDLDLG(QtWidgets.QDialog):
         else:
             com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_tbtnSaveFolder_clicked(self):
         fdSaveFolder = QtWidgets.QFileDialog()
@@ -229,7 +240,7 @@ class NewDLDLG(QtWidgets.QDialog):
             self.cbSaveFolder.insertItem(0, folder2Save)
             self.cbSaveFolder.setCurrentIndex(0)
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_pbtnMoreOp_clicked(self):
         if self.frMoreOp.isVisible():
@@ -241,7 +252,7 @@ class NewDLDLG(QtWidgets.QDialog):
             com_func.moveWindowtoFitDesktop(self)
 
 
-# ---------------------------------------------------
+# ************************************************************************
 
     def on_pbtnCancel_clicked(self):
         self.close()
