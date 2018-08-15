@@ -250,3 +250,9 @@ def getValFromAppSettings(Key2Get, DefaultVal=None, ReturnType=None):
         return AppSettings.value(Key2Get, DefaultVal)
     else:
         return AppSettings.value(Key2Get, DefaultVal, type=ReturnType)
+
+
+# ************************************************************************
+
+def isKeyExistInAppSettings(Key2Check):
+    return getAppSettings().contains(Key2Check)

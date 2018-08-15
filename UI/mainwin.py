@@ -13,12 +13,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
 
+        self.initDefaultVals()
         self.initUI()
 
 # ************************************************************************
 
     def initUI(self):
-        self.setWindowTitle("Better Download Manager")
 
         self.initActions()
 
@@ -36,23 +36,30 @@ class MainWindow(QtWidgets.QMainWindow):
 
 # ************************************************************************
 
+    def initDefaultVals(self):
+        self.setWindowTitle("Better Download Manager")
+        self.Settings = com_func.getAppSettings()
+
+
+# ************************************************************************
+
     def saveWindowSettings(self):
         if self.isMaximized():
-            com_func.add2AppSettings("Main_win/iswinmaximized", True)
+            self.Settings.setValue("Main_win/iswinmaximized", True)
         else:
-            com_func.add2AppSettings("Main_win/iswinmaximized", False)
-            com_func.add2AppSettings("Main_win/win_width", self.width())
-            com_func.add2AppSettings("Main_win/win_height", self.height())
-            com_func.add2AppSettings("Main_win/win_xpos", self.x())
-            com_func.add2AppSettings("Main_win/win_ypos", self.y())
+            self.Settings.setValue("Main_win/iswinmaximized", False)
+            self.Settings.setValue("Main_win/win_width", self.width())
+            self.Settings.setValue("Main_win/win_height", self.height())
+            self.Settings.setValue("Main_win/win_xpos", self.x())
+            self.Settings.setValue("Main_win/win_ypos", self.y())
 
         for col_num in range(self.tblwDLs.columnCount()):
-            com_func.add2AppSettings("Main_win/table_col{}_width".format(col_num),
-                                     self.tblwDLs.columnWidth(col_num))
+            self.Settings.setValue("Main_win/table_col{}_width".format(col_num),
+                                   self.tblwDLs.columnWidth(col_num))
 
-        com_func.add2AppSettings("Main_win/Main_spliter_state", self.splMain.saveState())
-        com_func.add2AppSettings("Main_win/Right_spliter_state", self.splRight.saveState())
-        com_func.add2AppSettings("Main_win/Left_spliter_state", self.splLeft.saveState())
+        self.Settings.setValue("Main_win/Main_spliter_state", self.splMain.saveState())
+        self.Settings.setValue("Main_win/Right_spliter_state", self.splRight.saveState())
+        self.Settings.setValue("Main_win/Left_spliter_state", self.splLeft.saveState())
 
 
 # ************************************************************************
@@ -70,15 +77,15 @@ class MainWindow(QtWidgets.QMainWindow):
 # ************************************************************************
 
     def initWindowSizeAndPos(self):
-        isWinMaximized = com_func.getValFromAppSettings("Main_win/iswinmaximized", True, bool)
+        isWinMaximized = self.Settings.value("Main_win/iswinmaximized", True, bool)
 
         if isWinMaximized:
             self.showMaximized()
         else:
-            win_width = com_func.getValFromAppSettings("Main_win/win_width", 640, int)
-            win_height = com_func.getValFromAppSettings("Main_win/win_height", 480, int)
-            win_xpos = com_func.getValFromAppSettings("Main_win/win_xpos", 50, int)
-            win_ypos = com_func.getValFromAppSettings("Main_win/win_ypos", 50, int)
+            win_width = self.Settings.value("Main_win/win_width", 640, int)
+            win_height = self.Settings.value("Main_win/win_height", 480, int)
+            win_xpos = self.Settings.value("Main_win/win_xpos", 50, int)
+            win_ypos = self.Settings.value("Main_win/win_ypos", 50, int)
 
             self.resize(win_width, win_height)
             self.move(win_xpos, win_ypos)
@@ -173,16 +180,11 @@ class MainWindow(QtWidgets.QMainWindow):
             ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"])
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-        self.tblwDLs.setColumnWidth(0, com_func.getValFromAppSettings(
-            "Main_win/table_col0_width", 250, int))
-        self.tblwDLs.setColumnWidth(1, com_func.getValFromAppSettings(
-            "Main_win/table_col1_width", 70, int))
-        self.tblwDLs.setColumnWidth(2, com_func.getValFromAppSettings(
-            "Main_win/table_col2_width", 150, int))
-        self.tblwDLs.setColumnWidth(3, com_func.getValFromAppSettings(
-            "Main_win/table_col3_width", 70, int))
-        self.tblwDLs.setColumnWidth(4, com_func.getValFromAppSettings(
-            "Main_win/table_col4_width", 100, int))
+        self.tblwDLs.setColumnWidth(0, self.Settings.value("Main_win/table_col0_width", 250, int))
+        self.tblwDLs.setColumnWidth(1, self.Settings.value("Main_win/table_col1_width", 70, int))
+        self.tblwDLs.setColumnWidth(2, self.Settings.value("Main_win/table_col2_width", 150, int))
+        self.tblwDLs.setColumnWidth(3, self.Settings.value("Main_win/table_col3_width", 70, int))
+        self.tblwDLs.setColumnWidth(4, self.Settings.value("Main_win/table_col4_width", 100, int))
 
     # -----------------------------------------------------
 
@@ -215,9 +217,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.splMain.restoreState(com_func.getValFromAppSettings("Main_win/Main_spliter_state"))
-        self.splRight.restoreState(com_func.getValFromAppSettings("Main_win/Right_spliter_state"))
-        self.splLeft.restoreState(com_func.getValFromAppSettings("Main_win/Left_spliter_state"))
+        if self.Settings.contains("Main_win/Main_spliter_state"):
+            self.splMain.restoreState(self.Settings.value("Main_win/Main_spliter_state"))
+
+        if self.Settings.contains("Main_win/Right_spliter_state"):
+            self.splRight.restoreState(self.Settings.value("Main_win/Right_spliter_state"))
+
+        if self.Settings.contains("Main_win/Left_spliter_state"):
+            self.splLeft.restoreState(self.Settings.value("Main_win/Left_spliter_state"))
 
 # ============END=OF=CLASS====================================
 

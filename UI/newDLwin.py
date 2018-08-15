@@ -13,15 +13,16 @@ class NewDLDLG(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(NewDLDLG, self).__init__(parent)
 
+        self.initDefaultVals()
         self.initUI()
         self.initEventHandlers()
-        self.initDefaultVals()
+        self.enableDisableButton()
 
 # ************************************************************************
 
     def saveWindowSettings(self):
-        com_func.add2AppSettings("NewDL_win/cbSaveFolderItems",
-                                 com_func.getComboBoxItemsAsList(self.cbSaveFolder))
+        self.Settings.setValue("NewDL_win/cbSaveFolderItems",
+                               com_func.getComboBoxItemsAsList(self.cbSaveFolder))
 
 
 # ************************************************************************
@@ -32,11 +33,19 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ************************************************************************
 
+    def enableDisableButton(self):
+        self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
+        self.pbtnAddStart.setEnabled(self.pbtnGetSize.isEnabled())
+        self.pbtnAddPause.setEnabled(self.pbtnGetSize.isEnabled())
+
+# ************************************************************************
+
     def initUI(self):
 
         # -------URL------------------------------------------
         self.ledtURL = QtWidgets.QLineEdit("")
         lblURL = com_func.getNewBuddyLabel(u"File &URL:", self.ledtURL)
+        self.ledtURL.setText(com_func.getURLfromClipboard())
 
         # -------Size-----------------------------------------
         self.pbtnGetSize = QtWidgets.QPushButton(u"&Get Size")
@@ -50,12 +59,13 @@ class NewDLDLG(QtWidgets.QDialog):
         # -------File Name------------------------------------
         self.ledtFileName = QtWidgets.QLineEdit("")
         lblFileName = com_func.getNewBuddyLabel(u"&File Name:", self.ledtFileName)
+        self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
 
         # -------Folder Name----------------------------------
         self.cbSaveFolder = QtWidgets.QComboBox()
         self.tbtnSaveFolder = QtWidgets.QToolButton()
         self.cbSaveFolder.setEditable(True)
-        self.cbSaveFolder.addItems(com_func.getValFromAppSettings(
+        self.cbSaveFolder.addItems(self.Settings.value(
             "NewDL_win/cbSaveFolderItems", [com_func.getSysDLDir()]))
 
         lblSaveFolder = com_func.getNewBuddyLabel(u"&Save Folder:", self.cbSaveFolder)
@@ -165,11 +175,9 @@ class NewDLDLG(QtWidgets.QDialog):
 
     def initDefaultVals(self):
         self.setWindowTitle(u"BDM - New Download")
+        self.Settings = com_func.getAppSettings()
         self.wantedToAdd = False
 
-        self.ledtURL.setText(com_func.getURLfromClipboard())
-        self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
-        self.on_ledtURL_textChanged()
 
 # ************************************************************************
 
@@ -193,9 +201,7 @@ class NewDLDLG(QtWidgets.QDialog):
 # ************************************************************************
 
     def on_ledtURL_textChanged(self):
-        self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
-        self.pbtnAddStart.setEnabled(self.pbtnGetSize.isEnabled())
-        self.pbtnAddPause.setEnabled(self.pbtnGetSize.isEnabled())
+        self.enableDisableButton()
 
 # ************************************************************************
 
