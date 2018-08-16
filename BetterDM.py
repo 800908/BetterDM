@@ -27,7 +27,7 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def initMainWin(self):
-        self.showDLListInTable()
+        self.showDLList()
 
 # ************************************************************************
 
@@ -41,10 +41,13 @@ class BetterDM(QtWidgets.QApplication):
         self.Main_win.action_File_NewDL.triggered.connect(self.on_action_File_NewDL_triggered)
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
 
+        self.Main_win.tblwDLs.itemSelectionChanged.connect(self.on_tblwDLs_itemSelectionChanged)
+
 # ************************************************************************
 
     def initDefaultVals(self):
         self.DLListFileName = "downloads.json"
+        self.Settings = com_func.getAppSettings()
 
 # ************************************************************************
 
@@ -56,7 +59,7 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
-    def showDLListInTable(self):
+    def showDLList(self):
         self.Main_win.tblwDLs.setRowCount(0)  # clear table
 
         curRow = 0
@@ -96,6 +99,16 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
+    def getCurDLInfoAsHtml(self, curDLDict):
+        return """
+                <p><strong>File Name:</strong> {0}</p>
+                <p><strong>URL:</strong> <a href="{1}" target="_blank" >{1}</a></p>
+                <p><strong>File Path:</strong> <a href="{2}" target="_blank" >{2}</a></p>
+               """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FileFolder"])
+
+
+# ************************************************************************
+
     def on_action_File_NewDL_triggered(self):
         NewDL_win = NewDLDLG(self.Main_win)
         NewDL_win.cbSaveFolder.addItems(com_func.getValFromAppSettings(
@@ -105,7 +118,7 @@ class BetterDM(QtWidgets.QApplication):
         if NewDL_win.wantedToAdd:
             self.addToDLList(self.getDLDicfromNewDLWin(NewDL_win))
             self.saveDLList()
-            self.showDLListInTable()
+            self.showDLList()
 
 
 # ************************************************************************
@@ -113,6 +126,12 @@ class BetterDM(QtWidgets.QApplication):
     def on_action_Help_About_triggered(self):
         AboutMe_win = AboutDLG(self.Main_win)
         AboutMe_win.exec_()
+
+# ************************************************************************
+
+    def on_tblwDLs_itemSelectionChanged(self):
+        self.Main_win.tedtDLInfo.setHtml(self.getCurDLInfoAsHtml(
+            self.DLList[self.Main_win.tblwDLs.currentRow()]))
 
 
 # ============END=OF=CLASS====================================

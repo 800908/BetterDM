@@ -188,8 +188,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.tedtLog = QtWidgets.QTextEdit()
-        self.tedtLog.setReadOnly(True)
+        self.tedtDLInfo = QtWidgets.QTextEdit()
+        # self.tedtDLInfo.setReadOnly(True)
+        self.tedtDLInfo.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
 
     # -----------------------------------------------------
 
@@ -199,7 +200,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.splRight.addWidget(self.toolbDL)
         self.splRight.addWidget(self.tblwDLs)
-        self.splRight.addWidget(self.tedtLog)
+        self.splRight.addWidget(self.tedtDLInfo)
         self.splRight.setStretchFactor(0, 1)
         self.splRight.setStretchFactor(1, 6)
         self.splRight.setStretchFactor(2, 2)
