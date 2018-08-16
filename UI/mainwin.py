@@ -169,7 +169,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.splRight = QtWidgets.QSplitter(QtCore.Qt.Vertical)
 
     # -----------------------------------------------------
-        self.lstwCat = QtWidgets.QListWidget()
         self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
         self.toolbDL.setMaximumHeight(25)
 
@@ -193,6 +192,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tedtDLInfo.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
 
     # -----------------------------------------------------
+
+        self.lstwCat = QtWidgets.QListWidget()
+        self.lstwCat.addItems(["All", "Active", "Stoped", "Deleted"])
 
         self.splLeft.addWidget(self.lstwCat)
 

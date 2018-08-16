@@ -104,7 +104,9 @@ class BetterDM(QtWidgets.QApplication):
                 <p><strong>File Name:</strong> {0}</p>
                 <p><strong>URL:</strong> <a href="{1}" target="_blank" >{1}</a></p>
                 <p><strong>File Path:</strong> <a href="{2}" target="_blank" >{2}</a></p>
-               """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FileFolder"])
+                <p><strong>Comment:</strong>{3}</p>
+               """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FileFolder"],
+                          curDLDict["Comment"])
 
 
 # ************************************************************************
