@@ -92,17 +92,21 @@ class NewDLDLG(QtWidgets.QDialog):
         hlayButtons.addWidget(self.pbtnAddStart)
 
         # ------Connections Group-----------------------------
-        self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, 5)
+        self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, self.Settings.value(
+            "NewDL_win/MaxConnDEF", 5))
         lblMaxConn = com_func.getNewBuddyLabel(u"Ma&x Conn:", self.spbMaxConn)
 
-        self.spbConnTimeout = com_func.getNewSpinBoxwithMinMaxVal(5, 9999, 300)
+        self.spbConnTimeout = com_func.getNewSpinBoxwithMinMaxVal(5, 9999, self.Settings.value(
+            "NewDL_win/ConnTimeoutDEF", 300))
         self.spbConnTimeout.setSuffix(" s")
         lblConnTimeout = com_func.getNewBuddyLabel(u"Conn Timeout:", self.spbConnTimeout)
 
-        self.spbMaxTry = com_func.getNewSpinBoxwithMinMaxVal(1, 999, 10)
+        self.spbMaxTry = com_func.getNewSpinBoxwithMinMaxVal(1, 999, self.Settings.value(
+            "NewDL_win/MaxTryDEF", 10))
         lblMaxTry = com_func.getNewBuddyLabel(u"Max &Try:", self.spbMaxTry)
 
-        self.spbTryDelay = com_func.getNewSpinBoxwithMinMaxVal(1, 99, 5)
+        self.spbTryDelay = com_func.getNewSpinBoxwithMinMaxVal(1, 99, self.Settings.value(
+            "NewDL_win/TryDelayDEF", 5))
         self.spbTryDelay.setSuffix(" s")
         lblTryDelay = com_func.getNewBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
 
@@ -136,10 +140,10 @@ class NewDLDLG(QtWidgets.QDialog):
         gboxID.setLayout(glayID)
 
         # ------Proxy Group-------------------------------------
-        self.ledtProxy = QtWidgets.QLineEdit("")
+        self.ledtProxy = QtWidgets.QLineEdit(self.Settings.value("NewDL_win/ProxyDEF", ""))
         lblProxy = com_func.getNewBuddyLabel(u"Proxy:", self.ledtProxy)
 
-        self.ledtPxPort = QtWidgets.QLineEdit("")
+        self.ledtPxPort = QtWidgets.QLineEdit(self.Settings.value("NewDL_win/PxPortDEF", ""))
         lblPxPort = com_func.getNewBuddyLabel(u"Port:", self.ledtPxPort)
 
         glayProxy = QtWidgets.QGridLayout()
@@ -239,10 +243,15 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ************************************************************************
 
+    def isFormCorrect(self):
+        return com_func.isItURL(self.ledtURL.text()) \
+            and self.ledtFileName.text() != "" and self.cbSaveFolder.currentText() != ""
+
+
+# ************************************************************************
+
     def on_pbtnAddStart_clicked(self):
-        if com_func.isItURL(str(self.ledtURL.text())) \
-                and self.ledtFileName.text() != "" \
-                and self.cbSaveFolder.currentText() != "":
+        if self.isFormCorrect():
             self.wantedToAdd = True
             self.wantedToStart = True
             self.close()
@@ -252,9 +261,7 @@ class NewDLDLG(QtWidgets.QDialog):
 # ************************************************************************
 
     def on_pbtnAddPause_clicked(self):
-        if com_func.isItURL(str(self.ledtURL.text())) \
-                and self.ledtFileName.text() != "" \
-                and self.cbSaveFolder.currentText() != "":
+        if self.isFormCorrect():
             self.wantedToAdd = True
             self.wantedToStart = False
             self.close()

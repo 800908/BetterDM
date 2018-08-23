@@ -198,7 +198,7 @@ def getSizeOfRemoteFile(FileURL):
 
 
 def getReadableFileSize(SizeInBytes):
-    if SizeInBytes == 0:
+    if SizeInBytes <= 0:
         return "0B"
 
     SizeName = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
