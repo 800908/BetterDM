@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 import time
 from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
@@ -46,11 +46,17 @@ class BetterDM(QtWidgets.QApplication):
 
         self.Main_win.tblwDLs.itemSelectionChanged.connect(self.on_tblwDLs_itemSelectionChanged)
 
+        self.RefreshDLTimer.timeout.connect(self.on_RefreshDLTimer_timout)
+
 # ************************************************************************
 
     def initDefaultVals(self):
         self.DLListFileName = "downloads.json"
         self.Settings = com_func.getAppSettings()
+
+        self.RefreshDLTimer = QtCore.QTimer()
+        self.RefreshDLTimer.setInterval(500)
+        self.RefreshDLTimer.start()
 
 # ************************************************************************
 
@@ -155,6 +161,11 @@ class BetterDM(QtWidgets.QApplication):
 
     def on_action_Download_Start_triggered(self):
         self.startDownloadCurDLDict(self.DLList[self.Main_win.tblwDLs.currentRow()])
+
+# ************************************************************************
+
+    def on_RefreshDLTimer_timout(self):
+        pass
 
 # ************************************************************************
 
