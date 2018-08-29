@@ -2,6 +2,7 @@ import pycurl
 import os
 import time
 import math
+from PyQt5.QtCore import QThread
 
 
 # ==========START=OF=CLASS====================================
@@ -30,7 +31,8 @@ class CURLDownloader():
         self.ToDownload = self.FileSize
         self.Downloaded = dlDownloaded
 
-        self.Failed = False
+        self.isDone = False
+        self.isFailed = False
         self.FailReason = ""
         self.LastTime = time.time()
 
@@ -38,11 +40,13 @@ class CURLDownloader():
 
 
 # ************************************************************************
+
     def startDownload(self):
         try:
             self.CURL.perform()
+            self.isDone = True
         except pycurl.error as error:
-            self.Failed = True
+            self.isFailed = True
             self.FailReason = str(error)
         finally:
             self.CURL.close()
@@ -114,3 +118,28 @@ class CURLDownloader():
         s = round(SizeInBytes / p, 2)
 
         return "{} {}".format(s, SizeName[i])
+
+
+# ==========START=OF=CLASS====================================
+
+class Downloader(CURLDownloader, QThread):
+
+    def __init__(self, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize, dlDownloaded,
+                 dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn, dlConnTimeout):
+
+        QThread.__init__(self)
+        CURLDownloader.__init__(self, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize,
+                                dlDownloaded, dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn,
+                                dlConnTimeout)
+
+# ************************************************************************
+
+    def __del__(self):
+        self.wait()
+
+# ************************************************************************
+
+    def run(self):
+        self.startDownload()
+
+# =================================================================
