@@ -4,7 +4,7 @@ from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
 import UI.libs.common_func as com_func
-from libs.downloader import CURLDownloader
+from libs.downloader import Downloader
 
 
 # ==========START=OF=CLASS====================================
@@ -79,8 +79,8 @@ class BetterDM(QtWidgets.QApplication):
             self.Main_win.tblwDLs.insertRow(curRow)
             self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
                 "File Name"), com_func.getNewTableItem(curDL["FileName"]))
-            self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
-                "Size"), com_func.getReadableFileSize(curDL["Size"]))
+            # self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
+            #     "FileSize"), com_func.getReadableFileSize(curDL["FileSize"]))
             self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
                 "Progress"), com_func.getNewDLProgressBar(100))
             curRow += 1
@@ -176,16 +176,29 @@ class BetterDM(QtWidgets.QApplication):
             self.updateActiveDL()
 
 # ************************************************************************
+    @QtCore.pyqtSlot(int)
+    def on_Download_done(self, dlID):
+        pass
+
+# ************************************************************************
+
+    @QtCore.pyqtSlot(int)
+    def on_Download_fail(self, dlID):
+        pass
+
+# ************************************************************************
 
     def startDownloadCurDLDict(self, CurDict):
-        Downloader = CURLDownloader(CurDict["URL"], CurDict["Mirror"], CurDict["FileName"],
-                                    CurDict["FilePath"], CurDict["FileSize"],
-                                    CurDict["Downloaded"], CurDict["User"], CurDict["Pass"],
-                                    CurDict["Proxy"], CurDict["PxPort"], CurDict["MaxConn"],
-                                    CurDict["ConnTimeout"])
+        DLThread = Downloader(CurDict["ID"], CurDict["URL"], CurDict["Mirror"],
+                              CurDict["FileName"], CurDict["FilePath"], CurDict["FileSize"],
+                              CurDict["Downloaded"], CurDict["User"], CurDict["Pass"],
+                              CurDict["Proxy"], CurDict["PxPort"], CurDict["MaxConn"],
+                              CurDict["ConnTimeout"])
+        DLThread.doneSignal.connect(self.on_Download_done)
+        DLThread.failSignal.connect(self.on_Download_fail)
 
-        self.ActiveDLList.append({"ID": CurDict["ID"], "Downloader": Downloader})
-        Downloader.startDownload()
+        self.ActiveDLList.append({"ID": CurDict["ID"], "Downloader": DLThread})
+        DLThread.start()
 
 # ************************************************************************
 
@@ -202,7 +215,7 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def getTableColIndexByName(self, ColName):
-        for i in range(self.Main_win.TableColList):
+        for i in range(len(self.Main_win.TableColList)):
             if self.Main_win.TableColList[i] == ColName:
                 return i
 
@@ -212,7 +225,7 @@ class BetterDM(QtWidgets.QApplication):
         for ActiveDLDic in self.ActiveDLList:
             curRow = self.getDLRowFromID(ActiveDLDic["ID"])
             self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
-                "Size")).setText(ActiveDLDic["Downloader"].FileSize)
+                "FileSize")).setText(ActiveDLDic["Downloader"].FileSize)
             self.Main_win.tblwDLs.cellWidget(curRow, self.getTableColIndexByName(
                 "Progress")).setValue(ActiveDLDic["Downloader"].Progress)
             self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
