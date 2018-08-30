@@ -196,6 +196,7 @@ class BetterDM(QtWidgets.QApplication):
                               CurDict["ConnTimeout"])
         DLThread.doneSignal.connect(self.on_Download_done)
         DLThread.failSignal.connect(self.on_Download_fail)
+        DLThread.progressSignal.connect(self.on_Download_progress)
 
         self.ActiveDLList.append({"ID": CurDict["ID"], "Downloader": DLThread})
         DLThread.start()

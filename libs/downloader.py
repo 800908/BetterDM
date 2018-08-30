@@ -1,6 +1,7 @@
 import pycurl
 import os
 import time
+import datetime
 import math
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -34,8 +35,12 @@ class CURLDownloader():
 
         self.doneSignal = pyqtSignal(int)
         self.failSignal = pyqtSignal(int)
+        self.progressSignal = pyqtSignal(int)
+
         self.FailReason = ""
-        self.LastTime = time.time()
+        self.StartTime = time.time()
+        self.LastTime = self.StartTime
+        self.LastTimeDL = 0
 
         self.initCurl()
 
@@ -82,16 +87,22 @@ class CURLDownloader():
 
 # ************************************************************************
 
-    def progressInfo(self, Total2DL, TotalDL, Total2UL, Uploaded):
-        self.ToDownload = Total2DL
-        self.Downloaded = TotalDL
+    def progressInfo(self, Total2DL, TotalDLed, Total2UL, TotalULed):
 
-        self.Progress = (TotalDL / Total2DL) * 100
+        self.Progress = (os.path.getsize(self.FilePath + self.FileName) / self.FileSize) * 100
 
-        curDLed = TotalDL - self.Downloaded
-        diffTime = self.LastTime - time.time()
-
+        curDLed = TotalDLed - self.LastTimeTotalDL
+        curTime = time.time()
+        diffTime = curTime - self.LastTime
         self.DLSpeed = self.getReadableFileSize(int(curDLed / diffTime)) + "/s"
+        self.LastTimeTotalDL = TotalDLed
+        self.LastTime = curTime
+
+        self.RemainingByte = Total2DL - TotalDLed
+        averageSpeed = TotalDLed / (curTime - self.StartTime)
+        self.RemainigTime = str(datetime.timedelta(seconds=self.RemainingByte / averageSpeed))
+
+        self.progressSignal.emit(self.ID)
 
 
 # ************************************************************************
@@ -129,7 +140,7 @@ class Downloader(CURLDownloader, QThread):
                  dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn, dlConnTimeout):
 
         QThread.__init__(self)
-        CURLDownloader.__init__(self, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize,
+        CURLDownloader.__init__(self, dlID, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize,
                                 dlDownloaded, dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn,
                                 dlConnTimeout)
 
