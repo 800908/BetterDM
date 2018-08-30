@@ -39,8 +39,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def initDefaultVals(self):
         self.setWindowTitle("Better Download Manager")
         self.Settings = com_func.getAppSettings()
-        self.TableColList = ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"]
-        self.TableColDefSize = [250, 70, 150, 70, 100]
+        self.TableColList = ["ID", "File Name", "File Size",
+                             "Progress", "DL Speed", "Time to Finish"]
+        self.TableColDefSize = [0, 250, 70, 150, 70, 100]
 
 
 # ************************************************************************
@@ -185,6 +186,7 @@ class MainWindow(QtWidgets.QMainWindow):
         for i in range(len(self.TableColList)):
             self.tblwDLs.setColumnWidth(i, self.Settings.value(
                 "Main_win/table_col{}_width".format(i), self.TableColDefSize[i], int))
+        self.tblwDLs.setColumnHidden(0, True)  # this column 0 is download ID and must be hidden
 
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 

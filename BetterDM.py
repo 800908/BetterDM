@@ -59,7 +59,7 @@ class BetterDM(QtWidgets.QApplication):
         self.WaitingDLList = []
 
         self.RefreshDLTimer = QtCore.QTimer()
-        self.RefreshDLTimer.setInterval(500)
+        self.RefreshDLTimer.setInterval(1000)
         self.RefreshDLTimer.start()
 
 
@@ -78,9 +78,12 @@ class BetterDM(QtWidgets.QApplication):
         for curDL in self.DLList:
             self.Main_win.tblwDLs.insertRow(curRow)
             self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+                "ID"), com_func.getNewTableItem(curDL["ID"]))
+            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
                 "File Name"), com_func.getNewTableItem(curDL["FileName"]))
-            # self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
-            #     "FileSize"), com_func.getReadableFileSize(curDL["FileSize"]))
+            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+                "File Size"), com_func.getNewTableItem(com_func.getReadableFileSize(
+                    curDL["FileSize"])))
             self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
                 "Progress"), com_func.getNewDLProgressBar(100))
             curRow += 1
@@ -172,10 +175,10 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def on_RefreshDLTimer_timout(self):
-        if len(self.ActiveDLList) > 0:
-            self.updateActiveDL()
+        self.enalbe_disable_actions()
 
 # ************************************************************************
+
     @QtCore.pyqtSlot(int)
     def on_Download_done(self, dlID):
         pass
@@ -185,6 +188,34 @@ class BetterDM(QtWidgets.QApplication):
     @QtCore.pyqtSlot(int)
     def on_Download_fail(self, dlID):
         pass
+
+# ************************************************************************
+
+    @QtCore.pyqtSlot(int)
+    def on_Download_progress(self, dlID):
+        pass
+
+# ************************************************************************
+
+    def isThisRowActiveDL(self, Row):
+        if Row < 0:
+            return False
+
+        rowDLID = self.Main_win.tblwDLs.item(Row, self.getTableColIndexByName("ID")).text()
+        for curDict in self.ActiveDLList:
+            if curDict["ID"] == rowDLID:
+                return False
+
+        return True
+
+# ************************************************************************
+
+    def enalbe_disable_actions(self):
+        curRow = self.Main_win.tblwDLs.currentRow()
+        self.Main_win.action_Download_Start.setEnabled(
+            (curRow >= 0) and self.isThisRowActiveDL(curRow))
+        self.Main_win.action_Download_Stop.setEnabled(
+            (curRow >= 0) and not self.Main_win.action_Download_Start.isEnabled())
 
 # ************************************************************************
 
