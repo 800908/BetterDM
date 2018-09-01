@@ -80,7 +80,7 @@ class BetterDM(QtWidgets.QApplication):
         for curDL in self.DLList:
             self.Main_win.tblwDLs.insertRow(curRow)
             self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
-                "ID"), com_func.getNewTableItem(curDL["ID"]))
+                "ID"), com_func.getNewTableItem(str(curDL["ID"])))
             self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
                 "File Name"), com_func.getNewTableItem(curDL["FileName"]))
             self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
@@ -232,10 +232,10 @@ class BetterDM(QtWidgets.QApplication):
                 for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
 
         for curRow in Rows:
-            curRowDL_ID = self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName("ID"))
+            curRowDL_ID = int(self.Main_win.tblwDLs.item(curRow, 0).text())
             curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.DLList)
-            if curDict and not com_func.isKeyValExistInDictList("ID",
-                                                                curRowDL_ID, self.ActiveDLList):
+            isItActiveDL = com_func.isKeyValExistInDictList("ID", curRowDL_ID, self.ActiveDLList)
+            if curDict and not isItActiveDL:
                 DLThread = Downloader(curDict["ID"], curDict["URL"],
                                       curDict["Mirror"], curDict["FileName"],
                                       curDict["FilePath"], curDict["FileSize"],
@@ -252,16 +252,18 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
-    def stoptDownloadCurTableRows(self):
+    def stopDownloadCurTableRows(self):
         Rows = [SelectedRow.row()
                 for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
 
         for curRow in Rows:
-            curRowDL_ID = self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName("ID"))
-            curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.DLList)
-            if curDict and com_func.isKeyValExistInDictList("ID",
-                                                                curRowDL_ID, self.ActiveDLList):
-            pass
+            curRowDL_ID = int(self.Main_win.tblwDLs.item(curRow, 0).text())
+            isItActiveDL = com_func.isKeyValExistInDictList("ID", curRowDL_ID, self.ActiveDLList)
+            if isItActiveDL:
+                curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.ActiveDLList)
+                DLThread = curDict["Downloader"]
+                if DLThread.isRunning():
+                    DLThread.terminate()
 
 # ************************************************************************
 

@@ -9,6 +9,9 @@ from PyQt5.QtCore import QThread, pyqtSignal
 # ==========START=OF=CLASS====================================
 
 class CURLDownloader():
+    doneSignal = pyqtSignal(int)
+    failSignal = pyqtSignal(int)
+    progressSignal = pyqtSignal(int)
 
     def __init__(self, dlID, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize, dlDownloaded,
                  dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn, dlConnTimeout):
@@ -32,10 +35,6 @@ class CURLDownloader():
 
         self.ToDownload = self.FileSize
         self.Downloaded = dlDownloaded
-
-        self.doneSignal = pyqtSignal(int)
-        self.failSignal = pyqtSignal(int)
-        self.progressSignal = pyqtSignal(int)
 
         self.FailReason = ""
         self.StartTime = time.time()
@@ -69,18 +68,22 @@ class CURLDownloader():
         self.CURL.setopt(pycurl.MAXREDIRS, 5)
 
         self.CURL.setopt(pycurl.URL, self.FileURL)
-        self.CURL.setopt(pycurl.MAXFILESIZE_LARGE, self.FileSize)
-        self.CURL.setopt(pycurl.USERPWD, self.UserPass)
-        self.CURL.setopt(pycurl.PROXY, self.Proxy)
-        self.CURL.setopt(pycurl.PROXYPORT, self.PxPort)
-        self.CURL.setopt(pycurl.MAXCONNECTS, self.MaxConn)
-        self.CURL.setopt(pycurl.CONNECTTIMEOUT, self.ConnTimeout)
+        # self.CURL.setopt(pycurl.MAXFILESIZE_LARGE, self.FileSize)
+        if self.UserPass != "":
+            self.CURL.setopt(pycurl.USERPWD, self.UserPass)
+        if self.Proxy != "":
+            self.CURL.setopt(pycurl.PROXY, self.Proxy)
+        if self.PxPort != "":
+            self.CURL.setopt(pycurl.PROXYPORT, int(self.PxPort))
+        self.CURL.setopt(pycurl.MAXCONNECTS, int(self.MaxConn))
+        self.CURL.setopt(pycurl.CONNECTTIMEOUT, int(self.ConnTimeout))
 
-        if os.path.exists(self.FilePath + self.FileName):
+        if os.path.exists(os.path.join(self.FilePath, self.FileName)):
             self.writefunc = open(self.FilePath + self.FileName, "ab")
-            self.CURL.setopt(pycurl.RESUME_FROM, os.path.getsize(self.FilePath + self.FileName))
+            self.CURL.setopt(pycurl.RESUME_FROM, os.path.getsize(
+                os.path.join(self.FilePath, self.FileName)))
         else:
-            self.writefunc = open(self.FilePath + self.FileName, "wb")
+            self.writefunc = open(os.path.join(self.FilePath, self.FileName), "wb")
 
         self.CURL.setopt(pycurl.WRITEDATA, self.writefunc)
         self.CURL.setopt(pycurl.PROGRESSFUNCTION, self.progressInfo)
@@ -91,16 +94,16 @@ class CURLDownloader():
 
         self.Progress = (os.path.getsize(self.FilePath + self.FileName) / self.FileSize) * 100
 
-        curDLed = TotalDLed - self.LastTimeTotalDL
+        curDLed = TotalDLed - self.LastTimeDL
         curTime = time.time()
         diffTime = curTime - self.LastTime
         self.DLSpeed = self.getReadableFileSize(int(curDLed / diffTime)) + "/s"
-        self.LastTimeTotalDL = TotalDLed
+        self.LastTimeDL = TotalDLed
         self.LastTime = curTime
 
-        self.RemainingByte = Total2DL - TotalDLed
-        averageSpeed = TotalDLed / (curTime - self.StartTime)
-        self.RemainigTime = str(datetime.timedelta(seconds=self.RemainingByte / averageSpeed))
+        # self.RemainingByte = Total2DL - TotalDLed
+        # averageSpeed = TotalDLed / (curTime - self.StartTime)
+        # self.RemainigTime = str(datetime.timedelta(seconds=self.RemainingByte / averageSpeed))
 
         self.progressSignal.emit(self.ID)
 
