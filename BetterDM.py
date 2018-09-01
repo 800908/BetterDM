@@ -43,6 +43,8 @@ class BetterDM(QtWidgets.QApplication):
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
         self.Main_win.action_Download_Start.triggered.connect(
             self.on_action_Download_Start_triggered)
+        self.Main_win.action_Download_Stop.triggered.connect(
+            self.on_action_Download_Stop_triggered)
 
         self.Main_win.tblwDLs.itemSelectionChanged.connect(self.on_tblwDLs_itemSelectionChanged)
 
@@ -170,29 +172,35 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def on_action_Download_Start_triggered(self):
-        self.startDownloadCurDLDict(self.DLList[self.Main_win.tblwDLs.currentRow()])
+        self.startDownloadCurTableRows()
+
+# ************************************************************************
+
+    def on_action_Download_Stop_triggered(self):
+        self.stopDownloadCurTableRows()
 
 # ************************************************************************
 
     def on_RefreshDLTimer_timout(self):
-        self.enalbe_disable_actions()
+        pass
+        # self.enalbe_disable_actions()
 
 # ************************************************************************
 
     @QtCore.pyqtSlot(int)
-    def on_Download_done(self, dlID):
+    def on_Download_done(self, dl_ID):
         pass
 
 # ************************************************************************
 
     @QtCore.pyqtSlot(int)
-    def on_Download_fail(self, dlID):
+    def on_Download_fail(self, dl_ID):
         pass
 
 # ************************************************************************
 
     @QtCore.pyqtSlot(int)
-    def on_Download_progress(self, dlID):
+    def on_Download_progress(self, dl_ID):
         pass
 
 # ************************************************************************
@@ -201,9 +209,9 @@ class BetterDM(QtWidgets.QApplication):
         if Row < 0:
             return False
 
-        rowDLID = self.Main_win.tblwDLs.item(Row, self.getTableColIndexByName("ID")).text()
+        rowDL_ID = self.Main_win.tblwDLs.item(Row, self.getTableColIndexByName("ID")).text()
         for curDict in self.ActiveDLList:
-            if curDict["ID"] == rowDLID:
+            if curDict["ID"] == rowDL_ID:
                 return False
 
         return True
@@ -219,30 +227,46 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
-    def startDownloadCurDLDict(self, CurDict):
-        DLThread = Downloader(CurDict["ID"], CurDict["URL"], CurDict["Mirror"],
-                              CurDict["FileName"], CurDict["FilePath"], CurDict["FileSize"],
-                              CurDict["Downloaded"], CurDict["User"], CurDict["Pass"],
-                              CurDict["Proxy"], CurDict["PxPort"], CurDict["MaxConn"],
-                              CurDict["ConnTimeout"])
-        DLThread.doneSignal.connect(self.on_Download_done)
-        DLThread.failSignal.connect(self.on_Download_fail)
-        DLThread.progressSignal.connect(self.on_Download_progress)
+    def startDownloadCurTableRows(self):
+        Rows = [SelectedRow.row()
+                for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
 
-        self.ActiveDLList.append({"ID": CurDict["ID"], "Downloader": DLThread})
-        DLThread.start()
+        for curRow in Rows:
+            curRowDL_ID = self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName("ID"))
+            curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.DLList)
+            if curDict and not com_func.isKeyValExistInDictList("ID",
+                                                                curRowDL_ID, self.ActiveDLList):
+                DLThread = Downloader(curDict["ID"], curDict["URL"],
+                                      curDict["Mirror"], curDict["FileName"],
+                                      curDict["FilePath"], curDict["FileSize"],
+                                      curDict["Downloaded"], curDict["User"],
+                                      curDict["Pass"], curDict["Proxy"],
+                                      curDict["PxPort"], curDict["MaxConn"],
+                                      curDict["ConnTimeout"])
+                DLThread.doneSignal.connect(self.on_Download_done)
+                DLThread.failSignal.connect(self.on_Download_fail)
+                DLThread.progressSignal.connect(self.on_Download_progress)
+
+                self.ActiveDLList.append({"ID": curDict["ID"], "Downloader": DLThread})
+                DLThread.start()
+
+# ************************************************************************
+
+    def stoptDownloadCurTableRows(self):
+        Rows = [SelectedRow.row()
+                for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
+
+        for curRow in Rows:
+            curRowDL_ID = self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName("ID"))
+            curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.DLList)
+            if curDict and com_func.isKeyValExistInDictList("ID",
+                                                                curRowDL_ID, self.ActiveDLList):
+            pass
 
 # ************************************************************************
 
     def showDLProgressOfTableRow(self, TableRow, Precent):
         pass
-
-# ************************************************************************
-
-    def getRowFromDLListByID(self, dlID):
-        for i in range(len(self.DLList)):
-            if self.DLList[i]["ID"] == dlID:
-                return i
 
 # ************************************************************************
 

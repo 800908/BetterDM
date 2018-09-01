@@ -189,6 +189,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs.setColumnHidden(0, True)  # this column 0 is download ID and must be hidden
 
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tblwDLs.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
     # -----------------------------------------------------
 

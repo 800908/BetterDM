@@ -277,3 +277,23 @@ def getDownloadID():
     return str(uuid.uuid4())[:8]
 
 # ************************************************************************
+
+
+def isKeyValExistInDictList(Key, Val, DictList):
+    for curDict in DictList:
+        if curDict[Key] == Val:
+            return True
+
+    return False
+
+# ************************************************************************
+
+
+def getDictByKeyValInList(Key, Val, DictList):
+    for curDict in DictList:
+        if curDict[Key] == Val:
+            return curDict
+
+    return None
+
+# ************************************************************************
