@@ -14,6 +14,7 @@ class NewDLDLG(QtWidgets.QDialog):
         super(NewDLDLG, self).__init__(parent)
 
         self.initUI()
+        self.initDefaultVals()
         self.initEventHandlers()
 
 # ---------------------------------------------------
@@ -148,7 +149,10 @@ class NewDLDLG(QtWidgets.QDialog):
         self.setLayout(glayMain)
 
 # ---------------------------------------------------
+    def initDefaultVals(self):
+        self.ledtURL.setText(com_func.getURLfromClipboard())
 
+# ---------------------------------------------------
     def initEventHandlers(self):
         self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)
         self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)

@@ -1,4 +1,5 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
+import re
 
 
 # ---------------------------------------------------------------------------
@@ -91,3 +92,26 @@ def moveWindowtoFitDesktop(window):
         win_yPos = win_yPos - off_yPos
 
     window.move(win_xPos, win_yPos)
+
+# ---------------------------------------------------------------------------
+
+
+def isItURL(textToCheck):
+    urlRegex = r"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+    regex = re.compile(urlRegex, re.IGNORECASE)
+    if regex.match(textToCheck):
+        return True
+    else:
+        return False
+
+# ---------------------------------------------------------------------------
+
+
+def getURLfromClipboard():
+    Result = QtWidgets.QApplication.clipboard().text(QtGui.QClipboard.Clipboard)
+
+    if not isItURL(Result):
+        Result = ""
+
+    return Result
+# ---------------------------------------------------------------------------
