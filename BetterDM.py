@@ -74,19 +74,20 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def showDLList(self):
-        self.Main_win.tblwDLs.setRowCount(0)  # clear table
+        Table = self.Main_win.tblwDLs
+        Table.setRowCount(0)  # clear table
 
         curRow = 0
         for curDL in self.DLList:
-            self.Main_win.tblwDLs.insertRow(curRow)
-            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+            Table.insertRow(curRow)
+            Table.setItem(curRow, self.getTableColIndexByName(
                 "ID"), com_func.getNewTableItem(str(curDL["ID"])))
-            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+            Table.setItem(curRow, self.getTableColIndexByName(
                 "File Name"), com_func.getNewTableItem(curDL["FileName"]))
-            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+            Table.setItem(curRow, self.getTableColIndexByName(
                 "File Size"), com_func.getNewTableItem(com_func.getReadableFileSize(
                     curDL["FileSize"])))
-            self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
+            Table.setCellWidget(curRow, self.getTableColIndexByName(
                 "Progress"), com_func.getNewDLProgressBar(100))
             curRow += 1
 
@@ -163,11 +164,12 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def on_tblwDLs_itemSelectionChanged(self):
+        Table = self.Main_win.tblwDLs
         self.Main_win.tedtDLInfo.setHtml(self.getCurDLInfoAsHtml(
-            self.DLList[self.Main_win.tblwDLs.currentRow()]))
+            self.DLList[Table.currentRow()]))
 
         self.Main_win.trvFiles.setRootIndex(self.Main_win.fsmFiles.setRootPath(
-            self.DLList[self.Main_win.tblwDLs.currentRow()]["FilePath"]))
+            self.DLList[Table.currentRow()]["FilePath"]))
 
 # ************************************************************************
 
@@ -228,11 +230,11 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def startDownloadCurTableRows(self):
-        Rows = [SelectedRow.row()
-                for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
+        Table = self.Main_win.tblwDLs
+        Rows = [SelectedRow.row() for SelectedRow in Table.selectionModel().selectedRows()]
 
         for curRow in Rows:
-            curRowDL_ID = int(self.Main_win.tblwDLs.item(curRow, 0).text())
+            curRowDL_ID = int(Table.item(curRow, 0).text())
             curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.DLList)
             isItActiveDL = com_func.isKeyValExistInDictList("ID", curRowDL_ID, self.ActiveDLList)
             if curDict and not isItActiveDL:
@@ -253,11 +255,11 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def stopDownloadCurTableRows(self):
-        Rows = [SelectedRow.row()
-                for SelectedRow in self.Main_win.tblwDLs.selectionModel().selectedRows()]
+        Table = self.Main_win.tblwDLs
+        Rows = [SelectedRow.row() for SelectedRow in Table.selectionModel().selectedRows()]
 
         for curRow in Rows:
-            curRowDL_ID = int(self.Main_win.tblwDLs.item(curRow, 0).text())
+            curRowDL_ID = int(Table.item(curRow, 0).text())
             isItActiveDL = com_func.isKeyValExistInDictList("ID", curRowDL_ID, self.ActiveDLList)
             if isItActiveDL:
                 curDict = com_func.getDictByKeyValInList("ID", curRowDL_ID, self.ActiveDLList)
@@ -279,19 +281,35 @@ class BetterDM(QtWidgets.QApplication):
                 return i
 
 # ************************************************************************
-    def getRowIndexOfDLByID
 
+    def getRowIndexByID(self, RowID):
+        Table = self.Main_win.tblwDLs
+        for curRowIndex in range(Table.rowCount()):
+            if int(Table.item(curRowIndex, 0).text()) == RowID:
+                return curRowIndex
+
+        return -1
+
+# ************************************************************************
     def updateActiveDLProgress(self, dl_ID):
-        dl_Dict = com_func.getDictByKeyValInList("ID", dl_ID, ActiveDLList)
+        Table = self.Main_win.tblwDLs
+        RowIndex = self.getRowIndexByID(dl_ID)
 
-        # for ActiveDLDic in self.ActiveDLList:
-        #     curRow = self.getDLRowFromID(ActiveDLDic["ID"])
-        #     self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
-        #         "FileSize")).setText(ActiveDLDic["Downloader"].FileSize)
-        #     self.Main_win.tblwDLs.cellWidget(curRow, self.getTableColIndexByName(
-        #         "Progress")).setValue(ActiveDLDic["Downloader"].Progress)
-        #     self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
-        #         "DL Speed")).setText(ActiveDLDic["Downloader"].DLSpeed)
+        if RowIndex == -1:  # if not visible
+            return
+
+        dl_Dict = com_func.getDictByKeyValInList("ID", dl_ID, self.ActiveDLList)
+        dl_Thread = dl_Dict["Downloader"]
+
+        FileSizeItem = Table.item(RowIndex, self.getTableColIndexByName("File Size"))
+        DLSpeedItem = Table.item(RowIndex, self.getTableColIndexByName("DL Speed"))
+        TimeToFinishItem = Table.item(RowIndex, self.getTableColIndexByName("Time to Finish"))
+        ProgressItem = Table.cellWidget(RowIndex, self.getTableColIndexByName("Progress"))
+
+        FileSizeItem.setText(com_func.getReadableFileSize(dl_Thread.FileSize))
+        DLSpeedItem.setText(dl_Thread.DLSpeed)
+        TimeToFinishItem.setText(dl_Thread.RemainingTime)
+        ProgressItem.setValue(int(dl_Thread.Progress))
 
 
 # ============END=OF=CLASS====================================

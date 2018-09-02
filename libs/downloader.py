@@ -90,6 +90,10 @@ class CURLDownloader():
 # ************************************************************************
 
     def progressInfo(self, Total2DL, TotalDLed, Total2UL, TotalULed):
+        self.Progress = 0
+        self.DLSpeed = 0
+        self.RemainigTime = u"can not estimate"
+
         curTime = time.time()
         diffTime = curTime - self.LastTime
         if diffTime < 1:
@@ -97,8 +101,6 @@ class CURLDownloader():
 
         if self.FileSize > 0:
             self.Progress = (os.path.getsize(self.FullFileName) / self.FileSize) * 100
-        else:
-            self.Progress = 0
 
         curDLed = TotalDLed - self.LastTimeDL
         self.DLSpeed = self.getReadableFileSize(int(curDLed / diffTime)) + "/s"
@@ -110,8 +112,6 @@ class CURLDownloader():
         if averageSpeed > 0:
             self.RemainigTime = str(datetime.timedelta(
                 seconds=(self.RemainingByte / averageSpeed)))
-        else:
-            self.RemainigTime = u"can not estimate"
 
         self.progressSignal.emit(self.ID)
 
