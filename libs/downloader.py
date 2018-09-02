@@ -40,7 +40,7 @@ class CURLDownloader():
         self.StartTime = time.time()
         self.LastTime = self.StartTime
         self.LastTimeDL = 0
-
+        self.FullFileName = os.path.join(self.FilePath, self.FileName)
         self.initCurl()
 
 
@@ -78,12 +78,11 @@ class CURLDownloader():
         self.CURL.setopt(pycurl.MAXCONNECTS, int(self.MaxConn))
         self.CURL.setopt(pycurl.CONNECTTIMEOUT, int(self.ConnTimeout))
 
-        if os.path.exists(os.path.join(self.FilePath, self.FileName)):
-            self.writefunc = open(self.FilePath + self.FileName, "ab")
-            self.CURL.setopt(pycurl.RESUME_FROM, os.path.getsize(
-                os.path.join(self.FilePath, self.FileName)))
+        if os.path.exists(self.FullFileName):
+            self.writefunc = open(self.FullFileName, "ab")
+            self.CURL.setopt(pycurl.RESUME_FROM, os.path.getsize(self.FullFileName))
         else:
-            self.writefunc = open(os.path.join(self.FilePath, self.FileName), "wb")
+            self.writefunc = open(self.FullFileName, "wb")
 
         self.CURL.setopt(pycurl.WRITEDATA, self.writefunc)
         self.CURL.setopt(pycurl.PROGRESSFUNCTION, self.progressInfo)
@@ -91,19 +90,28 @@ class CURLDownloader():
 # ************************************************************************
 
     def progressInfo(self, Total2DL, TotalDLed, Total2UL, TotalULed):
-
-        self.Progress = (os.path.getsize(self.FilePath + self.FileName) / self.FileSize) * 100
-
-        curDLed = TotalDLed - self.LastTimeDL
         curTime = time.time()
         diffTime = curTime - self.LastTime
+        if diffTime < 1:
+            return
+
+        if self.FileSize > 0:
+            self.Progress = (os.path.getsize(self.FullFileName) / self.FileSize) * 100
+        else:
+            self.Progress = 0
+
+        curDLed = TotalDLed - self.LastTimeDL
         self.DLSpeed = self.getReadableFileSize(int(curDLed / diffTime)) + "/s"
         self.LastTimeDL = TotalDLed
         self.LastTime = curTime
 
-        # self.RemainingByte = Total2DL - TotalDLed
-        # averageSpeed = TotalDLed / (curTime - self.StartTime)
-        # self.RemainigTime = str(datetime.timedelta(seconds=self.RemainingByte / averageSpeed))
+        self.RemainingByte = Total2DL - TotalDLed
+        averageSpeed = TotalDLed / (curTime - self.StartTime)
+        if averageSpeed > 0:
+            self.RemainigTime = str(datetime.timedelta(
+                seconds=(self.RemainingByte / averageSpeed)))
+        else:
+            self.RemainigTime = u"can not estimate"
 
         self.progressSignal.emit(self.ID)
 

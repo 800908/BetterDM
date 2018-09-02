@@ -201,7 +201,7 @@ class BetterDM(QtWidgets.QApplication):
 
     @QtCore.pyqtSlot(int)
     def on_Download_progress(self, dl_ID):
-        pass
+        self.updateActiveDLProgress(dl_ID)
 
 # ************************************************************************
 
@@ -264,6 +264,7 @@ class BetterDM(QtWidgets.QApplication):
                 DLThread = curDict["Downloader"]
                 if DLThread.isRunning():
                     DLThread.terminate()
+                    self.ActiveDLList.remove(curDict)
 
 # ************************************************************************
 
@@ -278,16 +279,19 @@ class BetterDM(QtWidgets.QApplication):
                 return i
 
 # ************************************************************************
+    def getRowIndexOfDLByID
 
-    def updateActiveDLProgress(self):
-        for ActiveDLDic in self.ActiveDLList:
-            curRow = self.getDLRowFromID(ActiveDLDic["ID"])
-            self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
-                "FileSize")).setText(ActiveDLDic["Downloader"].FileSize)
-            self.Main_win.tblwDLs.cellWidget(curRow, self.getTableColIndexByName(
-                "Progress")).setValue(ActiveDLDic["Downloader"].Progress)
-            self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
-                "DL Speed")).setText(ActiveDLDic["Downloader"].DLSpeed)
+    def updateActiveDLProgress(self, dl_ID):
+        dl_Dict = com_func.getDictByKeyValInList("ID", dl_ID, ActiveDLList)
+
+        # for ActiveDLDic in self.ActiveDLList:
+        #     curRow = self.getDLRowFromID(ActiveDLDic["ID"])
+        #     self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
+        #         "FileSize")).setText(ActiveDLDic["Downloader"].FileSize)
+        #     self.Main_win.tblwDLs.cellWidget(curRow, self.getTableColIndexByName(
+        #         "Progress")).setValue(ActiveDLDic["Downloader"].Progress)
+        #     self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
+        #         "DL Speed")).setText(ActiveDLDic["Downloader"].DLSpeed)
 
 
 # ============END=OF=CLASS====================================
