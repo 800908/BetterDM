@@ -152,6 +152,9 @@ class NewDLDLG(QtWidgets.QDialog):
     def initDefaultVals(self):
         self.ledtURL.setText(com_func.getURLfromClipboard())
 
+        if self.ledtURL.text() != "":
+            self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
+
 # ---------------------------------------------------
     def initEventHandlers(self):
         self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)

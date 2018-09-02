@@ -1,8 +1,8 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 import re
 
-
 # ---------------------------------------------------------------------------
+
 
 def getAction(parent=None, actTitle="New Action", actShortcut="", actTip="", actTriger=None):
     Result = QtWidgets.QAction(actTitle, parent)
@@ -114,4 +114,14 @@ def getURLfromClipboard():
         Result = ""
 
     return Result
+
+# ---------------------------------------------------------------------------
+
+
+def getFileNamefromURL(URL_str):
+    if URL_str.split("/")[-1] == "":
+        return "unknown"
+    else:
+        return URL_str.split("/")[-1]
+
 # ---------------------------------------------------------------------------
