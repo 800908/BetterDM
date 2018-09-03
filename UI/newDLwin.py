@@ -149,6 +149,7 @@ class NewDLDLG(QtWidgets.QDialog):
         self.setLayout(glayMain)
 
 # ---------------------------------------------------
+
     def initDefaultVals(self):
         self.ledtURL.setText(com_func.getURLfromClipboard())
 
@@ -156,12 +157,31 @@ class NewDLDLG(QtWidgets.QDialog):
             self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
 
 # ---------------------------------------------------
+
     def initEventHandlers(self):
+        self.wantedToAdd = False
+        self.pbtnAdd_Start.clicked.connect(self.Add_Start)
+        self.pbtnAdd_Pause.clicked.connect(self.Add_Pause)
         self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)
         self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)
         self.pbtnCancel.clicked.connect(self.close)
 
 # ---------------------------------------------------
+
+    def Add_Start(self):
+        self.wantedToAdd = True
+        self.wantedToStart = True
+        self.close()
+
+# ---------------------------------------------------
+
+    def Add_Pause(self):
+        self.wantedToAdd = True
+        self.wantedToStart = False
+        self.close()
+
+# ---------------------------------------------------
+
     def setFolder2Save(self):
         fdSaveFolder = QtWidgets.QFileDialog()
 
