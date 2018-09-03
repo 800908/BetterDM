@@ -50,6 +50,7 @@ class NewDLDLG(QtWidgets.QDialog):
         self.tedtComment = QtWidgets.QTextEdit("")
         lblComment = com_func.getBuddyLabel(u"&Comment:", self.tedtComment)
         self.tedtComment.setMaximumHeight(70)
+        self.tedtComment.setAcceptRichText(False)
         lblComment.setAlignment(QtCore.Qt.AlignTop)
 
         # ======Buttons====================================

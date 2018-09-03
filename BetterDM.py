@@ -14,6 +14,7 @@ class BetterDM(QtWidgets.QApplication):
 
         self.Main_win = MainWindow()
         self.initMainWin()
+        self.initDLlist()
         self.Main_win.show()
 
 # ---------------------------------------------------
@@ -30,13 +31,37 @@ class BetterDM(QtWidgets.QApplication):
 
 # ---------------------------------------------------
 
+    def initDLlist(self):
+        self.DLlist = []
+
+        pass
+
+# ---------------------------------------------------
+
+    def addToDLlist(self, toADDdic):
+        self.DLlist.append(toADDdic)
+
+        pass
+
+# ---------------------------------------------------
+
+    def getDLdic(self, DL_win):
+        DLParamDic = {}
+        DLParamDic["URL"] = str(DL_win.ledtURL.text())
+        DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
+        DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
+        DLParamDic["FileFolder"] = str(DL_win.cbSaveFolder.currentText())
+        DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
+        DLParamDic["Started"] = DL_win.wantedToStart
+
+# ---------------------------------------------------
+
     def NewDownload(self):
         NewDL_win = NewDLDLG(self.Main_win)
         NewDL_win.exec_()
 
         if NewDL_win.wantedToAdd:
-            pass
-
+            self.addToDLlist(self.getDLdic(NewDL_win))
 
 # ---------------------------------------------------
 
