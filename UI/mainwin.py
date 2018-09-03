@@ -39,10 +39,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def initDefaultVals(self):
         self.setWindowTitle("Better Download Manager")
         self.Settings = com_func.getAppSettings()
-        self.TableColList = ["ID", "File Name", "File Size",
-                             "Progress", "DL Speed", "Time to Finish"]
-        self.TableColDefSize = [0, 250, 70, 150, 70, 100]
-
 
 # ************************************************************************
 
@@ -180,16 +176,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.tblwDLs = QtWidgets.QTableWidget(0, len(self.TableColList))
-        self.tblwDLs.setHorizontalHeaderLabels(self.TableColList)
-
-        for i in range(len(self.TableColList)):
+        self.tblwDLs = dlTable()
+        for i in range(len(self.tblwDLs.ColumnLables)):
             self.tblwDLs.setColumnWidth(i, self.Settings.value(
-                "Main_win/table_col{}_width".format(i), self.TableColDefSize[i], int))
-        self.tblwDLs.setColumnHidden(0, True)  # this column 0 is download ID and must be hidden
-
-        self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.tblwDLs.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+                "Main_win/table_col{}_width".format(i), self.tblwDLs.ColumnDefSize[i], int))
 
     # -----------------------------------------------------
 
@@ -278,6 +268,26 @@ class MainWindow(QtWidgets.QMainWindow):
 
 # ============END=OF=CLASS====================================
 
+# ==========START=OF=CLASS====================================
+
+
+class dlTable(QtWidgets.QTableWidget):
+
+    def __init__(self):
+        self.Settings = com_func.getAppSettings()
+        self.ColumnLables = ["ID", "File Name", "File Size",
+                             "Progress", "DL Speed", "Time to Finish"]
+        self.ColumnDefSize = [0, 250, 70, 150, 70, 100]
+        QtWidgets.QTableWidget.__init__(self, 0, len(self.ColumnLables))
+        self.setHorizontalHeaderLabels(self.ColumnLables)
+
+        self.setColumnHidden(0, True)  # column 0 is download ID and must be hidden
+
+        self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+
+
+# ============END=OF=CLASS====================================
 
 if __name__ == "__main__":
     import sys

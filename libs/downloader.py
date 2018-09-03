@@ -21,12 +21,7 @@ class CURLDownloader():
         self.FileMirror = dlMirror
         self.FileName = dlFileName
         self.FilePath = dlFilePath
-
-        if dlFileSize == 0:
-            self.FileSize = self.getFileSize(dlURL)
-        else:
-            self.FileSize = dlFileSize
-
+        self.FileSize = dlFileSize
         self.UserPass = dlUser + ":" + dlPass
         self.Proxy = dlProxy
         self.PxPort = dlPxPort
@@ -48,6 +43,9 @@ class CURLDownloader():
 
     def startDownload(self):
         try:
+            if self.FileSize == 0:
+                self.FileSize = self.getFileSize(self.FileURL)
+
             self.CURL.perform()
             self.doneSignal.emit(self.ID)
         except pycurl.error as error:
