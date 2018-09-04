@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
@@ -34,18 +34,28 @@ class BetterDM(QtWidgets.QApplication):
     def initDLlist(self):
         self.DLlist = []
 
-        pass
+
+# ---------------------------------------------------
+
+    def showDLlistInTable(self):
+        curRow = 0
+        print(self.DLlist)
+        for curDL in self.DLlist:
+            self.Main_win.tblwDLs.insertRow(curRow)
+            tblitemFileName = QtWidgets.QTableWidgetItem(curDL["FileName"])
+            # tblitemFileName.setFlags(QtCore.Qt.NoItemFlags)
+            self.Main_win.tblwDLs.setItem(curRow, 0, tblitemFileName)
 
 # ---------------------------------------------------
 
     def addToDLlist(self, toADDdic):
         self.DLlist.append(toADDdic)
+        self.showDLlistInTable()
 
-        pass
 
 # ---------------------------------------------------
 
-    def getDLdic(self, DL_win):
+    def getDLDicfromNewDLWin(self, DL_win):
         DLParamDic = {}
         DLParamDic["URL"] = str(DL_win.ledtURL.text())
         DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
@@ -54,6 +64,8 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
         DLParamDic["Started"] = DL_win.wantedToStart
 
+        return DLParamDic
+
 # ---------------------------------------------------
 
     def NewDownload(self):
@@ -61,7 +73,7 @@ class BetterDM(QtWidgets.QApplication):
         NewDL_win.exec_()
 
         if NewDL_win.wantedToAdd:
-            self.addToDLlist(self.getDLdic(NewDL_win))
+            self.addToDLlist(self.getDLDicfromNewDLWin(NewDL_win))
 
 # ---------------------------------------------------
 

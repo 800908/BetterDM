@@ -19,7 +19,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def initUI(self):
         self.setWindowTitle("Better Download Manager")
-        self.setGeometry(50, 100, 640, 480)
 
         self.initActions()
 
@@ -31,6 +30,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.initLayoutAndWidget()
 
+        self.showMaximized()
 # ---------------------------------------------------
 
     def initActions(self):
@@ -112,7 +112,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.lstwCat = QtWidgets.QListWidget()
         self.toolbDL = QtWidgets.QToolBar("Main Toolbar")
         self.toolbDL.setMaximumHeight(25)
-        self.tblwDLs = QtWidgets.QTableWidget()
+
+        self.tblwDLs = QtWidgets.QTableWidget(0, 5)
+        self.tblwDLs.setHorizontalHeaderLabels(
+            ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"])
+        self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
         self.lstwLog = QtWidgets.QListWidget()
 
         splLeft.addWidget(self.lstwCat)
