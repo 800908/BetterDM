@@ -161,29 +161,47 @@ class NewDLDLG(QtWidgets.QDialog):
 
     def initEventHandlers(self):
         self.wantedToAdd = False
-        self.pbtnAdd_Start.clicked.connect(self.Add_Start)
-        self.pbtnAdd_Pause.clicked.connect(self.Add_Pause)
-        self.pbtnMoreOp.clicked.connect(self.show_hide_MoreOp)
-        self.tbtnSaveFolder.clicked.connect(self.setFolder2Save)
+
+        self.ledtURL.textChanged.connect(self.onURLtextChanged)
+
+        self.pbtnGetSize.clicked.connect(self.onGetSizeClicked)
+        self.pbtnAdd_Start.clicked.connect(self.onAdd_StartClicked)
+        self.pbtnAdd_Pause.clicked.connect(self.onAdd_PauseClicked)
+        self.pbtnMoreOp.clicked.connect(self.onMoreOpClicked)
+        self.tbtnSaveFolder.clicked.connect(self.onSaveFolderClicked)
         self.pbtnCancel.clicked.connect(self.close)
 
 # ---------------------------------------------------
 
-    def Add_Start(self):
+    def onURLtextChanged(self):
+        self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
+
+# ---------------------------------------------------
+
+    def onGetSizeClicked(self):
+        if com_func.isItURL(str(self.ledtURL.text())):
+            self.lblFileSize.setText(com_func.getReadableFileSize(
+                com_func.getSizeOfRemoteFile(str(self.ledtURL.text()))))
+        else:
+            self.lblFileSize.setText(u"bad URL")
+
+# ---------------------------------------------------
+
+    def onAdd_StartClicked(self):
         self.wantedToAdd = True
         self.wantedToStart = True
         self.close()
 
 # ---------------------------------------------------
 
-    def Add_Pause(self):
+    def onAdd_PauseClicked(self):
         self.wantedToAdd = True
         self.wantedToStart = False
         self.close()
 
 # ---------------------------------------------------
 
-    def setFolder2Save(self):
+    def onSaveFolderClicked(self):
         fdSaveFolder = QtWidgets.QFileDialog()
 
         folder2Save = fdSaveFolder.getExistingDirectory(
@@ -197,7 +215,7 @@ class NewDLDLG(QtWidgets.QDialog):
 
 # ---------------------------------------------------
 
-    def show_hide_MoreOp(self):
+    def onMoreOpClicked(self):
         if self.frMoreOp.isVisible():
             self.frMoreOp.hide()
             self.pbtnMoreOp.setText(u"More &Options")

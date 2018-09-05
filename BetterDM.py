@@ -1,8 +1,8 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
-# import UI.res.ui_common_func as com_func
+import UI.res.ui_common_func as com_func
 
 
 # ==========START=OF=CLASS====================================
@@ -16,6 +16,7 @@ class BetterDM(QtWidgets.QApplication):
         self.initMainWin()
         self.initDLlist()
         self.Main_win.show()
+
 
 # ---------------------------------------------------
 
@@ -39,12 +40,15 @@ class BetterDM(QtWidgets.QApplication):
 
     def showDLlistInTable(self):
         curRow = 0
-        print(self.DLlist)
         for curDL in self.DLlist:
             self.Main_win.tblwDLs.insertRow(curRow)
-            tblitemFileName = QtWidgets.QTableWidgetItem(curDL["FileName"])
-            # tblitemFileName.setFlags(QtCore.Qt.NoItemFlags)
-            self.Main_win.tblwDLs.setItem(curRow, 0, tblitemFileName)
+            self.Main_win.tblwDLs.setItem(curRow, 0, com_func.getTableItem(
+                curDL["FileName"]))
+            self.Main_win.tblwDLs.setItem(curRow, 1, com_func.getTableItem(
+                curDL["Mirror"]))
+            self.Main_win.tblwDLs.setItem(curRow, 2, com_func.getTableItem(
+                curDL["FileName"]))
+            curRow += 1
 
 # ---------------------------------------------------
 

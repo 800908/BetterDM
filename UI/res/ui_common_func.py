@@ -1,4 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
+import pycurl
+import math
 import re
 
 # ---------------------------------------------------------------------------
@@ -20,6 +22,15 @@ def getAction(parent=None, actTitle="New Action", actShortcut="", actTip="", act
 def getBuddyLabel(title, buddy, parent=None):
     Result = QtWidgets.QLabel(title, parent)
     Result.setBuddy(buddy)
+
+    return Result
+
+# ---------------------------------------------------------------------------
+
+
+def getTableItem(itemToGet):
+    Result = QtWidgets.QTableWidgetItem(itemToGet)
+    Result.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
     return Result
 
@@ -99,29 +110,64 @@ def moveWindowtoFitDesktop(window):
 def isItURL(textToCheck):
     urlRegex = r"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
     regex = re.compile(urlRegex, re.IGNORECASE)
-    if regex.match(textToCheck):
+    if regex.fullmatch(textToCheck):
         return True
     else:
         return False
+
+    # URL = QtCore.QUrl(textToCheck)
+    # return URL.isValid()
 
 # ---------------------------------------------------------------------------
 
 
 def getURLfromClipboard():
-    Result = QtWidgets.QApplication.clipboard().text(QtGui.QClipboard.Clipboard)
+    Clipboard_str = str(QtWidgets.QApplication.clipboard().text(QtGui.QClipboard.Clipboard))
 
-    if not isItURL(Result):
-        Result = ""
+    # print(URL)
+    if not isItURL(Clipboard_str):
+        return ""
 
-    return Result
+    return Clipboard_str
 
 # ---------------------------------------------------------------------------
 
 
 def getFileNamefromURL(URL_str):
-    if URL_str.split("/")[-1] == "":
-        return "unknown"
-    else:
-        return URL_str.split("/")[-1]
+    # if URL_str.split("/")[-1] == "":
+    #     return "unknown"
+    # else:
+    #     return URL_str.split("/")[-1]
+
+    URL = QtCore.QUrl(URL_str)
+    if not URL.isValid():
+        return ""
+
+    return URL.fileName()
+
+# ---------------------------------------------------------------------------
+
+
+def getSizeOfRemoteFile(FileURL):
+    CURL = pycurl.Curl()
+    CURL.setopt(CURL.URL, FileURL)
+    CURL.setopt(CURL.NOBODY, 1)
+    CURL.perform()
+    return CURL.getinfo(CURL.CONTENT_LENGTH_DOWNLOAD)
+
+# ---------------------------------------------------------------------------
+# https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
+
+
+def getReadableFileSize(SizeInBytes):
+    if SizeInBytes == 0:
+        return "0B"
+
+    SizeName = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(SizeInBytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(SizeInBytes / p, 2)
+
+    return "{} {}".format(s, SizeName[i])
 
 # ---------------------------------------------------------------------------
