@@ -274,20 +274,88 @@ class MainWindow(QtWidgets.QMainWindow):
 class dlTable(QtWidgets.QTableWidget):
 
     def __init__(self):
-        self.Settings = com_func.getAppSettings()
-        self.ColumnLables = ["ID", "File Name", "File Size",
-                             "Progress", "DL Speed", "Time to Finish"]
+        self.ID_Label = "ID"
+        self.FileName_Label = "File Name"
+        self.FileSize_Label = "File Size"
+        self.Progress_Label = "Progress"
+        self.DLSpeed_Label = "DL Speed"
+        self.TimeToFinish_Label = "Time to Finish"
+        self.TableRows = []
+        self.IDs = []
+
+        self.ColumnLables = [self.ID_Label, self.FileName_Label, self.FileSize_Label,
+                             self.Progress_Label, self.DLSpeed_Label, self.TimeToFinish_Label]
         self.ColumnDefSize = [0, 250, 70, 150, 70, 100]
+
         QtWidgets.QTableWidget.__init__(self, 0, len(self.ColumnLables))
         self.setHorizontalHeaderLabels(self.ColumnLables)
-
         self.setColumnHidden(0, True)  # column 0 is download ID and must be hidden
-
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
+# ************************************************************************
+
+    def getNewTableRow(self, Data):
+        Result = {}
+
+        Result[self.ID_Label] = com_func.getNewTableItem(str(Data["ID"]))
+        Result[self.FileName_Label] = com_func.getNewTableItem(Data["FileName"])
+        Result[self.FileSize_Label] = com_func.getNewTableItem(str(Data["FileSize"]))
+
+        Result[self.Progress_Label] = com_func.getNewDLProgressBar()
+        Result[self.Progress_Label].setValue(int(Data["Progress"]))
+
+        Result[self.DLSpeed_Label] = com_func.getNewTableItem("")
+        Result[self.TimeToFinish_Label] = com_func.getNewTableItem("")
+
+        return Result
+
+
+# ************************************************************************
+
+    def getTableRowIndexByID(self, ID):
+        for i in range(len(self.IDs)):
+            if self.IDs[i] == ID:
+                return i
+
+        return -1
+
+# ************************************************************************
+
+    def fillTableRows(self, dataList):
+        self.TableRows.clear()
+        self.IDs.clear()
+        for curData in dataList:
+            self.TableRows.append(self.getNewTableRow(curData))
+            self.IDs.append(curData[self.ID_Label])
+
+# ************************************************************************
+
+    def getSelectedRows(self):
+        return [SelectedRow.row() for SelectedRow in self.selectionModel().selectedRows()]
+
+# ************************************************************************
+
+    def setFileSize(self, Row, Val):
+        self.TableRows[Row][self.FileSize_Label].setText(com_func.getReadableFileSize(Val))
+
+# ************************************************************************
+
+    def setProgress(self, Row, Val):
+        self.TableRows[Row][self.Progress_Label].setValue(int(Val))
+
+# ************************************************************************
+
+    def setDLSpeed(self, Row, Val):
+        self.TableRows[Row][self.DLSpeed_Label].setText(Val)
+
+# ************************************************************************
+
+    def setTimeToFinish(self, Row, Val):
+        self.TableRows[Row][self.TimeToFinish_Label].setText(Val)
 
 # ============END=OF=CLASS====================================
+
 
 if __name__ == "__main__":
     import sys

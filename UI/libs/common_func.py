@@ -9,11 +9,10 @@ import uuid
 # ************************************************************************
 
 
-def getNewDLProgressBar(FileSize):
-    pbarDL = QtWidgets.QProgressBar()
-    pbarDL.setRange(0, FileSize)
-    pbarDL.setValue(0)
-    return pbarDL
+def getNewDLProgressBar():
+    Result = QtWidgets.QProgressBar()
+    Result.setRange(0, 100)
+    return Result
 
 # ************************************************************************
 
@@ -40,8 +39,8 @@ def getNewBuddyLabel(title, buddy, parent=None):
 # ************************************************************************
 
 
-def getNewTableItem(itemToGet):
-    Result = QtWidgets.QTableWidgetItem(itemToGet)
+def getNewTableItem(itemText):
+    Result = QtWidgets.QTableWidgetItem(itemText)
     Result.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
 
     return Result
