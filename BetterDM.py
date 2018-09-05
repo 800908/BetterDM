@@ -5,6 +5,7 @@ from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
 import UI.libs.common_func as com_func
 from libs.downloader import Downloader
+from libs.dldatamanager import DLDataManager
 
 
 # ==========START=OF=CLASS====================================
@@ -53,23 +54,12 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def initDefaultVals(self):
-        self.DLListFileName = "downloads.json"
+        self.DLDataMan = DLDataManager()
         self.Settings = com_func.getAppSettings()
-
-        self.DLList = []
-        self.ActiveDLList = []
-        self.WaitingDLList = []
 
         self.RefreshDLTimer = QtCore.QTimer()
         self.RefreshDLTimer.setInterval(1000)
         self.RefreshDLTimer.start()
-
-
-# ************************************************************************
-
-    def initDLList(self):
-        if com_func.isFileExistInCurDir(self.DLListFileName):
-            self.DLList = com_func.getFromJSONfile(self.DLListFileName)
 
 # ************************************************************************
 
