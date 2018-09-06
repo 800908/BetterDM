@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 import pycurl
 import math
 import re
+import json
 
 # ---------------------------------------------------------------------------
 
@@ -185,3 +186,21 @@ def getReadableFileSize(SizeInBytes):
     return "{} {}".format(s, SizeName[i])
 
 # ---------------------------------------------------------------------------
+
+
+def saveList2JSONfile(List, jsonFileName):
+    try:
+        with open(jsonFileName, "wt") as outFile:
+            json.dump(List, outFile)
+    except IOError as err:
+        showErrorMessBox("saving error", str(err))
+
+# ---------------------------------------------------------------------------
+
+
+def loadListFromJSONfile(jsonFileName):
+    try:
+        with open(jsonFileName, "rt") as inFile:
+            return json.load(inFile)
+    except IOError as err:
+        showErrorMessBox("loading error", str(err))

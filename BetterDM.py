@@ -37,6 +37,12 @@ class BetterDM(QtWidgets.QApplication):
 
 
 # ---------------------------------------------------
+    
+    def loadDLList():
+        self.DLlist = 
+
+
+# ---------------------------------------------------
 
     def showDLlistInTable(self):
         curRow = 0
