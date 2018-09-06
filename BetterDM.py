@@ -5,7 +5,7 @@ from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
 import UI.libs.common_func as com_func
 from libs.downloader import Downloader
-from libs.dldatamanager import DLDataManager
+from libs.dldatamanager import DLDataMan
 
 
 # ==========START=OF=CLASS====================================
@@ -54,7 +54,7 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def initDefaultVals(self):
-        self.DLDataMan = DLDataManager()
+        self.DLDataMan = DLDataMan()
         self.Settings = com_func.getAppSettings()
 
         self.RefreshDLTimer = QtCore.QTimer()
@@ -83,42 +83,8 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
-    def saveDLList(self):
-        com_func.save2JSONfile(self.DLList, self.DLListFileName)
-
-# ************************************************************************
-
     def addToDLList(self, Dict2Add):
         self.DLList.append(Dict2Add)
-
-# ************************************************************************
-
-    def getDLDicFromNewDLWin(self, DL_win):
-        DLParamDic = {}
-        # DLParamDic["ID"] = com_func.getDownloadID()
-        DLParamDic["ID"] = int(time.time())
-        DLParamDic["Added_Time"] = time.time()
-        DLParamDic["FileSize"] = 0
-        DLParamDic["Downloaded"] = 0
-        DLParamDic["Progress"] = 0
-
-        DLParamDic["URL"] = str(DL_win.ledtURL.text())
-        DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
-        DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
-        DLParamDic["FilePath"] = str(DL_win.cbSaveFolder.currentText())
-        DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
-        DLParamDic["User"] = str(DL_win.ledtUser.text())
-        DLParamDic["Pass"] = str(DL_win.ledtPass.text())
-        DLParamDic["Proxy"] = str(DL_win.ledtProxy.text())
-        DLParamDic["PxPort"] = str(DL_win.ledtPxPort.text())
-        DLParamDic["MaxConn"] = DL_win.spbMaxConn.value()
-        DLParamDic["ConnTimeout"] = DL_win.spbConnTimeout.value()
-        DLParamDic["MaxTry"] = DL_win.spbMaxTry.value()
-        DLParamDic["TryDelay"] = DL_win.spbTryDelay.value()
-
-        # DLParamDic["Started"] = DL_win.wantedToStart
-
-        return DLParamDic
 
 # ************************************************************************
 

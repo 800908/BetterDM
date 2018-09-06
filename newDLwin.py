@@ -1,9 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-
-try:
-    from UI.libs import common_func as com_func  # if imported
-except ImportError:
-    from libs import common_func as com_func  # if run directly
+from libs import common_func as com_func
 
 # ==========START=OF=CLASS====================================
 

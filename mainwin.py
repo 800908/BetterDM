@@ -1,12 +1,9 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-
-try:
-    from UI.libs import common_func as com_func  # if imported
-except ImportError:
-    from libs import common_func as com_func  # if run directly
-
+from libs import common_func as com_func
+from libs import constants as cons
 
 # ==========START=OF=CLASS====================================
+
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -266,26 +263,13 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.Settings.contains("Main_win/Left_spliter_state"):
             self.splLeft.restoreState(self.Settings.value("Main_win/Left_spliter_state"))
 
-# ============END=OF=CLASS====================================
-
 # ==========START=OF=CLASS====================================
 
 
 class dlTable(QtWidgets.QTableWidget):
 
     def __init__(self):
-        self.ID_Label = "ID"
-        self.FileName_Label = "File Name"
-        self.FileSize_Label = "File Size"
-        self.Progress_Label = "Progress"
-        self.DLSpeed_Label = "DL Speed"
-        self.TimeToFinish_Label = "Time to Finish"
-        self.TableRows = []
-        self.IDs = []
-
-        self.ColumnLables = [self.ID_Label, self.FileName_Label, self.FileSize_Label,
-                             self.Progress_Label, self.DLSpeed_Label, self.TimeToFinish_Label]
-        self.ColumnDefSize = [0, 250, 70, 150, 70, 100]
+        self.defineVariables()
 
         QtWidgets.QTableWidget.__init__(self, 0, len(self.ColumnLables))
         self.setHorizontalHeaderLabels(self.ColumnLables)
@@ -295,25 +279,35 @@ class dlTable(QtWidgets.QTableWidget):
 
 # ************************************************************************
 
-    def getNewTableRow(self, Data):
+    def defineVariables(self):
+        self.TableItemsList = []
+        self.IDs = []
+
+        self.ColumnLables = [self.ID_Label, self.FileName_Label, self.FileSize_Label,
+                             self.Progress_Label, self.DLSpeed_Label, self.TimeToFinish_Label]
+        self.ColumnDefSize = [0, 250, 70, 150, 70, 100]
+
+# ************************************************************************
+
+    def getNewTableItemsDict(self, Data):
         Result = {}
 
-        Result[self.ID_Label] = com_func.getNewTableItem(str(Data["ID"]))
-        Result[self.FileName_Label] = com_func.getNewTableItem(Data["FileName"])
-        Result[self.FileSize_Label] = com_func.getNewTableItem(str(Data["FileSize"]))
+        Result[cons.ID_str] = com_func.getNewTableItem(str(Data[cons.ID_str]))
+        Result[cons.FileName_str] = com_func.getNewTableItem(Data[cons.FileName_str])
+        Result[cons.FileSize_str] = com_func.getNewTableItem(str(Data[cons.FileSize_str]))
 
-        Result[self.Progress_Label] = com_func.getNewDLProgressBar()
-        Result[self.Progress_Label].setValue(int(Data["Progress"]))
+        Result[cons.Progress_str] = com_func.getNewDLProgressBar()
+        Result[cons.Progress_str].setValue(int(Data[cons.Progress_str]))
 
-        Result[self.DLSpeed_Label] = com_func.getNewTableItem("")
-        Result[self.TimeToFinish_Label] = com_func.getNewTableItem("")
+        Result[cons.DLSpeed_str] = com_func.getNewTableItem("")
+        Result[cons.TimeToFinish_str] = com_func.getNewTableItem("")
 
         return Result
 
 
 # ************************************************************************
 
-    def getTableRowIndexByID(self, ID):
+    def getTableItemsDictIndexByID(self, ID):
         for i in range(len(self.IDs)):
             if self.IDs[i] == ID:
                 return i
@@ -322,12 +316,12 @@ class dlTable(QtWidgets.QTableWidget):
 
 # ************************************************************************
 
-    def fillTableRows(self, dataList):
-        self.TableRows.clear()
+    def setTableItemsList(self, dataList):
+        self.TableItemsList.clear()
         self.IDs.clear()
         for curData in dataList:
-            self.TableRows.append(self.getNewTableRow(curData))
-            self.IDs.append(curData[self.ID_Label])
+            self.TableItemsList.append(self.getNewTableItemsDict(curData))
+            self.IDs.append(curData[cons.ID_str])
 
 # ************************************************************************
 
@@ -337,22 +331,41 @@ class dlTable(QtWidgets.QTableWidget):
 # ************************************************************************
 
     def setFileSize(self, Row, Val):
-        self.TableRows[Row][self.FileSize_Label].setText(com_func.getReadableFileSize(Val))
+        self.TableItemsList[Row][cons.FileSize_str].setText(com_func.getReadableFileSize(Val))
 
 # ************************************************************************
 
     def setProgress(self, Row, Val):
-        self.TableRows[Row][self.Progress_Label].setValue(int(Val))
+        self.TableItemsList[Row][cons.Progress_str].setValue(int(Val))
 
 # ************************************************************************
 
     def setDLSpeed(self, Row, Val):
-        self.TableRows[Row][self.DLSpeed_Label].setText(Val)
+        self.TableItemsList[Row][self.DLSpeed_str].setText(Val)
 
 # ************************************************************************
 
     def setTimeToFinish(self, Row, Val):
-        self.TableRows[Row][self.TimeToFinish_Label].setText(Val)
+        self.TableItemsList[Row][cons.TimeToFinish_str].setText(Val)
+
+# ************************************************************************
+
+    def showDataInTable(self, Data2Show):
+        self.setTableItemsList(Data2Show)
+
+        self.setRowCount(0)  # clear table
+        curRow = 0
+        for curRowItems in self.TableItemsList:
+            self.insertRow(curRow)
+            self.setItem(curRow, 0, curRowItems[cons.ID_str])
+            self.setItem(curRow, self.getTableColIndexByName(
+                ), com_func.getNewTableItem(curDL["FileName"]))
+            Table.setItem(curRow, self.getTableColIndexByName(
+                "File Size"), com_func.getNewTableItem(com_func.getReadableFileSize(
+                    curDL["FileSize"])))
+            Table.setCellWidget(curRow, self.getTableColIndexByName(
+                "Progress"), com_func.getNewDLProgressBar(100))
+            curRow += 1
 
 # ============END=OF=CLASS====================================
 

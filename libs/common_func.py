@@ -6,9 +6,6 @@ import json
 import uuid
 
 
-# ************************************************************************
-
-
 def getNewDLProgressBar():
     Result = QtWidgets.QProgressBar()
     Result.setRange(0, 100)

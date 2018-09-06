@@ -1,38 +1,20 @@
 import json
 import time
 import os
+import libs.common_func as com_func
 
 # ==========START=OF=CLASS====================================
 
 
-class DLDataManager():
+class DLDataMan():
 
     def __init__(self):
         self.defineVariables()
+        self.initDLList()
 
 # ************************************************************************
 
     def defineVariables(self):
-        self.ID_str = "ID"
-        self.AddedTime_str = "Added_Time"
-        self.FileSize_str = "FileSize"
-        self.Downloaded_str = "Downloaded"
-        self.Progress_str = "Progress"
-        self.URL_str = "URL"
-        self.Mirror_str = "Mirror"
-        self.FileName_str = "FileName"
-        self.FilePath_str = "FilePath"
-        self.Comment_str = "Comment"
-        self.User_str = "User"
-        self.Pass_str = "Pass"
-        self.Proxy_str = "Proxy"
-        self.PxPort_str = "PxPort"
-        self.MaxConn_str = "MaxConn"
-        self.ConnTimeout_str = "ConnTimeout"
-        self.MaxTry_str = "MaxTry"
-        self.TryDelay_str = "TryDelay"
-
-        self.JsonFileName = "downloads.json"
         self.AllDLList = []
         self.ActiveDLList = []
         self.WatingDLList = []
