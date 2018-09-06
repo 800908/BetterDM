@@ -34,6 +34,17 @@ def getTableItem(itemToGet):
 
     return Result
 
+
+# ---------------------------------------------------------------------------
+
+def showErrorMessBox(title, message, parent=None):
+    MessBox = QtWidgets.QMessageBox(parent)
+    MessBox.setIcon(QtWidgets.QMessageBox.Critical)
+    MessBox.setWindowTitle(title)
+    MessBox.setText(message)
+    MessBox.setDefaultButton(QtWidgets.QMessageBox.Ok)
+    MessBox.exec_()
+
 # ---------------------------------------------------------------------------
 
 
@@ -149,11 +160,14 @@ def getFileNamefromURL(URL_str):
 
 
 def getSizeOfRemoteFile(FileURL):
-    CURL = pycurl.Curl()
-    CURL.setopt(CURL.URL, FileURL)
-    CURL.setopt(CURL.NOBODY, 1)
-    CURL.perform()
-    return CURL.getinfo(CURL.CONTENT_LENGTH_DOWNLOAD)
+    try:
+        CURL = pycurl.Curl()
+        CURL.setopt(CURL.URL, FileURL)
+        CURL.setopt(CURL.NOBODY, 1)
+        CURL.perform()
+        return CURL.getinfo(CURL.CONTENT_LENGTH_DOWNLOAD)
+    except pycurl.error:
+        return 0
 
 # ---------------------------------------------------------------------------
 # https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python

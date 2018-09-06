@@ -14,13 +14,12 @@ class NewDLDLG(QtWidgets.QDialog):
         super(NewDLDLG, self).__init__(parent)
 
         self.initUI()
-        self.initDefaultVals()
         self.initEventHandlers()
+        self.initDefaultVals()
 
 # ---------------------------------------------------
 
     def initUI(self):
-        self.setWindowTitle(u"BDM - New Download")
 
         # ======URL========================================
         self.ledtURL = QtWidgets.QLineEdit("")
@@ -152,16 +151,16 @@ class NewDLDLG(QtWidgets.QDialog):
 # ---------------------------------------------------
 
     def initDefaultVals(self):
-        self.ledtURL.setText(com_func.getURLfromClipboard())
+        self.setWindowTitle(u"BDM - New Download")
+        self.wantedToAdd = False
 
-        if self.ledtURL.text() != "":
-            self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
+        self.ledtURL.setText(com_func.getURLfromClipboard())
+        self.ledtFileName.setText(com_func.getFileNamefromURL(self.ledtURL.text()))
+        self.onURLtextChanged()
 
 # ---------------------------------------------------
 
     def initEventHandlers(self):
-        self.wantedToAdd = False
-
         self.ledtURL.textChanged.connect(self.onURLtextChanged)
 
         self.pbtnGetSize.clicked.connect(self.onGetSizeClicked)
@@ -175,6 +174,8 @@ class NewDLDLG(QtWidgets.QDialog):
 
     def onURLtextChanged(self):
         self.pbtnGetSize.setEnabled(com_func.isItURL(str(self.ledtURL.text())))
+        self.pbtnAdd_Start.setEnabled(self.pbtnGetSize.isEnabled())
+        self.pbtnAdd_Pause.setEnabled(self.pbtnGetSize.isEnabled())
 
 # ---------------------------------------------------
 
@@ -183,21 +184,27 @@ class NewDLDLG(QtWidgets.QDialog):
             self.lblFileSize.setText(com_func.getReadableFileSize(
                 com_func.getSizeOfRemoteFile(str(self.ledtURL.text()))))
         else:
-            self.lblFileSize.setText(u"bad URL")
+            self.lblFileSize.setText(u"Faild")
 
 # ---------------------------------------------------
 
     def onAdd_StartClicked(self):
-        self.wantedToAdd = True
-        self.wantedToStart = True
-        self.close()
+        if com_func.isItURL(str(self.ledtURL.text())):
+            self.wantedToAdd = True
+            self.wantedToStart = True
+            self.close()
+        else:
+            com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
 
 # ---------------------------------------------------
 
     def onAdd_PauseClicked(self):
-        self.wantedToAdd = True
-        self.wantedToStart = False
-        self.close()
+        if com_func.isItURL(str(self.ledtURL.text())):
+            self.wantedToAdd = True
+            self.wantedToStart = False
+            self.close()
+        else:
+            com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
 
 # ---------------------------------------------------
 
