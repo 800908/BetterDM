@@ -135,6 +135,8 @@ class BetterDM(QtWidgets.QApplication):
         self.Main_win.tedtDLInfo.setHtml(self.getCurDLInfoAsHtml(
             self.DLList[self.Main_win.tblwDLs.currentRow()]))
 
+        self.Main_win.trvFiles.setRootIndex(self.Main_win.fsmFiles.setRootPath(
+            self.DLList[self.Main_win.tblwDLs.currentRow()]["FileFolder"]))
 
 # ============END=OF=CLASS====================================
 

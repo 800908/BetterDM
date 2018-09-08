@@ -197,37 +197,37 @@ class MainWindow(QtWidgets.QMainWindow):
         self.trwCats.setColumnCount(1)
         self.trwCats.setHeaderLabel("Categories")
 
-        self.trwiDLStatus = QtWidgets.QTreeWidgetItem()
-        self.trwiDLStatus.setText(0, "Download Status")
+        self.trwiDLStatus = com_func.getNewTreeItem("Download Status", self.trwCats)
 
-        self.trwiDLStatus_All = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
-        self.trwiDLStatus_All.setText(0, "All")
-        self.trwiDLStatus_Active = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
-        self.trwiDLStatus_Active.setText(0, "Active")
-        self.trwiDLStatus_Finished = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
-        self.trwiDLStatus_Finished.setText(0, "Finished")
-        self.trwiDLStatus_Stoped = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
-        self.trwiDLStatus_Stoped.setText(0, "Stoped")
-        self.trwiDLStatus_Deleted = QtWidgets.QTreeWidgetItem(self.trwiDLStatus)
-        self.trwiDLStatus_Deleted.setText(0, "Deleted")
+        self.trwiDLStatus_All = com_func.getNewTreeItem("All", self.trwiDLStatus)
+        self.trwiDLStatus_Active = com_func.getNewTreeItem("Active", self.trwiDLStatus)
+        self.trwiDLStatus_Finished = com_func.getNewTreeItem("Finished", self.trwiDLStatus)
+        self.trwiDLStatus_Stoped = com_func.getNewTreeItem("Stoped", self.trwiDLStatus)
+        self.trwiDLStatus_Deleted = com_func.getNewTreeItem("Deleted", self.trwiDLStatus)
 
-        self.trwCats.addTopLevelItem(self.trwiDLStatus)
+        self.trwiFileTypes = com_func.getNewTreeItem("File Types", self.trwCats)
 
-        self.trwiUserCats = QtWidgets.QTreeWidgetItem()
-        self.trwiUserCats.setText(0, "User Categories")
-        self.trwCats.addTopLevelItem(self.trwiUserCats)
+        self.trwiFileTypes_Music = com_func.getNewTreeItem("Muisc", self.trwiFileTypes)
+        self.trwiFileTypes_Video = com_func.getNewTreeItem("Video", self.trwiFileTypes)
+        self.trwiFileTypes_App = com_func.getNewTreeItem("Application", self.trwiFileTypes)
 
+        self.trwiUserCats = com_func.getNewTreeItem("User Categories", self.trwCats)
+
+        self.trwCats.expandAll()
         self.trwCats.setCurrentItem(self.trwiDLStatus_All)
-        self.splLeft.addWidget(self.trwCats)
 
+        self.splLeft.addWidget(self.trwCats)
 
     # -----------------------------------------------------
 
-        self.trwFiles = QtWidgets.QTreeWidget()
-        self.trwFiles.setColumnCount(2)
-        self.trwFiles.setHeaderLabels(["File", "Size"])
+        self.trvFiles = QtWidgets.QTreeView()
 
-        self.splLeft.addWidget(self.trwFiles)
+        self.fsmFiles = QtWidgets.QFileSystemModel()
+        self.trvFiles.setModel(self.fsmFiles)
+
+        self.splLeft.addWidget(self.trvFiles)
+
+    # -----------------------------------------------------
 
         self.splRight.setStretchFactor(0, 1)
         self.splRight.setStretchFactor(1, 1)

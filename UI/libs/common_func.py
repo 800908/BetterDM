@@ -47,6 +47,17 @@ def getNewTableItem(itemToGet):
 
 # ************************************************************************
 
+def getNewTreeItem(Text, Parent, Icon=None, ColIndex=0):
+    Result = QtWidgets.QTreeWidgetItem(Parent)
+    Result.setText(ColIndex, Text)
+    if Icon:
+        Result.setIcon(ColIndex, Icon)
+
+    return Result
+
+
+# ************************************************************************
+
 def showErrorMessBox(title, message, parent=None):
     MessBox = QtWidgets.QMessageBox(parent)
     MessBox.setIcon(QtWidgets.QMessageBox.Critical)
