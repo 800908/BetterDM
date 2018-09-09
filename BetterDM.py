@@ -1,11 +1,11 @@
 from PyQt5 import QtWidgets, QtCore
 import time
-from UI.mainwin import MainWindow
-from UI.newDLwin import NewDLDLG
-from UI.aboutwin import AboutDLG
-import UI.libs.common_func as com_func
-from libs.downloader import Downloader
-from libs.dldatamanager import DLDataMan
+from mainwin import MainWindow
+from newDLwin import NewDLDLG
+from aboutwin import AboutDLG
+import libs.common_func as com_func
+from downloader import Downloader
+from dldatamanager import DLDataMan
 
 
 # ==========START=OF=CLASS====================================
@@ -16,7 +16,7 @@ class BetterDM(QtWidgets.QApplication):
         super(BetterDM, self).__init__(argv)
 
         self.initDefaultVals()
-        self.initDLList()
+        # self.initDLList()
 
         self.Main_win = MainWindow()
         self.initMainWin()
@@ -65,21 +65,7 @@ class BetterDM(QtWidgets.QApplication):
 
     def showDLList(self):
         Table = self.Main_win.tblwDLs
-        Table.setRowCount(0)  # clear table
-
-        curRow = 0
-        for curDL in self.DLList:
-            Table.insertRow(curRow)
-            Table.setItem(curRow, self.getTableColIndexByName(
-                "ID"), com_func.getNewTableItem(str(curDL["ID"])))
-            Table.setItem(curRow, self.getTableColIndexByName(
-                "File Name"), com_func.getNewTableItem(curDL["FileName"]))
-            Table.setItem(curRow, self.getTableColIndexByName(
-                "File Size"), com_func.getNewTableItem(com_func.getReadableFileSize(
-                    curDL["FileSize"])))
-            Table.setCellWidget(curRow, self.getTableColIndexByName(
-                "Progress"), com_func.getNewDLProgressBar(100))
-            curRow += 1
+        Table.showDataInTable(self.DLDataMan.AllDLList)
 
 # ************************************************************************
 

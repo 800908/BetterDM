@@ -2,6 +2,7 @@ import json
 import time
 import os
 import libs.common_func as com_func
+import libs.constants as cons
 
 # ==========START=OF=CLASS====================================
 
@@ -48,7 +49,7 @@ class DLDataMan():
 
 # ************************************************************************
 
-    def saveData2JSONfile(toSave, jsonFileName):
+    def saveData2JSONfile(self, toSave, jsonFileName):
         try:
             with open(jsonFileName, "wt") as outFile:
                 json.dump(toSave, outFile)
@@ -57,7 +58,7 @@ class DLDataMan():
 
 # ************************************************************************
 
-    def getDataFromJSONfile(jsonFileName):
+    def getDataFromJSONfile(self, jsonFileName):
         try:
             with open(jsonFileName, "rt") as inFile:
                 return json.load(inFile)
@@ -67,12 +68,15 @@ class DLDataMan():
 # ************************************************************************
 
     def initDLList(self):
-        if os.path.exists(self.JsonFileName):
-            self.AllDLList = self.getDataFromJSONfile(self.JsonFileName)
+        if os.path.exists(cons.JsonFileName):
+            self.AllDLList = self.getDataFromJSONfile(cons.JsonFileName)
 
 # ************************************************************************
 
     def saveDLList(self):
-        self.saveData2JSONfile(self.AllDLList, self.JsonFileName)
+        self.saveData2JSONfile(self.AllDLList, cons.JsonFileName)
 
+# ************************************************************************
+
+    def is
 # ************************************************************************
