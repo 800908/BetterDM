@@ -61,6 +61,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.Settings.setValue("Main_win/Right_spliter_state", self.splRight.saveState())
         self.Settings.setValue("Main_win/Left_spliter_state", self.splLeft.saveState())
 
+        for col_num in range(2):
+            self.Settings.setValue("Main_win/FileTree_col{}_width".format(col_num),
+                                   self.trvFiles.columnWidth(col_num))
 
 # ************************************************************************
 
@@ -224,6 +227,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.fsmFiles = QtWidgets.QFileSystemModel()
         self.trvFiles.setModel(self.fsmFiles)
+
+        for i in range(2, self.trvFiles.header().count()):
+            self.trvFiles.hideColumn(i)
+
+        self.trvFiles.setColumnWidth(0, self.Settings.value(
+            "Main_win/FileTree_col0_width", 150, int))
+        self.trvFiles.setColumnWidth(1, self.Settings.value(
+            "Main_win/FileTree_col1_width", 50, int))
 
         self.splLeft.addWidget(self.trvFiles)
 

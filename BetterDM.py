@@ -41,6 +41,9 @@ class BetterDM(QtWidgets.QApplication):
         self.Main_win.action_File_NewDL.triggered.connect(self.on_action_File_NewDL_triggered)
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
 
+        self.Main_win.action_Download_Start.triggered.connect(
+            self.on_action_Download_Start_triggered)
+
         self.Main_win.tblwDLs.itemSelectionChanged.connect(self.on_tblwDLs_itemSelectionChanged)
 
 # ************************************************************************
@@ -137,6 +140,11 @@ class BetterDM(QtWidgets.QApplication):
 
         self.Main_win.trvFiles.setRootIndex(self.Main_win.fsmFiles.setRootPath(
             self.DLList[self.Main_win.tblwDLs.currentRow()]["FileFolder"]))
+
+# ************************************************************************
+
+    def on_action_Download_Start_triggered(self):
+        startDownloadCurTableItem(self.Main_win.tblwDLs.currentRow())
 
 # ============END=OF=CLASS====================================
 
