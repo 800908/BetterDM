@@ -90,10 +90,11 @@ class BetterDM(QtWidgets.QApplication):
 
     def getDLDicfromNewDLWin(self, DL_win):
         DLParamDic = {}
+        DLParamDic["ID"] = com_func.getDownloadID()
         DLParamDic["URL"] = str(DL_win.ledtURL.text())
         DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
         DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
-        DLParamDic["FileFolder"] = str(DL_win.cbSaveFolder.currentText())
+        DLParamDic["FilePath"] = str(DL_win.cbSaveFolder.currentText())
         DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
         DLParamDic["Started"] = DL_win.wantedToStart
         DLParamDic["Added_Time"] = time.time()
@@ -108,7 +109,7 @@ class BetterDM(QtWidgets.QApplication):
                 <p><strong>URL:</strong> <a href="{1}" target="_blank" >{1}</a></p>
                 <p><strong>File Path:</strong> <a href="{2}" target="_blank" >{2}</a></p>
                 <p><strong>Comment:</strong>{3}</p>
-               """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FileFolder"],
+               """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FilePath"],
                           curDLDict["Comment"])
 
 
@@ -139,12 +140,22 @@ class BetterDM(QtWidgets.QApplication):
             self.DLList[self.Main_win.tblwDLs.currentRow()]))
 
         self.Main_win.trvFiles.setRootIndex(self.Main_win.fsmFiles.setRootPath(
-            self.DLList[self.Main_win.tblwDLs.currentRow()]["FileFolder"]))
+            self.DLList[self.Main_win.tblwDLs.currentRow()]["FilePath"]))
 
 # ************************************************************************
 
     def on_action_Download_Start_triggered(self):
-        startDownloadCurTableItem(self.Main_win.tblwDLs.currentRow())
+        self.startDownloadCurDLDict(self.DLList[self.Main_win.tblwDLs.currentRow()])
+
+# ************************************************************************
+
+    def startDownloadCurDLDict(self, CurDict):
+        pass
+
+# ************************************************************************
+
+    def showDLProgressOfTableRow(self, TableRow, Precent):
+        pass
 
 # ============END=OF=CLASS====================================
 

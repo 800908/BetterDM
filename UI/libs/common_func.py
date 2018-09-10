@@ -3,6 +3,8 @@ import pycurl
 import math
 import re
 import json
+import uuid
+
 
 # ************************************************************************
 
@@ -267,3 +269,11 @@ def getValFromAppSettings(Key2Get, DefaultVal=None, ReturnType=None):
 
 def isKeyExistInAppSettings(Key2Check):
     return getAppSettings().contains(Key2Check)
+
+
+# ************************************************************************
+
+def getDownloadID():
+    return str(uuid.uuid4())[:8]
+
+# ************************************************************************
