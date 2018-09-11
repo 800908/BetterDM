@@ -240,22 +240,26 @@ class NewDLDLG(QtWidgets.QDialog):
 # ************************************************************************
 
     def on_pbtnAddStart_clicked(self):
-        if com_func.isItURL(str(self.ledtURL.text())):
+        if com_func.isItURL(str(self.ledtURL.text())) \
+                and self.ledtFileName.text() != "" \
+                and self.cbSaveFolder.currentText() != "":
             self.wantedToAdd = True
             self.wantedToStart = True
             self.close()
         else:
-            com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
+            com_func.showErrorMessBox(u"Bad Input", u"Please enter correct input", self)
 
 # ************************************************************************
 
     def on_pbtnAddPause_clicked(self):
-        if com_func.isItURL(str(self.ledtURL.text())):
+        if com_func.isItURL(str(self.ledtURL.text())) \
+                and self.ledtFileName.text() != "" \
+                and self.cbSaveFolder.currentText() != "":
             self.wantedToAdd = True
             self.wantedToStart = False
             self.close()
         else:
-            com_func.showErrorMessBox(u"Bad URL", u"Please enter correct URL", self)
+            com_func.showErrorMessBox(u"Bad Input", u"Please enter correct input", self)
 
 # ************************************************************************
 

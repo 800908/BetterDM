@@ -88,9 +88,11 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
-    def getDLDicfromNewDLWin(self, DL_win):
+    def getDLDicFromNewDLWin(self, DL_win):
         DLParamDic = {}
         DLParamDic["ID"] = com_func.getDownloadID()
+        DLParamDic["Added_Time"] = time.time()
+
         DLParamDic["URL"] = str(DL_win.ledtURL.text())
         DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
         DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
@@ -106,7 +108,6 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["PxPort"] = str(DL_win.ledtPxPort.text())
 
         DLParamDic["Started"] = DL_win.wantedToStart
-        DLParamDic["Added_Time"] = time.time()
 
         return DLParamDic
 
@@ -130,7 +131,7 @@ class BetterDM(QtWidgets.QApplication):
         NewDL_win.exec_()
 
         if NewDL_win.wantedToAdd:
-            self.addToDLList(self.getDLDicfromNewDLWin(NewDL_win))
+            self.addToDLList(self.getDLDicFromNewDLWin(NewDL_win))
             self.saveDLList()
             self.showDLList()
 
