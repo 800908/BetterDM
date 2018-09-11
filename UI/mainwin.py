@@ -177,18 +177,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.tblwDLs = QtWidgets.QTableWidget(0, 7)
-        self.tblwDLs.setHorizontalHeaderLabels(["File Name", "Size", "Progress", "Downloaded",
-                                                "Remaining", "DL Speed", "Time to Finish"])
+        self.tblwDLs = QtWidgets.QTableWidget(0, 5)
+        self.tblwDLs.setHorizontalHeaderLabels(["File Name", "Size", "Progress",
+                                                "DL Speed", "Time to Finish"])
         self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         self.tblwDLs.setColumnWidth(0, self.Settings.value("Main_win/table_col0_width", 250, int))
         self.tblwDLs.setColumnWidth(1, self.Settings.value("Main_win/table_col1_width", 70, int))
         self.tblwDLs.setColumnWidth(2, self.Settings.value("Main_win/table_col2_width", 150, int))
         self.tblwDLs.setColumnWidth(3, self.Settings.value("Main_win/table_col3_width", 70, int))
-        self.tblwDLs.setColumnWidth(4, self.Settings.value("Main_win/table_col4_width", 70, int))
-        self.tblwDLs.setColumnWidth(5, self.Settings.value("Main_win/table_col5_width", 70, int))
-        self.tblwDLs.setColumnWidth(6, self.Settings.value("Main_win/table_col6_width", 100, int))
+        self.tblwDLs.setColumnWidth(4, self.Settings.value("Main_win/table_col4_width", 100, int))
 
     # -----------------------------------------------------
 

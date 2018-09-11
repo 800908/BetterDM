@@ -14,7 +14,7 @@ class CURLDownloader():
         self.FileName = dlFileName
         self.FilePath = dlFilePath
 
-        if dlFileSize == -1:
+        if dlFileSize == 0:
             self.FileSize = self.getFileSize(dlURL)
         else:
             self.FileSize = dlFileSize

@@ -96,6 +96,15 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
         DLParamDic["FilePath"] = str(DL_win.cbSaveFolder.currentText())
         DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
+        DLParamDic["MaxConn"] = DL_win.spbMaxConn.value()
+        DLParamDic["ConnTimeout"] = DL_win.spbConnTimeout.value()
+        DLParamDic["MaxTry"] = DL_win.spbMaxTry.value()
+        DLParamDic["TryDelay"] = DL_win.spbTryDelay.value()
+        DLParamDic["User"] = str(DL_win.ledtUser.text())
+        DLParamDic["Pass"] = str(DL_win.ledtPass.text())
+        DLParamDic["Proxy"] = str(DL_win.ledtProxy.text())
+        DLParamDic["PxPort"] = str(DL_win.ledtPxPort.text())
+
         DLParamDic["Started"] = DL_win.wantedToStart
         DLParamDic["Added_Time"] = time.time()
 
@@ -108,6 +117,7 @@ class BetterDM(QtWidgets.QApplication):
                 <p><strong>File Name:</strong> {0}</p>
                 <p><strong>URL:</strong> <a href="{1}" target="_blank" >{1}</a></p>
                 <p><strong>File Path:</strong> <a href="{2}" target="_blank" >{2}</a></p>
+                <p><strong>Downloaded:</strong>{3}<strong>Remaining:</strong>{3}</p>
                 <p><strong>Comment:</strong>{3}</p>
                """.format(curDLDict["FileName"], curDLDict["URL"], curDLDict["FilePath"],
                           curDLDict["Comment"])
@@ -117,8 +127,6 @@ class BetterDM(QtWidgets.QApplication):
 
     def on_action_File_NewDL_triggered(self):
         NewDL_win = NewDLDLG(self.Main_win)
-        NewDL_win.cbSaveFolder.addItems(com_func.getValFromAppSettings(
-            "NewDL_win/cbSaveFolderItems", [com_func.getSysDLDir()]))
         NewDL_win.exec_()
 
         if NewDL_win.wantedToAdd:
