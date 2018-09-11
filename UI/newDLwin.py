@@ -92,22 +92,29 @@ class NewDLDLG(QtWidgets.QDialog):
         hlayButtons.addWidget(self.pbtnAddStart)
 
         # ------Connections Group-----------------------------
-        self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, 4)
-        lblMaxConn = com_func.getNewBuddyLabel(u"Ma&x Connections:", self.spbMaxConn)
+        self.spbMaxConn = com_func.getNewSpinBoxwithMinMaxVal(1, 16, 5)
+        lblMaxConn = com_func.getNewBuddyLabel(u"Ma&x Conn:", self.spbMaxConn)
+
+        self.spbConnTimeout = com_func.getNewSpinBoxwithMinMaxVal(5, 9999, 300)
+        self.spbConnTimeout.setSuffix(" s")
+        lblConnTimeout = com_func.getNewBuddyLabel(u"Conn Timeout:", self.spbConnTimeout)
 
         self.spbMaxTry = com_func.getNewSpinBoxwithMinMaxVal(1, 999, 10)
         lblMaxTry = com_func.getNewBuddyLabel(u"Max &Try:", self.spbMaxTry)
 
         self.spbTryDelay = com_func.getNewSpinBoxwithMinMaxVal(1, 99, 5)
+        self.spbTryDelay.setSuffix(" s")
         lblTryDelay = com_func.getNewBuddyLabel(u"Trying &Delay:", self.spbTryDelay)
 
         glayConn = QtWidgets.QGridLayout()
         glayConn.addWidget(lblMaxConn, 0, 0)
         glayConn.addWidget(self.spbMaxConn, 0, 1)
-        glayConn.addWidget(lblMaxTry, 1, 0)
-        glayConn.addWidget(self.spbMaxTry, 1, 1)
-        glayConn.addWidget(lblTryDelay, 2, 0)
-        glayConn.addWidget(self.spbTryDelay, 2, 1)
+        glayConn.addWidget(lblConnTimeout, 1, 0)
+        glayConn.addWidget(self.spbConnTimeout, 1, 1)
+        glayConn.addWidget(lblMaxTry, 2, 0)
+        glayConn.addWidget(self.spbMaxTry, 2, 1)
+        glayConn.addWidget(lblTryDelay, 3, 0)
+        glayConn.addWidget(self.spbTryDelay, 3, 1)
 
         gboxConn = QtWidgets.QGroupBox(u"Connections:")
         gboxConn.setLayout(glayConn)
@@ -128,9 +135,27 @@ class NewDLDLG(QtWidgets.QDialog):
         gboxID = QtWidgets.QGroupBox(u"Identification:")
         gboxID.setLayout(glayID)
 
+        # ------Proxy Group-------------------------------------
+        self.ledtProxy = QtWidgets.QLineEdit("")
+        lblProxy = com_func.getNewBuddyLabel(u"Proxy:", self.ledtProxy)
+
+        self.ledtPxPort = QtWidgets.QLineEdit("")
+        lblPxPort = com_func.getNewBuddyLabel(u"Port:", self.ledtPxPort)
+
+        glayProxy = QtWidgets.QGridLayout()
+        glayProxy.addWidget(lblProxy, 0, 0)
+        glayProxy.addWidget(self.ledtProxy, 0, 1)
+        glayProxy.addWidget(lblPxPort, 1, 0)
+        glayProxy.addWidget(self.ledtPxPort, 1, 1)
+
+        gboxProxy = QtWidgets.QGroupBox(u"Proxy Settings:")
+        gboxProxy.setLayout(glayProxy)
+
+        # ------Layout Setting----------------------------------
         glayMoreOp = QtWidgets.QGridLayout()
-        glayMoreOp.addWidget(gboxConn, 0, 0)
+        glayMoreOp.addWidget(gboxConn, 0, 0, 2, 1)
         glayMoreOp.addWidget(gboxID, 0, 1)
+        glayMoreOp.addWidget(gboxProxy, 1, 1)
 
         self.frMoreOp = QtWidgets.QFrame()
         self.frMoreOp.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -272,8 +297,8 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
 
-    with open("../rc/appstyle.qss", "rt") as ssFile:
-        app.setStyleSheet(ssFile.read())
+    # with open("../rc/appstyle.qss", "rt") as ssFile:
+    #     app.setStyleSheet(ssFile.read())
 
     newdl_win = NewDLDLG()
     newdl_win.show()
