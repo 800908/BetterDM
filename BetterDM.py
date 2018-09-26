@@ -4,6 +4,7 @@ from UI.mainwin import MainWindow
 from UI.newDLwin import NewDLDLG
 from UI.aboutwin import AboutDLG
 import UI.libs.common_func as com_func
+from libs.downloader import CURLDownloader
 
 
 # ==========START=OF=CLASS====================================
@@ -54,17 +55,20 @@ class BetterDM(QtWidgets.QApplication):
         self.DLListFileName = "downloads.json"
         self.Settings = com_func.getAppSettings()
 
+        self.DLList = []
+        self.ActiveDLList = []
+        self.WaitingDLList = []
+
         self.RefreshDLTimer = QtCore.QTimer()
         self.RefreshDLTimer.setInterval(500)
         self.RefreshDLTimer.start()
+
 
 # ************************************************************************
 
     def initDLList(self):
         if com_func.isFileExistInCurDir(self.DLListFileName):
             self.DLList = com_func.getFromJSONfile(self.DLListFileName)
-        else:
-            self.DLList = []
 
 # ************************************************************************
 
@@ -113,7 +117,7 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["Proxy"] = str(DL_win.ledtProxy.text())
         DLParamDic["PxPort"] = str(DL_win.ledtPxPort.text())
 
-        DLParamDic["Started"] = DL_win.wantedToStart
+        # DLParamDic["Started"] = DL_win.wantedToStart
 
         return DLParamDic
 
@@ -165,7 +169,8 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def on_RefreshDLTimer_timout(self):
-        pass
+        if len(self.ActiveDLList) > 0:
+            self.updateActiveDL()
 
 # ************************************************************************
 
@@ -176,6 +181,12 @@ class BetterDM(QtWidgets.QApplication):
 
     def showDLProgressOfTableRow(self, TableRow, Precent):
         pass
+
+# ************************************************************************
+
+    def updateActiveDLProgress(self):
+        for ActiveDLDic in self.ActiveDLList:
+
 
 # ============END=OF=CLASS====================================
 
