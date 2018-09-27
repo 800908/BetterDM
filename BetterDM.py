@@ -41,7 +41,6 @@ class BetterDM(QtWidgets.QApplication):
     def initEventHandler(self):
         self.Main_win.action_File_NewDL.triggered.connect(self.on_action_File_NewDL_triggered)
         self.Main_win.action_Help_About.triggered.connect(self.on_action_Help_About_triggered)
-
         self.Main_win.action_Download_Start.triggered.connect(
             self.on_action_Download_Start_triggered)
 
@@ -103,7 +102,7 @@ class BetterDM(QtWidgets.QApplication):
         # DLParamDic["ID"] = com_func.getDownloadID()
         DLParamDic["ID"] = int(time.time())
         DLParamDic["Added_Time"] = time.time()
-        DLParamDic["Size"] = 0
+        DLParamDic["FileSize"] = 0
         DLParamDic["Downloaded"] = 0
         DLParamDic["Progress"] = 0
 
@@ -112,14 +111,14 @@ class BetterDM(QtWidgets.QApplication):
         DLParamDic["FileName"] = str(DL_win.ledtFileName.text())
         DLParamDic["FilePath"] = str(DL_win.cbSaveFolder.currentText())
         DLParamDic["Comment"] = str(DL_win.tedtComment.toPlainText())
-        DLParamDic["MaxConn"] = DL_win.spbMaxConn.value()
-        DLParamDic["ConnTimeout"] = DL_win.spbConnTimeout.value()
-        DLParamDic["MaxTry"] = DL_win.spbMaxTry.value()
-        DLParamDic["TryDelay"] = DL_win.spbTryDelay.value()
         DLParamDic["User"] = str(DL_win.ledtUser.text())
         DLParamDic["Pass"] = str(DL_win.ledtPass.text())
         DLParamDic["Proxy"] = str(DL_win.ledtProxy.text())
         DLParamDic["PxPort"] = str(DL_win.ledtPxPort.text())
+        DLParamDic["MaxConn"] = DL_win.spbMaxConn.value()
+        DLParamDic["ConnTimeout"] = DL_win.spbConnTimeout.value()
+        DLParamDic["MaxTry"] = DL_win.spbMaxTry.value()
+        DLParamDic["TryDelay"] = DL_win.spbTryDelay.value()
 
         # DLParamDic["Started"] = DL_win.wantedToStart
 
@@ -179,7 +178,14 @@ class BetterDM(QtWidgets.QApplication):
 # ************************************************************************
 
     def startDownloadCurDLDict(self, CurDict):
-        pass
+        Downloader = CURLDownloader(CurDict["URL"], CurDict["Mirror"], CurDict["FileName"],
+                                    CurDict["FilePath"], CurDict["FileSize"],
+                                    CurDict["Downloaded"], CurDict["User"], CurDict["Pass"],
+                                    CurDict["Proxy"], CurDict["PxPort"], CurDict["MaxConn"],
+                                    CurDict["ConnTimeout"])
+
+        self.ActiveDLList.append({"ID": CurDict["ID"], "Downloader": Downloader})
+        Downloader.startDownload()
 
 # ************************************************************************
 

@@ -36,6 +36,9 @@ class CURLDownloader():
 
         self.initCurl()
 
+
+# ************************************************************************
+    def startDownload(self):
         try:
             self.CURL.perform()
         except pycurl.error as error:

@@ -182,7 +182,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tblwDLs = QtWidgets.QTableWidget(0, len(self.TableColList))
         self.tblwDLs.setHorizontalHeaderLabels(self.TableColList)
 
-        for i in range(self.TableColList):
+        for i in range(len(self.TableColList)):
             self.tblwDLs.setColumnWidth(i, self.Settings.value(
                 "Main_win/table_col{}_width".format(i), self.TableColDefSize[i], int))
 
