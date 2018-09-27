@@ -78,12 +78,12 @@ class BetterDM(QtWidgets.QApplication):
         curRow = 0
         for curDL in self.DLList:
             self.Main_win.tblwDLs.insertRow(curRow)
-            self.Main_win.tblwDLs.setItem(curRow, 0, com_func.getNewTableItem(
-                curDL["FileName"]))
-            # self.Main_win.tblwDLs.setItem(curRow, 1, com_func.getNewTableItem(
-            #     curDL["Size"]))
-
-            self.Main_win.tblwDLs.setCellWidget(curRow, 2, com_func.getNewDLProgressBar(100))
+            self.Main_win.tblwDLs.setItem(curRow, self.getTableColIndexByName(
+                "File Name"), com_func.getNewTableItem(curDL["FileName"]))
+            self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
+                "Size"), com_func.getReadableFileSize(curDL["Size"]))
+            self.Main_win.tblwDLs.setCellWidget(curRow, self.getTableColIndexByName(
+                "Progress"), com_func.getNewDLProgressBar(100))
             curRow += 1
 
 # ************************************************************************
@@ -100,8 +100,12 @@ class BetterDM(QtWidgets.QApplication):
 
     def getDLDicFromNewDLWin(self, DL_win):
         DLParamDic = {}
-        DLParamDic["ID"] = com_func.getDownloadID()
+        # DLParamDic["ID"] = com_func.getDownloadID()
+        DLParamDic["ID"] = int(time.time())
         DLParamDic["Added_Time"] = time.time()
+        DLParamDic["Size"] = 0
+        DLParamDic["Downloaded"] = 0
+        DLParamDic["Progress"] = 0
 
         DLParamDic["URL"] = str(DL_win.ledtURL.text())
         DLParamDic["Mirror"] = str(DL_win.ledtMirror.text())
@@ -184,8 +188,29 @@ class BetterDM(QtWidgets.QApplication):
 
 # ************************************************************************
 
+    def getRowFromDLListByID(self, dlID):
+        for i in range(len(self.DLList)):
+            if self.DLList[i]["ID"] == dlID:
+                return i
+
+# ************************************************************************
+
+    def getTableColIndexByName(self, ColName):
+        for i in range(self.Main_win.TableColList):
+            if self.Main_win.TableColList[i] == ColName:
+                return i
+
+# ************************************************************************
+
     def updateActiveDLProgress(self):
         for ActiveDLDic in self.ActiveDLList:
+            curRow = self.getDLRowFromID(ActiveDLDic["ID"])
+            self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
+                "Size")).setText(ActiveDLDic["Downloader"].FileSize)
+            self.Main_win.tblwDLs.cellWidget(curRow, self.getTableColIndexByName(
+                "Progress")).setValue(ActiveDLDic["Downloader"].Progress)
+            self.Main_win.tblwDLs.item(curRow, self.getTableColIndexByName(
+                "DL Speed")).setText(ActiveDLDic["Downloader"].DLSpeed)
 
 
 # ============END=OF=CLASS====================================

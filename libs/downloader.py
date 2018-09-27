@@ -1,12 +1,14 @@
 import pycurl
 import os
+import time
+import math
 
 
 # ==========START=OF=CLASS====================================
 
 class CURLDownloader():
 
-    def __init__(self, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize,
+    def __init__(self, dlURL, dlMirror, dlFileName, dlFilePath, dlFileSize, dlDownloaded,
                  dlUser, dlPass, dlProxy, dlPxPort, dlMaxConn, dlConnTimeout):
 
         self.FileURL = dlURL
@@ -24,8 +26,13 @@ class CURLDownloader():
         self.PxPort = dlPxPort
         self.MaxConn = dlMaxConn
         self.ConnTimeout = dlConnTimeout
+
+        self.ToDownload = self.FileSize
+        self.Downloaded = dlDownloaded
+
         self.Failed = False
         self.FailReason = ""
+        self.LastTime = time.time()
 
         self.initCurl()
 
@@ -67,9 +74,17 @@ class CURLDownloader():
 
 # ************************************************************************
 
-    def progressInfo(self, Total2DL, Downloaded, Total2UL, Uploaded):
+    def progressInfo(self, Total2DL, TotalDL, Total2UL, Uploaded):
         self.ToDownload = Total2DL
-        self.Downloaded = Downloaded
+        self.Downloaded = TotalDL
+
+        self.Progress = (TotalDL / Total2DL) * 100
+
+        curDLed = TotalDL - self.Downloaded
+        diffTime = self.LastTime - time.time()
+
+        self.DLSpeed = self.getReadableFileSize(int(curDLed / diffTime)) + "/s"
+
 
 # ************************************************************************
 
@@ -82,3 +97,17 @@ class CURLDownloader():
             return CURL.getinfo(CURL.CONTENT_LENGTH_DOWNLOAD)
         except pycurl.error:
             return 0
+
+# ************************************************************************
+# from: https://stackoverflow.com/questions/5194057/better-way-to-convert-file-sizes-in-python
+
+    def getReadableFileSize(self, SizeInBytes):
+        if SizeInBytes <= 0:
+            return "0B"
+
+        SizeName = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+        i = int(math.floor(math.log(SizeInBytes, 1024)))
+        p = math.pow(1024, i)
+        s = round(SizeInBytes / p, 2)
+
+        return "{} {}".format(s, SizeName[i])

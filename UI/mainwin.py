@@ -39,6 +39,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def initDefaultVals(self):
         self.setWindowTitle("Better Download Manager")
         self.Settings = com_func.getAppSettings()
+        self.TableColList = ["File Name", "Size", "Progress", "DL Speed", "Time to Finish"]
+        self.TableColDefSize = [250, 70, 150, 70, 100]
 
 
 # ************************************************************************
@@ -177,16 +179,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # -----------------------------------------------------
 
-        self.tblwDLs = QtWidgets.QTableWidget(0, 5)
-        self.tblwDLs.setHorizontalHeaderLabels(["File Name", "Size", "Progress",
-                                                "DL Speed", "Time to Finish"])
-        self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tblwDLs = QtWidgets.QTableWidget(0, len(self.TableColList))
+        self.tblwDLs.setHorizontalHeaderLabels(self.TableColList)
 
-        self.tblwDLs.setColumnWidth(0, self.Settings.value("Main_win/table_col0_width", 250, int))
-        self.tblwDLs.setColumnWidth(1, self.Settings.value("Main_win/table_col1_width", 70, int))
-        self.tblwDLs.setColumnWidth(2, self.Settings.value("Main_win/table_col2_width", 150, int))
-        self.tblwDLs.setColumnWidth(3, self.Settings.value("Main_win/table_col3_width", 70, int))
-        self.tblwDLs.setColumnWidth(4, self.Settings.value("Main_win/table_col4_width", 100, int))
+        for i in range(self.TableColList):
+            self.tblwDLs.setColumnWidth(i, self.Settings.value(
+                "Main_win/table_col{}_width".format(i), self.TableColDefSize[i], int))
+
+        self.tblwDLs.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     # -----------------------------------------------------
 
